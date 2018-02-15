@@ -35,7 +35,7 @@ Either locally or hosted on a site like mLab.
 
 ```command prompt
 
-node app
+npm start
 ```
 
 __Will be running on either port 8080 or the port supplied in an environment variable.__
