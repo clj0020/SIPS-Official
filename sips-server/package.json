@@ -1,0 +1,44 @@
+{
+  "name": "sips-server",
+  "version": "1.0.0",
+  "description": "SIPS Server by Team 11.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "contributors": [
+    {
+      "name": "Carson Jones",
+      "email": "clj0020@tigermail.auburn.edu",
+      "url": "http://developer-carson-jones.com/"
+    },
+    {
+      "name": "Bryant Kelley",
+      "email": "bak0016@tigermail.auburn.edu",
+      "url": ""
+    },
+    {
+      "name": "David Moore",
+      "email": "dtm0013@tigermail.auburn.edu",
+      "url": ""
+    },
+    {
+      "name": "Jordan Peterson",
+      "email": "jdp0041@tigermail.auburn.edu",
+      "url": ""
+    }
+  ],
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "*",
+    "body-parser": "*",
+    "cors": "*",
+    "express": "*",
+    "jsonwebtoken": "*",
+    "mongoose": "*",
+    "mongoose-currency": "^0.2.0",
+    "nconf": "^0.10.0",
+    "passport": "*",
+    "passport-jwt": "^3.0.1"
+  }
+}

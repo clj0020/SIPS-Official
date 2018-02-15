@@ -1,0 +1,11 @@
+<div class="wrapper">
+  <div class="container">
+    <h1>Login</h1>
+
+    <form class="form" (submit)="onLoginSubmit()">
+      <input type="text" placeholder="Username" [(ngModel)]="username" name="username">
+      <input type="password" placeholder="Password" [(ngModel)]="password" name="password">
+      <button type="submit" id="login-button">Login</button>
+    </form>
+  </div>
+</div>
