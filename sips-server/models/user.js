@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
-const config = require('../config/database');
 
 // User Schema
 //Adding "unique" option to some fields here
@@ -28,6 +27,11 @@ const UserSchema = new Schema({
 	created_at: {
 		type: Date,
 		default: Date.now
+	},
+	role: {
+		type: String,
+		enum: ['organization_admin', 'tester', 'athlete'],
+		default: 'athlete'
 	}
 });
 //for search functionality it may be a good idea to impose some case options
@@ -56,9 +60,16 @@ module.exports.addUser = function(newUser, callback) {
 	});
 };
 
-module.exports.comparePassword = function(candidatePassword, hash, callback) {
-	bcrypt.compare(candidatePassword, hash, (err, isMatch) => {
-		if (err) throw err;
+module.exports.comparePassword = function(passwordAttempt, password, callback) {
+
+	bcrypt.compare(passwordAttempt, password, function(err, isMatch) {
 		callback(null, isMatch);
 	});
-};
+
+}
+// module.exports.comparePassword = function(candidatePassword, hash, callback) {
+// 	bcrypt.compare(candidatePassword, hash, (err, isMatch) => {
+// 		if (err) throw err;
+// 		callback(null, isMatch);
+// 	});
+// };

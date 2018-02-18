@@ -1,0 +1,31 @@
+@startuml
+
+class User {
+    +String name
+    +String email
+    +String username
+    -String password
+    +Date created_at
+    +Enum role
+    +getUserById()
+    +getUserByUsername()
+    +addUser()
+    +comparePassword()
+}
+
+class Organization {
+  +String title
+  +organization_admins[]
+  +testers[]
+  +athletes[]
+  +createdAt
+  +creator
+  +getOrganizationById()
+  +listOrganizations()
+  +addOrganization()
+  +updateOrganization()
+}
+
+Organization *- User
+
+@enduml

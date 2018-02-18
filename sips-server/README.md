@@ -47,7 +47,7 @@ To test the project, open up a web browser, or better yet [Postman](https://www.
 ## How it works ##
 
 * [server.js](sips-server/server.js) - This is the main file that puts everything together to make an API. We initialize app, connect to the database, and provide routes for the API.
-* [routes/](sips-server/routes) - This is the directory that holds the route files, to include a routes file in the project you must add it to the [server.js](sips-server/server.js) file.
+* [routes/](sips-server/routes) - This is the directory that holds the route files, to include a routes file in the project you must add it to the server.js file.
   * [routes/users.js](sips-server/routes/users.js) - This is the routes file for the user model. It includes routes for registering users, logging in, and retrieving user's profiles.
 * [models/](sips-server/models) - This is the directory that holds the models for the api, each model file contains the schema of the model and the [mongoose](http://mongoosejs.com/) methods for interacting with those model objects in the database.
   * [models/user.js](sips-server/models/user.js) - This is the model file for the user. It includes the user schema as well as methods for adding users to the database, retrieving users, and comparing user passwords.
