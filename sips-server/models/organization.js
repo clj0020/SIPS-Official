@@ -5,24 +5,6 @@ const config = require('config');
 // Organization Schema
 const OrganizationSchema = new Schema({
 	title: String,
-	organization_admins: [{
-		admin: {
-			type: Schema.ObjectId,
-			ref: 'User'
-		}
-	}],
-	testers: [{
-		tester: {
-			type: Schema.ObjectId,
-			ref: 'User'
-		}
-	}],
-	athletes: [{
-		athlete: {
-			type: Schema.ObjectId,
-			ref: 'User'
-		}
-	}],
 	createdAt: {
 		type: Date,
 		default: Date.now
@@ -37,7 +19,9 @@ const OrganizationSchema = new Schema({
 const Organization = module.exports = mongoose.model('Organization', OrganizationSchema);
 
 module.exports.getOrganizationById = function(id, callback) {
-	Organization.findById(id, callback).populate('athletes.athlete');
+	Organization.findOne({
+		'_id': id
+	}, callback);
 };
 
 // List organizations

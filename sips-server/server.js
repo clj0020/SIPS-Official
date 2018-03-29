@@ -27,19 +27,6 @@ mongoose.connection.on('error', (err) => {
 	console.log('Database error: ' + err);
 });
 
-// Include the Routes
-const users = require('./routes/users');
-const organizations = require('./routes/organizations');
-
-// Port Number
-const port = process.env.PORT || 8080;
-
-// CORS Middleware
-app.use(cors());
-
-// Set Static Folder
-app.use(express.static(path.join(__dirname, 'public')));
-
 
 // Body Parser Middleware
 app.use(bodyParser.json());
@@ -51,6 +38,22 @@ app.use(bodyParser.json({
 	type: 'application/json'
 }));
 
+// Include the Routes
+const users = require('./routes/users');
+const admins = require('./routes/admins');
+const testers = require('./routes/testers');
+const athletes = require('./routes/athletes');
+const testingData = require('./routes/testingData')
+const organizations = require('./routes/organizations');
+
+// Port Number
+const port = process.env.PORT || 8080;
+
+// CORS Middleware
+app.use(cors());
+
+// Set Static Folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Passport Middleware
 app.use(passport.initialize()); // initialize passport.
@@ -58,9 +61,12 @@ app.use(passport.initialize()); // initialize passport.
 
 require('./middleware/passport')(passport);
 
-
 // Tell the app to use the routes.
 app.use('/users', users);
+app.use('/admins', admins);
+app.use('/testers', testers);
+app.use('/athletes', athletes);
+app.use('/testingData', testingData);
 app.use('/organizations', organizations);
 
 // Index Route

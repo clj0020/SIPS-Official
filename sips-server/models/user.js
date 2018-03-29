@@ -6,16 +6,15 @@ const bcrypt = require('bcryptjs');
 //Adding "unique" option to some fields here
 // (email and username should be unique fields) -RJM
 const UserSchema = new Schema({
-	name: {
+	first_name: {
+		type: String,
+		required: true
+	},
+	last_name: {
 		type: String,
 		required: true
 	},
 	email: {
-		type: String,
-		required: true,
-		unique: true
-	},
-	username: {
 		type: String,
 		required: true,
 		unique: true
@@ -27,15 +26,10 @@ const UserSchema = new Schema({
 	created_at: {
 		type: Date,
 		default: Date.now
-	},
-	role: {
-		type: String,
-		enum: ['organization_admin', 'tester', 'athlete'],
-		default: 'athlete'
 	}
+}, {
+	discriminatorKey: 'kind'
 });
-//for search functionality it may be a good idea to impose some case options
-//to some of the fields (like username) to make searches more accurate -RJM
 
 const User = module.exports = mongoose.model('User', UserSchema);
 
@@ -43,9 +37,9 @@ module.exports.getUserById = function(id, callback) {
 	User.findById(id, callback);
 };
 
-module.exports.getUserByUsername = function(username, callback) {
+module.exports.getUserByEmail = function(email, callback) {
 	const query = {
-		username: username
+		email: email
 	};
 	User.findOne(query, callback);
 };

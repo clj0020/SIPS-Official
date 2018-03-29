@@ -1,68 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
+const auth = require('../middleware/auth');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const Organization = require('../models/organization');
 
+var requireAuth = passport.authenticate('jwt', {
+	session: false
+});
+
 /**
   Organization routes
 */
-
-
-/** List Organizations
-
-    Description: List organizations.
-    Endpoint: '/organizations'
-    Method: GET
-    Auth:
-    Request: params.page: Number
-    Response: success: bool,
-              msg: String,
-              organizations: Organization[],
-              page: Number,
-              pages: Number
-*/
-router.get('/', (req, res) => {
-	const page = (req.params.page > 0 ? req.params.page : 1) - 1;
-	const perPage = 15;
-	const options = {
-		perPage: perPage,
-		page: page
-	};
-
-	// Call the listOrganizations method of Organization model.
-	Organization.listOrganizations(options, (err, organizations) => {
-		// If theres an error, success will be false
-		if (err) {
-			return res.json({
-				data: {
-					success: false,
-					msg: 'Failed to retrieve organizations: ' + err
-				}
-			});
-		}
-		// Get the number of organizations
-		Organization.count().exec((err, count) => {
-			if (err) {
-				return res.json({
-					data: {
-						success: false,
-						msg: 'Failed to retrieve organizations: ' + err
-					}
-				});
-			}
-			// Success! Send back organizations along with page info
-			res.status(200).json({
-				success: true,
-				msg: 'Got your organizations.',
-				organizations: organizations,
-				page: page + 1,
-				pages: Math.ceil(count / perPage)
-			});
-		});
-	})
-});
 
 /** Add Organization
 
@@ -81,15 +31,10 @@ router.get('/', (req, res) => {
 						msg: String (),
 						organization: Organization ()
 */
-router.post('/add', passport.authenticate('jwt', {
-	session: false
-}), (req, res) => {
+router.post('/add', requireAuth, auth.roleAuthorization(['Admin']), (req, res) => {
 
 	let newOrganization = new Organization({
 		title: req.body.title,
-		organization_admins: [],
-		testers: [],
-		athletes: [],
 		creator: req.user
 	});
 
@@ -127,9 +72,8 @@ router.post('/add', passport.authenticate('jwt', {
 						msg: String (),
 						organization: Organization ()
 */
-router.get('/organization/:id', (req, res) => {
+router.get('/:id', requireAuth, (req, res) => {
 	const id = req.params.id;
-
 	Organization.getOrganizationById(id, (err, organization) => {
 		if (err) {
 			res.json({
@@ -145,6 +89,8 @@ router.get('/organization/:id', (req, res) => {
 		}
 	});
 });
+
+
 
 
 module.exports = router;

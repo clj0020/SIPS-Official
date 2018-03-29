@@ -15,7 +15,7 @@ var requireLogin = passport.authenticate('local', {
 });
 
 function generateToken(user) {
-	return jwt.sign(user.toObject(), config.secret, {
+	return jwt.sign(user, config.secret, {
 		expiresIn: 10080
 	});
 }
@@ -24,25 +24,21 @@ function setUserInfo(request) {
 	return {
 		_id: request._id,
 		email: request.email,
-		role: request.role,
-		name: request.name,
-		username: request.username
+		name: request.name
 	};
 }
-
 
 // Register
 router.post('/register', (req, res, next) => {
 	let newUser = new User({
 		name: req.body.name,
 		email: req.body.email,
-		username: req.body.username,
 		password: req.body.password,
 		role: req.body.role
 	});
 
 	User.findOne({
-		username: req.body.username
+		email: req.body.email
 	}, (err, existingUser) => {
 		if (err) {
 			return next(err);
@@ -58,14 +54,16 @@ router.post('/register', (req, res, next) => {
 			if (err) {
 				res.status(401).json({
 					success: false,
-					msg: 'Failed to register user!'
+					msg: 'Failed to register user!' + err.message
 				});
 			} else {
+				userInfo = setUserInfo(user);
+
 				res.status(200).json({
 					success: true,
 					msg: 'User registered!',
-					token: 'JWT ' + generateToken(user),
-					user: user
+					token: 'JWT ' + generateToken(userInfo),
+					user: userInfo
 				});
 			}
 		});
@@ -75,11 +73,11 @@ router.post('/register', (req, res, next) => {
 // Authenticate
 router.post('/login', (req, res, next) => {
 
-	if (!req.body.username) {
+	if (!req.body.email) {
 		return res.status(422).json({
 			success: false,
 			errors: {
-				username: "No username included in request."
+				email: "No email included in request."
 			}
 		});
 	}
@@ -101,13 +99,13 @@ router.post('/login', (req, res, next) => {
 		}
 
 		if (user) {
-
 			userInfo = setUserInfo(user);
+
 			return res.json({
 				success: true,
 				msg: 'User found!',
-				token: generateToken(userInfo),
-				user: userInfo
+				token: 'JWT ' + generateToken(userInfo),
+				user: user
 			});
 		} else {
 			return res.status(500).json({
@@ -116,60 +114,6 @@ router.post('/login', (req, res, next) => {
 			});
 		}
 	})(req, res, next);
-
-
-	// const username = req.body.username;
-	// const password = req.body.password;
-	//
-	// if (!password) {
-	// 	return res.status(206).json({
-	// 		success: false,
-	// 		msg: "Password not included in request."
-	// 	});
-	// }
-	// if (!username) {
-	// 	return res.status(206).json({
-	// 		success: false,
-	// 		msg: "Username not included in request."
-	// 	});
-	// }
-	//
-	// User.getUserByUsername(username, (err, user) => {
-	// 	if (err) {
-	// 		return res.status(206).send(err);
-	// 	}
-	// 	if (!user) {
-	// 		return res.status(404).json({
-	// 			success: false,
-	// 			msg: "User not found!"
-	// 		});
-	// 	}
-	//
-	// 	User.comparePassword(password, user.password, (err, isMatch) => {
-	// 		if (err) {
-	// 			return res.status(206).send(err);
-	// 		}
-	// 		if (isMatch) {
-	// 			res.status(200).json({
-	// 				success: true,
-	// 				msg: "Successfully logged in!",
-	// 				token: 'JWT ' + generateToken(user),
-	// 				user: {
-	// 					id: user._id,
-	// 					name: user.name,
-	// 					username: user.username,
-	// 					email: user.email,
-	// 					role: user.role
-	// 				}
-	// 			});
-	// 		} else {
-	// 			return res.status(400).json({
-	// 				success: false,
-	// 				msg: 'Wrong password!'
-	// 			});
-	// 		}
-	// 	});
-	// });
 });
 
 // Profile

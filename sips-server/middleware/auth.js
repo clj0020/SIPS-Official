@@ -16,7 +16,7 @@ exports.roleAuthorization = function(roles) {
 				return next(err);
 			}
 
-			if (roles.indexOf(foundUser.role) > -1) {
+			if (roles.indexOf(foundUser.kind) > -1) {
 				return next();
 			}
 

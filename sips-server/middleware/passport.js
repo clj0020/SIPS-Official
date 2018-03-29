@@ -6,14 +6,14 @@ const LocalStrategy = require('passport-local').Strategy;
 
 module.exports = function(passport) {
 	var localOptions = {
-		usernameField: 'username',
+		usernameField: 'email',
 		passwordField: 'password'
 	}
 
-	var localLogin = new LocalStrategy(localOptions, function(username, password, done) {
-		if (!username) {
+	var localLogin = new LocalStrategy(localOptions, function(email, password, done) {
+		if (!email) {
 			return done(null, false, {
-				error: 'Username not included in request.'
+				error: 'Email not included in request.'
 			});
 		}
 		if (!password) {
@@ -22,7 +22,7 @@ module.exports = function(passport) {
 			});
 		}
 
-		User.getUserByUsername(username, (err, user) => {
+		User.getUserByEmail(email, (err, user) => {
 			if (err) {
 				return done(err);
 			}
