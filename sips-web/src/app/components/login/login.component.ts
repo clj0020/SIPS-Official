@@ -10,7 +10,7 @@ import { FlashMessagesService } from 'angular2-flash-messages';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  username: string;
+  email: string;
   password: string;
 
 
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
 
   onLoginSubmit() {
     const user = {
-      username: this.username,
+      email: this.email,
       password: this.password
     };
 
