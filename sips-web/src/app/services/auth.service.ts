@@ -60,6 +60,7 @@ export class AuthService {
   }
 
   setToken(newToken) {
+    localStorage.setItem('id_token', newToken);
     this.authToken = newToken;
     this.tokenEmitter.emit(this.authToken);
   }

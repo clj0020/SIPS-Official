@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FlashMessagesModule } from 'angular2-flash-messages';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+
 // Components
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -16,6 +17,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { AdminRegisterComponent } from './components/admin-register/admin-register.component';
 import { AddOrganizationComponent } from './components/add-organization/add-organization.component';
 import { OrganizationAdminComponent } from './components/organization-admin/organization-admin.component';
+import { VerifyTesterComponent } from './components/verify-tester/verify-tester.component';
 
 // Services
 import { AuthService } from './services/auth.service';
@@ -35,6 +37,7 @@ const appRoutes: Routes = [
   { path: 'admin/register', component: AdminRegisterComponent },
   { path: 'admin/add-organization', component: AddOrganizationComponent },
   { path: 'admin/organization/:organizationId', component: OrganizationAdminComponent },
+  { path: 'testers/verify', component: VerifyTesterComponent },
   { path: 'login', component: LoginComponent },
 
   // {path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
@@ -54,7 +57,8 @@ const appRoutes: Routes = [
     ProfileComponent,
     AdminRegisterComponent,
     AddOrganizationComponent,
-    OrganizationAdminComponent
+    OrganizationAdminComponent,
+    VerifyTesterComponent
   ],
   imports: [
     BrowserModule,

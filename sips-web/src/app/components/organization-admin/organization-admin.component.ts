@@ -39,21 +39,27 @@ export class OrganizationAdminComponent implements OnInit {
   onTesterAdded() {
     this.testerService.addTester({ email: this.testerEmail, organization: this.organizationId }).subscribe(data => {
       if (data.success) {
-        this.testerService.sendConfirmationEmail(data.tester).subscribe(confirmationData => {
-          if (confirmationData.success) {
-            this.flashMessage.show('Successfully sent tester confirmation email!', {
-              cssClass: 'alert-success',
-              timeout: 5000
-            });
-            this.testers.push({ email: this.testerEmail, status: 'Email sent.' });
-          }
-          else {
-            this.flashMessage.show(confirmationData.msg, {
-              cssClass: 'alert-danger',
-              timeout: 5000
-            });
-          }
+        this.flashMessage.show('Successfully sent tester confirmation email!', {
+          cssClass: 'alert-success',
+          timeout: 5000
         });
+        this.testers.push(data.tester);
+        // 
+        // this.testerService.sendConfirmationEmail(data.tester).subscribe(confirmationData => {
+        //   if (confirmationData.success) {
+        //     this.flashMessage.show('Successfully sent tester confirmation email!', {
+        //       cssClass: 'alert-success',
+        //       timeout: 5000
+        //     });
+        //     this.testers.push({ email: this.testerEmail, status: 'Email sent.' });
+        //   }
+        //   else {
+        //     this.flashMessage.show(confirmationData.msg, {
+        //       cssClass: 'alert-danger',
+        //       timeout: 5000
+        //     });
+        //   }
+        // });
       }
       else {
         this.flashMessage.show(data.msg, {

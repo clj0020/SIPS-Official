@@ -44,7 +44,9 @@ function setTesterInfo(request) {
 		first_name: request.first_name,
 		last_name: request.last_name,
 		email: request.email,
-		organization: request.organization
+		kind: request.kind,
+		organization: request.organization,
+		created_at: request.created_at
 	};
 }
 
@@ -52,52 +54,11 @@ function setUnVerifiedTesterInfo(request) {
 	return {
 		_id: request._id,
 		email: request.email,
-		organization: request.organization
+		kind: request.kind,
+		organization: request.organization,
+		created_at: request.created_at
 	};
 }
-
-// Register
-router.post('/register', (req, res, next) => {
-	let newTester = new Tester({
-		first_name: req.body.first_name,
-		last_name: req.body.last_name,
-		email: req.body.email,
-		password: req.body.password,
-		organization: req.body.organization
-	});
-
-	Tester.findOne({
-		email: req.body.email
-	}, (err, existingTester) => {
-		if (err) {
-			return next(err);
-		}
-		if (existingTester) {
-			return res.status(422).json({
-				success: false,
-				msg: 'That email address is already in use.'
-			});
-		}
-
-		Tester.addUser(newTester, (err, tester) => {
-			if (err) {
-				res.status(401).json({
-					success: false,
-					msg: 'Failed to register tester!' + err.message
-				});
-			} else {
-				testerInfo = setTesterInfo(tester);
-
-				res.status(200).json({
-					success: true,
-					msg: 'User registered!',
-					token: 'JWT ' + generateToken(testerInfo),
-					user: testerInfo
-				});
-			}
-		});
-	});
-});
 
 router.post('/add', requireAuth, auth.roleAuthorization(['Admin']), (req, res, next) => {
 	let newTester = new Tester({
@@ -122,58 +83,92 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Admin']), (req, res, n
 			if (err) {
 				res.status(401).json({
 					success: false,
-					msg: 'Failed to register tester!' + err.message
+					msg: 'Failed to register tester! Error:' + err.message
 				});
 			} else {
 				testerInfo = setUnVerifiedTesterInfo(tester);
+				let token = generateToken(testerInfo);
+				// Send Email
+				host = req.get('host');
+				link = "http://" + config.WebHost + "/testers/verify?token=" + token;
 
-				res.status(200).json({
-					success: true,
-					msg: 'Tester registered!',
-					tester: testerInfo
+				mailOptions = {
+					to: testerInfo.email,
+					subject: "Please confirm your Email account",
+					html: "<h3>Hello from SIPS!</h5><br> <h5>You've been added as a tester, Please verify your email.</h5><br><a href=" + link + ">Click here to verify</a>"
+				}
+				smtpTransport.sendMail(mailOptions, function(error, response) {
+					if (error) {
+						res.status(401).json({
+							success: false,
+							msg: 'Failed to send tester email! Error:' + error.message
+						});
+					} else {
+						res.status(200).json({
+							success: true,
+							msg: 'Tester registered and confirmation email sent!'
+						});
+					}
 				});
 			}
 		});
 	});
 });
 
-router.get('/send-confirmation', function(req, res) {
-	rand = Math.floor((Math.random() * 100) + 54);
-	host = req.get('host');
-	link = "http://" + req.get('host') + "/testers/verify?id=" + rand;
-	mailOptions = {
-		to: req.query.to,
-		subject: "Please confirm your Email account",
-		html: "Hello from SIPS!<br> You've been added as a tester, Please Click on the link to verify your email.<br><a href=" + link + ">Click here to verify</a>"
-	}
-	console.log(mailOptions);
-	smtpTransport.sendMail(mailOptions, function(error, response) {
-		if (error) {
+router.post('/verify', function(req, res) {
+	var decodedToken = {}
+
+	// get object from token
+	jwt.verify(req.headers.authorization, config.secret, function(err, decoded) {
+		decodedToken = decoded;
+	});
+
+	const tester = {
+		_id: decodedToken._id,
+		first_name: req.body.first_name,
+		last_name: req.body.last_name,
+		email: decodedToken.email,
+		kind: 'Tester',
+		organization: decodedToken.organization,
+		password: req.body.password
+	};
+
+	Tester.verifyTester(tester, (err, newTester) => {
+		if (err) {
 			res.status(401).json({
 				success: false,
-				msg: 'Failed to send tester email!' + error.message
+				msg: 'Failed to verify tester! Error:' + err.message
 			});
 		} else {
+
+			let testerInfo = setTesterInfo(newTester);
+
 			res.status(200).json({
 				success: true,
-				msg: 'Sent email!'
+				msg: 'Tester registered and confirmation email sent!',
+				tester: testerInfo,
+				token: 'JWT ' + generateToken(testerInfo)
 			});
 		}
 	});
-});
 
-router.get('/verify', function(req, res) {
-	console.log(req.protocol + ":/" + req.get('host'));
-	if ((req.protocol + "://" + req.get('host')) == ("http://" + host)) {
-		console.log("Domain is matched. Information is from Authentic email");
-		if (req.query.id == rand) {
-			res.end("<h1>" + mailOptions.to + " has been successfully verified! You are now a tester!");
-		} else {
-			res.end("<h1>Bad Request</h1>");
-		}
-	} else {
-		res.end("<h1>Request is from unknown source");
-	}
+
+	//
+	// return jwt.sign(user, config.secret, {
+	// 	expiresIn: 10080
+	// });
+	//
+	//
+	// if ((req.protocol + "://" + req.get('host')) == ("http://" + host)) {
+	// 	console.log("Domain is matched. Information is from Authentic email");
+	// 	if (req.query.id == rand) {
+	// 		res.end("<h1>" + mailOptions.to + " has been successfully verified! You are now a tester!");
+	// 	} else {
+	// 		res.end("<h1>Bad Request</h1>");
+	// 	}
+	// } else {
+	// 	res.end("<h1>Request is from unknown source");
+	// }
 });
 
 module.exports = router;

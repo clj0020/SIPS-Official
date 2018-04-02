@@ -23,3 +23,28 @@ module.exports.addUser = function(newUser, callback) {
 	// 	});
 	// });
 };
+
+module.exports.verifyTester = function(newTester, callback) {
+	bcrypt.genSalt(10, (err, salt) => {
+		bcrypt.hash(newTester.password, salt, (err, hash) => {
+			if (err) throw err;
+			newTester.password = hash;
+
+			Tester.findOneAndUpdate({
+				_id: newTester._id
+			}, {
+				'first_name': newTester.first_name,
+				'last_name': newTester.last_name,
+				'password': hash
+			}, {
+				new: true
+			}, callback);
+		});
+	});
+
+
+};
+
+module.exports.verifyUser = function(newTester, callback) {
+
+}

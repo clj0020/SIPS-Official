@@ -14,7 +14,6 @@ export class TesterService {
   authToken: string;
   tester: any;
 
-
   constructor(
     private http: Http,
     private authService: AuthService
@@ -29,19 +28,28 @@ export class TesterService {
       .map(res => res.json());
   }
 
-  sendConfirmationEmail(tester) {
+  verifyTester(tester) {
     let headers = new Headers();
     this.authToken = this.authService.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
-
-    let myParams = new URLSearchParams();
-    myParams.append('to', tester.email);
-    let options = new RequestOptions({ params: myParams, headers: headers });
-
-    let url = 'http://localhost:8080/testers/send-confirmation';
-    return this.http.get(url, options)
+    return this.http.post('http://localhost:8080/testers/verify', tester, { headers: headers })
       .map(res => res.json());
   }
+
+  // sendConfirmationEmail(tester) {
+  //   let headers = new Headers();
+  //   this.authToken = this.authService.loadToken();
+  //   headers.append('Authorization', this.authToken);
+  //   headers.append('Content-Type', 'application/json');
+  //
+  //   let myParams = new URLSearchParams();
+  //   myParams.append('to', tester.email);
+  //   let options = new RequestOptions({ params: myParams, headers: headers });
+  //
+  //   let url = 'http://localhost:8080/testers/send-confirmation';
+  //   return this.http.get(url, options)
+  //     .map(res => res.json());
+  // }
 
 }
