@@ -40,6 +40,8 @@
     "mongoose": "^5.0.12",
     "mongoose-currency": "^0.2.0",
     "nconf": "^0.10.0",
+    "nodemailer": "^4.6.4",
+    "nodemailer-smtp-transport": "^2.7.4",
     "passport": "*",
     "passport-jwt": "^3.0.1",
     "passport-local": "^1.0.0"

@@ -13,16 +13,18 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ProfileComponent } from './components/profile/profile.component';
-
+import { AdminRegisterComponent } from './components/admin-register/admin-register.component';
+import { AddOrganizationComponent } from './components/add-organization/add-organization.component';
+import { OrganizationAdminComponent } from './components/organization-admin/organization-admin.component';
 
 // Services
 import { AuthService } from './services/auth.service';
 import { ValidateService } from './services/validate.service';
+import { OrganizationService } from './services/organization.service';
+import { TesterService } from './services/tester.service';
 
 // Guards
 import { AuthGuard } from './guards/auth.guard';
-
-
 
 
 
@@ -30,6 +32,9 @@ const appRoutes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'register', component: RegisterComponent },
+  { path: 'admin/register', component: AdminRegisterComponent },
+  { path: 'admin/add-organization', component: AddOrganizationComponent },
+  { path: 'admin/organization/:organizationId', component: OrganizationAdminComponent },
   { path: 'login', component: LoginComponent },
 
   // {path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
@@ -46,7 +51,10 @@ const appRoutes: Routes = [
     LoginComponent,
     RegisterComponent,
     NavbarComponent,
-    ProfileComponent
+    ProfileComponent,
+    AdminRegisterComponent,
+    AddOrganizationComponent,
+    OrganizationAdminComponent
   ],
   imports: [
     BrowserModule,
@@ -58,6 +66,8 @@ const appRoutes: Routes = [
   ],
   providers: [
     AuthService,
+    OrganizationService,
+    TesterService,
     ValidateService,
     AuthGuard
   ],

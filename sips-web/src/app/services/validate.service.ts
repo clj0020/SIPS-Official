@@ -6,7 +6,16 @@ export class ValidateService {
   constructor() { }
 
   validateRegister(user) {
-    if (user.name == undefined || user.email == undefined || user.username == undefined || user.password == undefined) {
+    if (user.first_name == undefined || user.last_name == undefined || user.email == undefined || user.password == undefined) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  }
+
+  validateAddOrganization(organization) {
+    if (organization.title == undefined) {
       return false;
     }
     else {

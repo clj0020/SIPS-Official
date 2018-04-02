@@ -1,0 +1,8 @@
+<h2 class="page-header">Add Organization</h2>
+<form (submit)="onAddOrganizationSubmit()">
+  <div class="form-group">
+    <label>Organization Title</label>
+    <input type="text" [(ngModel)]="title" name="title" class="form-control">
+  </div>
+  <input type="submit" class="btn btn-primary" value="Submit">
+</form>

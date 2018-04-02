@@ -21,3 +21,9 @@ module.exports.addAdmin = function(newAdmin, callback) {
 		});
 	});
 };
+
+module.exports.updateAdmin = function(admin, callback) {
+	Admin.findOneAndUpdate({
+		id: admin._id
+	}, admin, callback);
+};

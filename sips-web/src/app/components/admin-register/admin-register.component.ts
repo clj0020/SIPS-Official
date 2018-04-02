@@ -5,13 +5,13 @@ import { FlashMessagesService } from 'angular2-flash-messages';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  selector: 'app-admin-register',
+  templateUrl: './admin-register.component.html',
+  styleUrls: ['./admin-register.component.css']
 })
-export class RegisterComponent implements OnInit {
-  name: string;
-  username: string;
+export class AdminRegisterComponent implements OnInit {
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
 
@@ -27,11 +27,12 @@ export class RegisterComponent implements OnInit {
 
   onRegisterSubmit() {
     const user = {
-      name: this.name,
-      username: this.username,
+      first_name: this.first_name,
+      last_name: this.last_name,
       email: this.email,
       password: this.password
     }
+
 
     // Required Fields
     if (!this.validateService.validateRegister(user)) {
@@ -45,15 +46,15 @@ export class RegisterComponent implements OnInit {
       return false;
     }
 
-    // Register User
-    this.authService.registerUser(user).subscribe(data => {
+    // Register Admin
+    this.authService.registerAdmin(user).subscribe(data => {
       if (data.success) {
         this.flashMessage.show('You are now registered and can log in now!', { cssClass: 'alert-success', timeout: 3000 });
         this.router.navigate(['/login']);
       }
       else {
         this.flashMessage.show('Something went wrong!', { cssClass: 'alert-danger', timeout: 3000 });
-        this.router.navigate(['/register']);
+        this.router.navigate(['/admin/register']);
       }
     });
 

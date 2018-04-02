@@ -5,6 +5,25 @@ const auth = require('../middleware/auth');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const Organization = require('../models/organization');
+const Admin = require('../models/admin');
+
+function generateToken(user) {
+	return jwt.sign(user, config.secret, {
+		expiresIn: 10080
+	});
+}
+
+function setAdminInfo(request) {
+	return {
+		_id: request._id,
+		kind: request.kind,
+		created_at: request.created_at,
+		first_name: request.first_name,
+		last_name: request.last_name,
+		email: request.email,
+		organization: request.organization
+	};
+}
 
 var requireAuth = passport.authenticate('jwt', {
 	session: false
@@ -45,13 +64,36 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Admin']), (req, res) =
 
 	Organization.addOrganization(newOrganization, (err, organization) => {
 		if (err) {
-			res.status(206).send(err);
-		} else {
-			res.status(200).json({
-				success: true,
-				msg: 'Successfully added organization!',
-				organization: organization
+			res.status(206).json({
+				success: false,
+				msg: 'Unable to add organization: ' + err
 			});
+		} else {
+
+			Admin.findOneAndUpdate({
+				_id: req.user._id
+			}, {
+				'organization': newOrganization._id
+			}, {
+				new: true
+			}, function(err, admin) {
+				if (err) {
+					res.status(206).json({
+						success: false,
+						msg: 'Unable to add organization to user object: ' + err
+					});
+				} else {
+					let adminInfo = setAdminInfo(admin);
+					console.log(admin);
+					res.status(200).json({
+						success: true,
+						msg: 'Successfully added organization!',
+						organization: organization,
+						user: adminInfo
+					});
+				}
+			})
+
 		}
 	});
 });
@@ -72,7 +114,7 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Admin']), (req, res) =
 						msg: String (),
 						organization: Organization ()
 */
-router.get('/:id', requireAuth, (req, res) => {
+router.get('/:id', requireAuth, auth.roleAuthorization(['Admin']), (req, res) => {
 	const id = req.params.id;
 	Organization.getOrganizationById(id, (err, organization) => {
 		if (err) {

@@ -73,4 +73,27 @@ router.post('/register', (req, res, next) => {
 	});
 });
 
+router.post('/update', (req, res, next) => {
+	let admin = req.body._id;
+	// console.log(admin);
+	Admin.updateAdmin(admin, (err, admin) => {
+		if (err) {
+			res.status(401).json({
+				success: false,
+				msg: 'Failed to update admin!' + err.message
+			});
+		} else {
+			adminInfo = setAdminInfo(admin);
+
+			res.status(200).json({
+				success: true,
+				msg: 'Admin updated!',
+				token: 'JWT ' + generateToken(adminInfo),
+				admin: adminInfo
+			});
+		}
+	});
+});
+
+
 module.exports = router;

@@ -1,3 +1,21 @@
-<p>
-  home works!
-</p>
+<!-- <div class="row" *ngIf="user.kind == 'Admin'">
+
+  <div class="col-lg-4 text-center">
+    <h3>Organization</h3>
+    <a class="btn btn-primary" [routerLink]="['/admin/add-organization']">Add Organization</a>
+  </div>
+  <div class="col-lg-4 text-center">
+    <h3>Testers</h3>
+    <a class="btn btn-primary" [routerLink]="['/admin/add-tester']">Add Tester</a>
+  </div>
+  <div class="col-lg-4 text-center">
+    <h3>Athletes</h3>
+    <a class="btn btn-primary" [routerLink]="['/admin/add-tester']">Add Athlete</a>
+  </div>
+</div> -->
+
+
+<div class="row text-center">
+  <app-organization-admin *ngIf="user.organization" [organizationId]="user.organization"></app-organization-admin>
+  <app-add-organization *ngIf="!user.organization"></app-add-organization>
+</div>
