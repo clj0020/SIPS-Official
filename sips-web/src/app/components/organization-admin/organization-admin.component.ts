@@ -5,7 +5,7 @@ import { FlashMessagesService } from 'angular2-flash-messages';
 import { Organization } from '../../classes/organization';
 import { OrganizationService } from '../../services/organization.service';
 import { TesterService } from '../../services/tester.service';
-
+import { AthleteService } from '../../services/athlete.service';
 
 @Component({
   selector: 'app-organization-admin',
@@ -27,13 +27,15 @@ export class OrganizationAdminComponent implements OnInit {
     private authService: AuthService,
     private organizationService: OrganizationService,
     private testerService: TesterService,
+    private athleteService: AthleteService,
     private router: Router,
     private flashMessage: FlashMessagesService,
   ) { }
 
   ngOnInit() {
     this.loadOrganization(this.organizationId);
-
+    this.loadAthletes(this.organizationId);
+    this.loadTesters(this.organizationId);
   }
 
   onTesterAdded() {
@@ -44,22 +46,6 @@ export class OrganizationAdminComponent implements OnInit {
           timeout: 5000
         });
         this.testers.push(data.tester);
-        // 
-        // this.testerService.sendConfirmationEmail(data.tester).subscribe(confirmationData => {
-        //   if (confirmationData.success) {
-        //     this.flashMessage.show('Successfully sent tester confirmation email!', {
-        //       cssClass: 'alert-success',
-        //       timeout: 5000
-        //     });
-        //     this.testers.push({ email: this.testerEmail, status: 'Email sent.' });
-        //   }
-        //   else {
-        //     this.flashMessage.show(confirmationData.msg, {
-        //       cssClass: 'alert-danger',
-        //       timeout: 5000
-        //     });
-        //   }
-        // });
       }
       else {
         this.flashMessage.show(data.msg, {
@@ -72,7 +58,21 @@ export class OrganizationAdminComponent implements OnInit {
   }
 
   onAthleteAdded() {
-    this.athletes.push({ email: this.athleteEmail, status: 'Not Emailed.' });
+    this.athleteService.addAthlete({ email: this.athleteEmail, organization: this.organizationId }).subscribe(data => {
+      if (data.success) {
+        this.flashMessage.show('Successfully sent athlete confirmation email!', {
+          cssClass: 'alert-success',
+          timeout: 5000
+        });
+        this.athletes.push(data.athlete);
+      }
+      else {
+        this.flashMessage.show(data.msg, {
+          cssClass: 'alert-danger',
+          timeout: 5000
+        });
+      }
+    });
     this.athleteEmail = '';
   }
 
@@ -81,6 +81,36 @@ export class OrganizationAdminComponent implements OnInit {
       if (data.success) {
         this.organizationService.storeOrganization(data.organization);
         this.organization = data.organization;
+      }
+      else {
+        this.flashMessage.show(data.msg, {
+          cssClass: 'alert-danger',
+          timeout: 5000
+        });
+      }
+    });
+  }
+
+  loadAthletes(organizationId) {
+    this.athleteService.getAthletesFromOrganization(organizationId).subscribe(data => {
+      if (data.success) {
+        this.athleteService.storeAthletes(data.athletes);
+        this.athletes = data.athletes;
+      }
+      else {
+        this.flashMessage.show(data.msg, {
+          cssClass: 'alert-danger',
+          timeout: 5000
+        });
+      }
+    });
+  }
+
+  loadTesters(organizationId) {
+    this.testerService.getTestersFromOrganization(organizationId).subscribe(data => {
+      if (data.success) {
+        this.testerService.storeTesters(data.testers);
+        this.testers = data.testers;
       }
       else {
         this.flashMessage.show(data.msg, {

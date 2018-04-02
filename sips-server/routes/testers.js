@@ -46,6 +46,7 @@ function setTesterInfo(request) {
 		email: request.email,
 		kind: request.kind,
 		organization: request.organization,
+		status: request.status,
 		created_at: request.created_at
 	};
 }
@@ -56,6 +57,7 @@ function setUnVerifiedTesterInfo(request) {
 		email: request.email,
 		kind: request.kind,
 		organization: request.organization,
+		status: request.status,
 		created_at: request.created_at
 	};
 }
@@ -63,7 +65,8 @@ function setUnVerifiedTesterInfo(request) {
 router.post('/add', requireAuth, auth.roleAuthorization(['Admin']), (req, res, next) => {
 	let newTester = new Tester({
 		email: req.body.email,
-		organization: req.body.organization
+		organization: req.body.organization,
+		status: 'Unverified'
 	});
 
 	Tester.findOne({
@@ -106,7 +109,8 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Admin']), (req, res, n
 					} else {
 						res.status(200).json({
 							success: true,
-							msg: 'Tester registered and confirmation email sent!'
+							msg: 'Tester registered and confirmation email sent!',
+							tester: testerInfo
 						});
 					}
 				});
@@ -129,6 +133,7 @@ router.post('/verify', function(req, res) {
 		last_name: req.body.last_name,
 		email: decodedToken.email,
 		kind: 'Tester',
+		status: 'Verified',
 		organization: decodedToken.organization,
 		password: req.body.password
 	};
@@ -170,5 +175,29 @@ router.post('/verify', function(req, res) {
 	// 	res.end("<h1>Request is from unknown source");
 	// }
 });
+
+// Get list of testers from Organization
+router.get('/get-testers-from-organization', requireAuth, auth.roleAuthorization(['Admin']), (req, res, next) => {
+	let organizationId = req.params.organizationId;
+
+	// Call the getTestersFromOrganization method of Tester model.
+	Tester.getTestersFromOrganization(organizationId, (err, testers) => {
+		// If theres an error, success will be false
+		if (err) {
+			return res.json({
+				success: false,
+				msg: 'Failed to retrieve testers: ' + err
+			});
+		} else {
+			// Success! Send back testers
+			res.status(200).json({
+				success: true,
+				msg: 'Got your testers.',
+				testers: testers
+			});
+		}
+	});
+});
+
 
 module.exports = router;

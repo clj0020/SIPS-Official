@@ -10,45 +10,45 @@ import { User } from '../classes/user';
 import { AuthService } from '../services/auth.service';
 
 @Injectable()
-export class TesterService {
+export class AthleteService {
   authToken: string;
-  tester: any;
-  testers: any[];
+  athlete: any;
+  athletes: any[];
 
   constructor(
     private http: Http,
     private authService: AuthService
   ) { }
 
-  addTester(tester) {
+  addAthlete(athlete) {
     let headers = new Headers();
     this.authToken = this.authService.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
-    return this.http.post('http://localhost:8080/testers/add', tester, { headers: headers })
+    return this.http.post('http://localhost:8080/athletes/add', athlete, { headers: headers })
       .map(res => res.json());
   }
 
-  verifyTester(tester) {
+  verifyAthlete(athlete) {
     let headers = new Headers();
     this.authToken = this.authService.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
-    return this.http.post('http://localhost:8080/testers/verify', tester, { headers: headers })
+    return this.http.post('http://localhost:8080/athletes/verify', athlete, { headers: headers })
       .map(res => res.json());
   }
 
-  getTestersFromOrganization(organizationId) {
+  getAthletesFromOrganization(organizationId) {
     let headers = new Headers();
     this.authToken = this.authService.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('http://localhost:8080/testers/get-testers-from-organization', { headers: headers })
+    return this.http.get('http://localhost:8080/athletes/get-athletes-from-organization', { headers: headers })
       .map(res => res.json());
   }
 
-  storeTesters(testers) {
-    this.testers = testers;
+  storeAthletes(athletes) {
+    this.athletes = athletes;
   }
 
 }

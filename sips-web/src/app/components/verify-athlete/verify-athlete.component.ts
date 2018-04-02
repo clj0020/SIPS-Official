@@ -1,28 +1,34 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { ValidateService } from '../../services/validate.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { FlashMessagesService } from 'angular2-flash-messages';
-import { TesterService } from '../../services/tester.service';
+import { AthleteService } from '../../services/athlete.service';
 import 'rxjs/add/operator/filter';
+import * as moment from 'moment'; // add this 1 of 4
+
 
 @Component({
-  selector: 'app-verify-tester',
-  templateUrl: './verify-tester.component.html',
-  styleUrls: ['./verify-tester.component.css']
+  selector: 'app-verify-athlete',
+  templateUrl: './verify-athlete.component.html',
+  styleUrls: ['./verify-athlete.component.css']
 })
-export class VerifyTesterComponent implements OnInit {
+export class VerifyAthleteComponent implements OnInit {
   token: string;
 
   first_name: string;
   last_name: string;
+  date_of_birth: Date;
+  heightFeet: number;
+  heightInches: number;
+  weight: number;
   password: string;
   confirm_password: string;
 
   constructor(
     private validateService: ValidateService,
     private authService: AuthService,
-    private testerService: TesterService,
+    private athleteService: AthleteService,
     private router: Router,
     private route: ActivatedRoute,
     private flashMessage: FlashMessagesService,
@@ -40,14 +46,17 @@ export class VerifyTesterComponent implements OnInit {
   }
 
   onVerifySubmit() {
-    const tester = {
+    const athlete = {
       first_name: this.first_name,
       last_name: this.last_name,
+      date_of_birth: moment(this.date_of_birth).toISOString(),
+      height: ((this.heightFeet * 12) + this.heightInches),
+      weight: this.weight,
       password: this.password
     }
 
 
-    if (!this.validateService.validateTesterVerification(tester)) {
+    if (!this.validateService.validateAthleteVerification(athlete)) {
       this.flashMessage.show('Please fill in all fields!', { cssClass: 'alert-danger', timeout: 3000 });
       return false;
     }
@@ -57,14 +66,14 @@ export class VerifyTesterComponent implements OnInit {
       return false;
     }
 
-    this.testerService.verifyTester(tester).subscribe(data => {
+    this.athleteService.verifyAthlete(athlete).subscribe(data => {
       if (data.success) {
         this.flashMessage.show('Successfully verified!', {
           cssClass: 'alert-success',
           timeout: 5000
         });
-        localStorage.clear();
-        this.authService.storeUserData(data.token, data.tester);
+
+        this.authService.storeUserData(data.token, data.athlete);
         this.router.navigate(['/']);
       }
       else {
@@ -75,5 +84,6 @@ export class VerifyTesterComponent implements OnInit {
       }
     })
   }
+
 
 }

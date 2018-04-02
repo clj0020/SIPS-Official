@@ -24,10 +24,11 @@ import { AuthService } from './services/auth.service';
 import { ValidateService } from './services/validate.service';
 import { OrganizationService } from './services/organization.service';
 import { TesterService } from './services/tester.service';
+import { AthleteService } from './services/athlete.service';
 
 // Guards
 import { AuthGuard } from './guards/auth.guard';
-
+import { VerifyAthleteComponent } from './components/verify-athlete/verify-athlete.component';
 
 
 const appRoutes: Routes = [
@@ -38,6 +39,7 @@ const appRoutes: Routes = [
   { path: 'admin/add-organization', component: AddOrganizationComponent },
   { path: 'admin/organization/:organizationId', component: OrganizationAdminComponent },
   { path: 'testers/verify', component: VerifyTesterComponent },
+  { path: 'athletes/verify', component: VerifyAthleteComponent },
   { path: 'login', component: LoginComponent },
 
   // {path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
@@ -58,7 +60,8 @@ const appRoutes: Routes = [
     AdminRegisterComponent,
     AddOrganizationComponent,
     OrganizationAdminComponent,
-    VerifyTesterComponent
+    VerifyTesterComponent,
+    VerifyAthleteComponent
   ],
   imports: [
     BrowserModule,
@@ -72,6 +75,7 @@ const appRoutes: Routes = [
     AuthService,
     OrganizationService,
     TesterService,
+    AthleteService,
     ValidateService,
     AuthGuard
   ],

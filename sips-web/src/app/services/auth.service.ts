@@ -11,9 +11,9 @@ import { User } from '../classes/user';
 @Injectable()
 export class AuthService {
   authToken: any;
-  user: User;
+  user: any;
 
-  @Output() userEmitter: EventEmitter<User> = new EventEmitter();
+  @Output() userEmitter: EventEmitter<any> = new EventEmitter();
   @Output() tokenEmitter: EventEmitter<any> = new EventEmitter();
 
   // user$: Observable<any>;

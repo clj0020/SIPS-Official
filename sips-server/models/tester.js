@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 
 const TesterSchema = User.discriminator('Tester', new Schema({
+	status: String,
 	organization: {
 		type: Schema.ObjectId,
 		ref: 'Organization'
@@ -15,13 +16,6 @@ const Tester = module.exports = mongoose.model('Tester');
 module.exports.addUser = function(newUser, callback) {
 	console.log(newUser);
 	newUser.save(callback);
-	// bcrypt.genSalt(10, (err, salt) => {
-	// 	bcrypt.hash(newUser.password, salt, (err, hash) => {
-	// 		if (err) throw err;
-	// 		newUser.password = hash;
-	// 		newUser.save(callback);
-	// 	});
-	// });
 };
 
 module.exports.verifyTester = function(newTester, callback) {
@@ -35,16 +29,22 @@ module.exports.verifyTester = function(newTester, callback) {
 			}, {
 				'first_name': newTester.first_name,
 				'last_name': newTester.last_name,
+				'status': newTester.status,
 				'password': hash
 			}, {
 				new: true
 			}, callback);
 		});
 	});
-
-
 };
 
-module.exports.verifyUser = function(newTester, callback) {
-
+module.exports.getTestersFromOrganization = function(organizationId, callback) {
+	Tester.find({
+			"organization._id": organizationId
+		})
+		.populate()
+		.sort({
+			'createdAt': -1
+		})
+		.exec(callback);
 }

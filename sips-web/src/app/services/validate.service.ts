@@ -6,7 +6,8 @@ export class ValidateService {
   constructor() { }
 
   validateRegister(user) {
-    if (user.first_name == undefined || user.last_name == undefined || user.email == undefined || user.password == undefined) {
+    if (user.first_name == undefined || user.last_name == undefined ||
+      user.email == undefined || user.password == undefined) {
       return false;
     }
     else {
@@ -24,7 +25,19 @@ export class ValidateService {
   }
 
   validateTesterVerification(tester) {
-    if (tester.first_name == undefined || tester.last_name == undefined || tester.password == undefined) {
+    if (tester.first_name == undefined || tester.last_name == undefined ||
+      tester.password == undefined) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  }
+
+  validateAthleteVerification(athlete) {
+    if (athlete.first_name == undefined || athlete.last_name == undefined ||
+      athlete.date_of_birth == undefined || athlete.height == undefined ||
+      athlete.weight == undefined || athlete.password == undefined) {
       return false;
     }
     else {

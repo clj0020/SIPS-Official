@@ -5,32 +5,32 @@
     <div class="col-lg-6">
       <h4>Testers</h4>
       <ul class="list-group">
-        <li *ngFor="let tester of testers" class="list-group-item">
-          <p> {{ tester.email }} <span> {{ tester.status }}</span></p>
+        <li *ngFor="let item of testers" class="list-group-item">
+          <h6> {{ item.email }}</h6>
+          <p style="color: red;" *ngIf="item.status == 'Unverified'">Not Verified Yet</p>
+          <p style="color: green;" *ngIf="item.status == 'Verified'">Verified</p>
         </li>
       </ul>
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="enter tester emails" id="testerEmail" [(ngModel)]="testerEmail" />
+        <input type="text" class="form-control" placeholder="enter tester emails" id="testerEmail" [(ngModel)]="testerEmail" (keyup.enter)="onTesterAdded()" />
         <div class="input-group-btn">
-          <button class="btn btn-primary" type="button" (click)="onTesterAdded()">
-            Add
-      </button>
+          <button class="btn btn-primary" type="button" (click)="onTesterAdded()">Add</button>
         </div>
       </div>
     </div>
     <div class="col-lg-6">
       <h4>Athletes</h4>
       <ul class="list-group">
-        <li *ngFor="let athlete of athletes" class="list-group-item">
-          <p> {{ athlete.email }} <span> {{ athlete.status }}</span></p>
+        <li *ngFor="let item of athletes" class="list-group-item">
+          <p> {{ item.email }} </p>
+          <p style="color: red;" *ngIf="item.status == 'Unverified'">Not Verified Yet</p>
+          <p style="color: green;" *ngIf="item.status == 'Verified'">Verified</p>
         </li>
       </ul>
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="enter athlete emails" id="athleteEmail" [(ngModel)]="athleteEmail" />
+        <input type="text" class="form-control" placeholder="enter athlete emails" id="athleteEmail" [(ngModel)]="athleteEmail" (keyup.enter)="onAthleteAdded()" />
         <div class="input-group-btn">
-          <button class="btn btn-primary" type="button" (click)="onAthleteAdded()">
-        Add
-      </button>
+          <button class="btn btn-primary" type="button" (click)="onAthleteAdded()">Add</button>
         </div>
       </div>
     </div>

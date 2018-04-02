@@ -14,12 +14,17 @@
   </div>
 </div> -->
 
-<h1>{{ user.kind }}</h1>
 <div class="row text-center" *ngIf="user.kind == 'Admin'">
   <app-organization-admin *ngIf="user.organization" [organizationId]="user.organization"></app-organization-admin>
   <app-add-organization *ngIf="!user.organization"></app-add-organization>
 </div>
 <div class="row text-center" *ngIf="user.kind == 'Tester'">
+
+  <!-- <app-organization-admin *ngIf="user.organization" [organizationId]="user.organization"></app-organization-admin>
+  <app-add-organization *ngIf="!user.organization"></app-add-organization> -->
+</div>
+<div class="row text-center" *ngIf="user.kind == 'Athlete'">
+
   <!-- <app-organization-admin *ngIf="user.organization" [organizationId]="user.organization"></app-organization-admin>
   <app-add-organization *ngIf="!user.organization"></app-add-organization> -->
 </div>
