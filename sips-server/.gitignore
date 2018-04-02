@@ -4,4 +4,4 @@
 # env
 keys.json
 
-/config
+/config/*
