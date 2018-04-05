@@ -5,6 +5,8 @@ const auth = require('../middleware/auth');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const User = require('../models/user');
+const Athlete = require('../models/athlete');
+const Organization = require('../models/organization');
 
 var requireAuth = passport.authenticate('jwt', {
 	session: false
@@ -101,12 +103,36 @@ router.post('/login', (req, res, next) => {
 		if (user) {
 			userInfo = setUserInfo(user);
 
-			return res.json({
-				success: true,
-				msg: 'User found!',
-				token: 'JWT ' + generateToken(userInfo),
-				user: user
-			});
+			// if the user is a tester, then we're gonna send them their athletes to prevent another call.
+			if (user.kind == 'Tester') {
+				// Call the getAthletesFromOrganization method of Athlete model.
+				Athlete.getAthletesFromOrganization(user.organization._id, (err, athletes) => {
+					console.log(athletes);
+					// If theres an error, success will be false
+					if (err) {
+						return res.json({
+							success: false,
+							msg: 'Failed to retrieve athletes for tester: ' + err
+						});
+					} else {
+						// Success! Send back athletes
+						res.status(200).json({
+							success: true,
+							msg: 'Tester successfully logged in!',
+							token: 'JWT ' + generateToken(userInfo),
+							user: user,
+							athletes: athletes
+						});
+					}
+				});
+			} else {
+				return res.json({
+					success: true,
+					msg: 'User found!',
+					token: 'JWT ' + generateToken(userInfo),
+					user: user
+				});
+			}
 		} else {
 			return res.status(500).json({
 				success: false,

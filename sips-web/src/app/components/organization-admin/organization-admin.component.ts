@@ -33,7 +33,7 @@ export class OrganizationAdminComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.loadOrganization(this.organizationId);
+    this.organization = this.authService.loadUser().organization;
     this.loadAthletes(this.organizationId);
     this.loadTesters(this.organizationId);
   }

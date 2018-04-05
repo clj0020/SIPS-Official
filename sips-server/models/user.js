@@ -26,6 +26,10 @@ const UserSchema = new Schema({
 	created_at: {
 		type: Date,
 		default: Date.now
+	},
+	organization: {
+		type: Schema.ObjectId,
+		ref: 'Organization'
 	}
 }, {
 	discriminatorKey: 'kind'
@@ -41,7 +45,7 @@ module.exports.getUserByEmail = function(email, callback) {
 	const query = {
 		email: email
 	};
-	User.findOne(query, callback);
+	User.findOne(query).populate('organization').exec(callback);
 };
 
 module.exports.addUser = function(newUser, callback) {

@@ -39,6 +39,7 @@ function setAthleteInfo(request) {
 	return {
 		_id: request._id,
 		status: request.status,
+		kind: request.kind,
 		first_name: request.first_name,
 		last_name: request.last_name,
 		email: request.email,
@@ -125,8 +126,6 @@ router.post('/verify', function(req, res) {
 		decodedToken = decoded;
 	});
 
-	// console.log(decodedToken);
-
 	const athlete = {
 		_id: decodedToken._id,
 		status: 'Verified',
@@ -141,8 +140,6 @@ router.post('/verify', function(req, res) {
 		password: req.body.password
 	};
 
-	// console.log(athlete);
-
 	Athlete.verifyAthlete(athlete, (err, newAthlete) => {
 		if (err) {
 			res.status(401).json({
@@ -150,7 +147,6 @@ router.post('/verify', function(req, res) {
 				msg: 'Failed to verify athlete! Error:' + err.message
 			});
 		} else {
-			// console.log(newAthlete);
 			let athleteInfo = setAthleteInfo(newAthlete);
 
 			res.status(200).json({
@@ -162,54 +158,6 @@ router.post('/verify', function(req, res) {
 		}
 	});
 });
-
-//
-// // Add Athlete as Admin and Tester
-// router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester']), (req, res, next) => {
-// 	let newAthlete = new Athlete({
-// 		first_name: req.body.first_name,
-// 		last_name: req.body.last_name,
-// 		email: req.body.email,
-// 		dateOfBirth: req.body.date_of_birth,
-// 		height: req.body.height,
-// 		weight: req.body.weight,
-// 		organization: req.body.organization,
-// 		password: "placeholder-password"
-// 	});
-//
-// 	console.log(newAthlete);
-//
-// 	Athlete.findOne({
-// 		email: req.body.email
-// 	}, (err, existingAthlete) => {
-// 		if (err) {
-// 			return next(err);
-// 		}
-// 		if (existingAthlete) {
-// 			return res.status(422).json({
-// 				success: false,
-// 				msg: 'That email address is already in use.'
-// 			});
-// 		}
-//
-// 		Athlete.addAthlete(newAthlete, (err, athlete) => {
-// 			if (err) {
-// 				res.status(401).json({
-// 					success: false,
-// 					msg: 'Failed to add athlete!' + err.message
-// 				});
-// 			} else {
-// 				athleteInfo = setAthleteInfo(athlete);
-//
-// 				res.status(200).json({
-// 					success: true,
-// 					msg: 'Athlete added to database!',
-// 					athlete: athleteInfo
-// 				});
-// 			}
-// 		});
-// 	});
-// });
 
 // Get list of athletes from Organization
 router.get('/get-athletes-from-organization', requireAuth, auth.roleAuthorization(['Admin', 'Tester']), (req, res, next) => {
@@ -223,29 +171,15 @@ router.get('/get-athletes-from-organization', requireAuth, auth.roleAuthorizatio
 				success: false,
 				msg: 'Failed to retrieve athletes: ' + err
 			});
-		}
-
-		Organization.getOrganizationById(organizationId, function(err, organization) {
-			if (err) {
-				return res.json({
-					success: false,
-					msg: 'Failed to retrieve organization: ' + err
-				});
-			}
-
-			console.log(organization);
-
+		} else {
 			// Success! Send back athletes
 			res.status(200).json({
 				success: true,
 				msg: 'Got your athletes.',
-				athletes: athletes,
-				organization: organization
+				athletes: athletes
 			});
-		});
-
-
-	})
+		}
+	});
 });
 
 // Get a single athlete

@@ -4,10 +4,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 
 const AdminSchema = User.discriminator('Admin', new Schema({
-	organization: {
-		type: Schema.ObjectId,
-		ref: 'Organization'
-	}
+
 }));
 
 const Admin = module.exports = mongoose.model('Admin');

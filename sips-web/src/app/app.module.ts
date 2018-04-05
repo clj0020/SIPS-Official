@@ -18,6 +18,8 @@ import { AdminRegisterComponent } from './components/admin-register/admin-regist
 import { AddOrganizationComponent } from './components/add-organization/add-organization.component';
 import { OrganizationAdminComponent } from './components/organization-admin/organization-admin.component';
 import { VerifyTesterComponent } from './components/verify-tester/verify-tester.component';
+import { VerifyAthleteComponent } from './components/verify-athlete/verify-athlete.component';
+import { AthleteProfileComponent } from './components/athlete-profile/athlete-profile.component';
 
 // Services
 import { AuthService } from './services/auth.service';
@@ -28,7 +30,7 @@ import { AthleteService } from './services/athlete.service';
 
 // Guards
 import { AuthGuard } from './guards/auth.guard';
-import { VerifyAthleteComponent } from './components/verify-athlete/verify-athlete.component';
+
 
 
 const appRoutes: Routes = [
@@ -40,6 +42,7 @@ const appRoutes: Routes = [
   { path: 'admin/organization/:organizationId', component: OrganizationAdminComponent },
   { path: 'testers/verify', component: VerifyTesterComponent },
   { path: 'athletes/verify', component: VerifyAthleteComponent },
+  { path: 'athletes/athlete/:id', component: VerifyAthleteComponent },
   { path: 'login', component: LoginComponent },
 
   // {path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
@@ -61,7 +64,8 @@ const appRoutes: Routes = [
     AddOrganizationComponent,
     OrganizationAdminComponent,
     VerifyTesterComponent,
-    VerifyAthleteComponent
+    VerifyAthleteComponent,
+    AthleteProfileComponent
   ],
   imports: [
     BrowserModule,

@@ -4,11 +4,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 
 const TesterSchema = User.discriminator('Tester', new Schema({
-	status: String,
-	organization: {
-		type: Schema.ObjectId,
-		ref: 'Organization'
-	}
+	status: String
 }));
 
 const Tester = module.exports = mongoose.model('Tester');

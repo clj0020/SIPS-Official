@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit {
     private flashMessage: FlashMessagesService
   ) {
     this.user = authService.loadUser();
+    console.log(this.user);
   }
 
   ngOnInit() {

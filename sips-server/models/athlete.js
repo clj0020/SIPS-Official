@@ -13,11 +13,7 @@ const AthleteSchema = User.discriminator('Athlete', new Schema({
 		type: Date
 	},
 	height: Number,
-	weight: Number,
-	organization: {
-		type: Schema.ObjectId,
-		ref: 'Organization'
-	}
+	weight: Number
 }));
 
 const Athlete = module.exports = mongoose.model('Athlete');
@@ -34,8 +30,6 @@ module.exports.addAthlete = function(newAthlete, callback) {
 };
 
 module.exports.verifyAthlete = function(newAthlete, callback) {
-	console.log(newAthlete);
-
 	bcrypt.genSalt(10, (err, salt) => {
 		bcrypt.hash(newAthlete.password, salt, (err, hash) => {
 			if (err) throw err;
@@ -46,7 +40,7 @@ module.exports.verifyAthlete = function(newAthlete, callback) {
 			}, {
 				'first_name': newAthlete.first_name,
 				'last_name': newAthlete.last_name,
-				'date_of_birth': newAthlete.dateOfBirth,
+				'date_of_birth': newAthlete.date_of_birth,
 				'height': newAthlete.height,
 				'weight': newAthlete.weight,
 				'status': newAthlete.status,
@@ -59,12 +53,14 @@ module.exports.verifyAthlete = function(newAthlete, callback) {
 };
 
 module.exports.getAthletesFromOrganization = function(organizationId, callback) {
+	console.log("OrganizationID: " + organizationId);
+
 	Athlete.find({
-			"organization._id": organizationId
+			organization: {
+				$in: organizationId
+			}
 		})
-		.populate()
-		.sort({
-			'createdAt': -1
-		})
+		.populate('tests')
+		.select('-password')
 		.exec(callback);
 }

@@ -4,7 +4,7 @@ const config = require('config');
 
 // TestData Schema
 const TestDataSchema = new Schema({
-	createdAt: {
+	created_at: {
 		type: Date,
 		default: Date.now
 	},
@@ -16,19 +16,19 @@ const TestDataSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'Tester'
 	},
-	accelerometerData: [{
+	accelerometer_data: [{
 		time: Date,
 		x: Number,
 		y: Number,
 		z: Number
 	}],
-	gyroscopeData: [{
+	gyroscope_data: [{
 		time: Date,
 		x: Number,
 		y: Number,
 		z: Number
 	}],
-	magnometerData: [{
+	magnometer_data: [{
 		time: Date,
 		x: Number,
 		y: Number,
@@ -53,7 +53,7 @@ module.exports.getAthleteTestData = function(athleteId, callback) {
 			'athlete._id': athleteId
 		})
 		.sort({
-			'createdAt': -1
+			'created_at': -1
 		})
 		.exec(callback);
 }
@@ -63,7 +63,7 @@ module.exports.getTesterTestData = function(testerId, callback) {
 			'tester._id': testerId
 		})
 		.sort({
-			'createdAt': -1
+			'created_at': -1
 		})
 		.exec(callback);
 }
