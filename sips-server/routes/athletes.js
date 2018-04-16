@@ -161,7 +161,9 @@ router.post('/verify', function(req, res) {
 
 // Get list of athletes from Organization
 router.get('/get-athletes-from-organization', requireAuth, auth.roleAuthorization(['Admin', 'Tester']), (req, res, next) => {
-	let organizationId = req.params.organizationId;
+	// let organizationId = req.params.organizationId;
+
+	let organizationId = req.user.organization
 
 	// Call the getAthletesFromOrganization method of Athlete model.
 	Athlete.getAthletesFromOrganization(organizationId, (err, athletes) => {
@@ -183,7 +185,7 @@ router.get('/get-athletes-from-organization', requireAuth, auth.roleAuthorizatio
 });
 
 // Get a single athlete
-router.get('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester']), (req, res, next) => {
+router.get('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'getAthlete'), (req, res, next) => {
 	const id = req.params.id;
 
 	Athlete.getAthleteById(id, (err, athlete) => {

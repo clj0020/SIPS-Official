@@ -114,7 +114,7 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Admin']), (req, res) =
 						msg: String (),
 						organization: Organization ()
 */
-router.get('/:id', requireAuth, auth.roleAuthorization(['Admin']), (req, res) => {
+router.get('/:id', requireAuth, auth.roleAuthorization([], 'getOrganization'), (req, res) => {
 	const id = req.params.id;
 	Organization.getOrganizationById(id, (err, organization) => {
 		if (err) {

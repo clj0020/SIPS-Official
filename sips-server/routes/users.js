@@ -107,7 +107,6 @@ router.post('/login', (req, res, next) => {
 			if (user.kind == 'Tester') {
 				// Call the getAthletesFromOrganization method of Athlete model.
 				Athlete.getAthletesFromOrganization(user.organization._id, (err, athletes) => {
-					console.log(athletes);
 					// If theres an error, success will be false
 					if (err) {
 						return res.json({

@@ -126,4 +126,9 @@ export class OrganizationAdminComponent implements OnInit {
     return false;
   }
 
+  onAthleteClick(id) {
+    this.router.navigate(['/athletes/athlete', id]);
+    return false;
+  }
+
 }

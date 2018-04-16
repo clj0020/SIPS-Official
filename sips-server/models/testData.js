@@ -17,19 +17,19 @@ const TestDataSchema = new Schema({
 		ref: 'Tester'
 	},
 	accelerometer_data: [{
-		time: Date,
+		time: Number,
 		x: Number,
 		y: Number,
 		z: Number
 	}],
 	gyroscope_data: [{
-		time: Date,
+		time: Number,
 		x: Number,
 		y: Number,
 		z: Number
 	}],
 	magnometer_data: [{
-		time: Date,
+		time: Number,
 		x: Number,
 		y: Number,
 		z: Number
@@ -50,7 +50,9 @@ module.exports.addTestData = function(newTestData, callback) {
 
 module.exports.getAthleteTestData = function(athleteId, callback) {
 	TestData.find({
-			'athlete._id': athleteId
+			athlete: {
+				$in: athleteId
+			}
 		})
 		.sort({
 			'created_at': -1

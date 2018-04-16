@@ -60,7 +60,7 @@ module.exports.getAthletesFromOrganization = function(organizationId, callback) 
 				$in: organizationId
 			}
 		})
-		.populate('tests')
+		.populate('tests organization')
 		.select('-password')
 		.exec(callback);
 }

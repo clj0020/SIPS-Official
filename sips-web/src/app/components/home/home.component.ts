@@ -21,7 +21,10 @@ export class HomeComponent implements OnInit {
     private flashMessage: FlashMessagesService
   ) {
     this.user = authService.loadUser();
-    console.log(this.user);
+
+    // if (this.user.kind == "Athlete") {
+    //   this.router.navigate(['/athletes/athlete/', this.user._id]);
+    // }
   }
 
   ngOnInit() {

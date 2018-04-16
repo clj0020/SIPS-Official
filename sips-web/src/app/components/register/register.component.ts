@@ -10,8 +10,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  name: string;
-  username: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
 
@@ -27,8 +27,8 @@ export class RegisterComponent implements OnInit {
 
   onRegisterSubmit() {
     const user = {
-      name: this.name,
-      username: this.username,
+      first_name: this.first_name,
+      last_name: this.last_name,
       email: this.email,
       password: this.password
     }

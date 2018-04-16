@@ -5,6 +5,8 @@ import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { FlashMessagesModule } from 'angular2-flash-messages';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ChartsModule } from 'ng2-charts';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 // Components
@@ -20,6 +22,8 @@ import { OrganizationAdminComponent } from './components/organization-admin/orga
 import { VerifyTesterComponent } from './components/verify-tester/verify-tester.component';
 import { VerifyAthleteComponent } from './components/verify-athlete/verify-athlete.component';
 import { AthleteProfileComponent } from './components/athlete-profile/athlete-profile.component';
+import { TestDataComponent } from './components/testdata/testdata.component';
+import { LoaderComponent } from './components/loader/loader.component';
 
 // Services
 import { AuthService } from './services/auth.service';
@@ -27,9 +31,13 @@ import { ValidateService } from './services/validate.service';
 import { OrganizationService } from './services/organization.service';
 import { TesterService } from './services/tester.service';
 import { AthleteService } from './services/athlete.service';
+import { TestingDataService } from './services/testing-data.service';
+import { LoaderService } from './services/loader.service';
 
 // Guards
 import { AuthGuard } from './guards/auth.guard';
+
+
 
 
 
@@ -42,8 +50,9 @@ const appRoutes: Routes = [
   { path: 'admin/organization/:organizationId', component: OrganizationAdminComponent },
   { path: 'testers/verify', component: VerifyTesterComponent },
   { path: 'athletes/verify', component: VerifyAthleteComponent },
-  { path: 'athletes/athlete/:id', component: VerifyAthleteComponent },
+  { path: 'athletes/athlete/:id', component: AthleteProfileComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'tests/athlete/:athleteId/:id', component: TestDataComponent },
 
   // {path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
   // {path: 'profile', component: ProfileComponent, canActivate:[AuthGuard]},
@@ -65,7 +74,9 @@ const appRoutes: Routes = [
     OrganizationAdminComponent,
     VerifyTesterComponent,
     VerifyAthleteComponent,
-    AthleteProfileComponent
+    AthleteProfileComponent,
+    TestDataComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -73,12 +84,16 @@ const appRoutes: Routes = [
     HttpModule,
     FlashMessagesModule.forRoot(),
     RouterModule.forRoot(appRoutes),
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    ChartsModule,
+    MatProgressBarModule
   ],
   providers: [
     AuthService,
     OrganizationService,
     TesterService,
+    TestingDataService,
+    LoaderService,
     AthleteService,
     ValidateService,
     AuthGuard

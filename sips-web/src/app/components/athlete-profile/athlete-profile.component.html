@@ -1,8 +1,23 @@
-<div class="col-lg-12" *ngIf="athlete">
-  <h1>Name: {{ athlete.first_name + " " + athlete.last_name }}</h1>
-  <h2>Email: {{ athlete.email }}</h2>
-  <p>DOB: {{ athlete.date_of_birth }}</p>
-  <p>Weight: {{ athlete.weight }} lbs</p>
-  <p>Height: {{ athlete.height }} inches</p>
-  <p>Organization: {{ organization }}</p>
+<div class="row text-center h-100 justify-content-center align-items-center">
+  <div class="col-lg-6" *ngIf="athlete">
+    <h1>{{ athlete.first_name + " " + athlete.last_name }}</h1>
+    <h2>{{ athlete.email }}</h2>
+    <p>DOB: {{ formatBirthday(athlete.date_of_birth) }}</p>
+    <p>Weight: {{ athlete.weight }} lbs</p>
+    <p>Height: {{ athlete.height }} inches</p>
+    <p *ngIf="organization">Organization: {{ organization.title }}</p>
+
+    <div class="row tests-row">
+      <div class="col-lg-12 test-list-filled" *ngIf="testingData?.length > 0">
+        <p class="tests-header">Tests</p>
+        <div class="list-group tests-list-group" *ngFor="let test of testingData">
+          <button (click)="onTestingDataClick(test._id)" class="list-group-item">{{ formatDate(test.created_at) }}</button>
+        </div>
+      </div>
+      <div class="col-lg-12" *ngIf="!testingData?.length > 0">
+        <p class="tests-header">Tests</p>
+        <p>No tests performed yet..</p>
+      </div>
+    </div>
+  </div>
 </div>

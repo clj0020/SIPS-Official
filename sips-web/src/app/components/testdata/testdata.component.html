@@ -1,0 +1,21 @@
+<div class="row text-center h-100 justify-content-center align-items-center" *ngIf="testData">
+  <div class="col-lg-12">
+    <h1>{{ formatDate(testData.created_at) }}</h1>
+    <div class="row">
+      <div class="col-lg-4">
+        <canvas baseChart width="400" height="400" [datasets]="accelerometerLineChartData" [labels]="accelerometerLineChartLabels" [options]="accelerometerLineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"></canvas>
+      </div>
+
+      <div class="col-lg-4">
+        <canvas baseChart width="400" height="400" [datasets]="gyroscopeLineChartData" [labels]="gyroscopeLineChartLabels" [options]="gyroscopeLineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"></canvas>
+      </div>
+
+      <div class="col-lg-4">
+        <canvas baseChart width="400" height="400" [datasets]="magnometerLineChartData" [labels]="magnometerLineChartLabels" [options]="magnometerLineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
+          (chartClick)="chartClicked($event)"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
