@@ -30,6 +30,8 @@ export class OrganizationService {
   }
 
   addOrganization(organization) {
+    this.showLoader();
+
     let headers = new Headers();
     this.authToken = this.authService.loadToken();
     headers.append('Authorization', this.authToken);
@@ -37,7 +39,15 @@ export class OrganizationService {
 
     let url = this.serverUrl + "organizations/add";
 
-    return this.http.post(url, organization, { headers: headers })
+    return this.http.post(url, organization, { headers: headers }).catch(this.onCatch)
+      .do((res: Response) => {
+        this.onSuccess(res);
+      }, (error: any) => {
+        this.onError(error);
+      })
+      .finally(() => {
+        this.onEnd();
+      })
       .map(res => res.json());
   }
 
@@ -60,15 +70,18 @@ export class OrganizationService {
       .finally(() => {
         this.onEnd();
       })
-      .map((res: Response) => {
-        let body = res.json();
-        return body || {};
-      });
+      .map(res => res.json());
   }
 
   storeOrganization(organization) {
     localStorage.setItem('organization', organization);
     this.organization = organization;
+  }
+
+  loadOrganization() {
+    const organization = localStorage.getItem('organization');
+    this.organization = JSON.parse(organization);
+    return this.organization;
   }
 
   onCatch(error: any, caught: Observable<any>): Observable<any> {

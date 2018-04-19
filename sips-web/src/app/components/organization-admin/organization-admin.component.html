@@ -1,52 +1,54 @@
-<div class="col-lg-12 text-center" *ngIf="organization">
-  <h3>{{ organization.title }}</h3>
-  <div class="row text-center">
-    <div class="col-lg-6" id="testerCol">
-      <mat-nav-list>
-        <h4 mat-header>Testers</h4>
-        <div class="row vertical-align">
-          <div class="col-lg-8">
-            <mat-form-field>
-              <input matInput type="text" placeholder="Tester Email" id="testerEmail" [(ngModel)]="testerEmail" (keyup.enter)="onTesterAdded()">
-            </mat-form-field>
+<div class="row text-center h-100 justify-content-center align-items-center">
+  <div class="col-sm-8 text-center" *ngIf="organization">
+    <h3>{{ organization.title }}</h3>
+    <div class="row text-center">
+      <div class="col-lg-6" id="testerCol">
+        <mat-nav-list>
+          <h4 mat-header>Testers</h4>
+          <div class="row vertical-align">
+            <div class="col-sm-10">
+              <mat-form-field>
+                <input matInput type="email" placeholder="Tester Email" id="testerEmail" [(ngModel)]="testerEmail" (keyup.enter)="onTesterAdded()">
+              </mat-form-field>
+            </div>
+            <div class="col-sm-2">
+              <button class="align-middle" mat-raised-button color="primary" (click)="onTesterAdded()">Add</button>
+            </div>
           </div>
-          <div class="col-lg-4">
-            <button class="align-middle" mat-raised-button color="primary" (click)="onTesterAdded()">Add</button>
+          <a mat-list-item *ngFor="let tester of testers">
+            <mat-icon mat-list-icon>accessibility</mat-icon>
+            <h4 *ngIf="!tester.first_name" mat-line>{{ tester.email }}</h4>
+            <h4 *ngIf="tester.first_name" mat-line>{{ tester.first_name + " " + tester.last_name }}</h4>
+            <p style="color: red;" *ngIf="tester.status == 'Unverified'">Not Verified Yet</p>
+            <p style="color: green;" *ngIf="tester.status == 'Verified'">Verified</p>
+            <p mat-line> {{tester.created_at | date}} </p>
+          </a>
+        </mat-nav-list>
+      </div>
+      <div class="col-lg-6" id="athleteCol">
+        <mat-nav-list>
+          <h4 mat-header>Athletes</h4>
+          <div class="row vertical-align">
+            <div class="col-sm-10">
+              <mat-form-field>
+                <input matInput type="email" placeholder="Athlete Email" id="athleteEmail" [(ngModel)]="athleteEmail" (keyup.enter)="onAthleteAdded()">
+              </mat-form-field>
+            </div>
+            <div class="col-sm-2">
+              <button class="align-middle" mat-raised-button color="primary" (click)="onAthleteAdded()">Add</button>
+            </div>
           </div>
-        </div>
-        <a mat-list-item *ngFor="let tester of testers">
-          <mat-icon mat-list-icon>accessibility</mat-icon>
-          <h4 *ngIf="!tester.first_name" mat-line>{{ tester.email }}</h4>
-          <h4 *ngIf="tester.first_name" mat-line>{{ tester.first_name + " " + tester.last_name }}</h4>
-          <p style="color: red;" *ngIf="tester.status == 'Unverified'">Not Verified Yet</p>
-          <p style="color: green;" *ngIf="tester.status == 'Verified'">Verified</p>
-          <p mat-line> {{tester.created_at | date}} </p>
-        </a>
-      </mat-nav-list>
-    </div>
-    <div class="col-lg-6" id="athleteCol">
-      <mat-nav-list>
-        <h4 mat-header>Athletes</h4>
-        <div class="row vertical-align">
-          <div class="col-lg-8">
-            <mat-form-field>
-              <input matInput type="text" placeholder="Athlete Email" id="athleteEmail" [(ngModel)]="athleteEmail" (keyup.enter)="onAthleteAdded()">
-            </mat-form-field>
-          </div>
-          <div class="col-lg-4">
-            <button class="align-middle" mat-raised-button color="primary" (click)="onAthleteAdded()">Add</button>
-          </div>
-        </div>
-        <a mat-list-item *ngFor="let athlete of athletes" (click)="onAthleteClick(athlete._id)">
-          <mat-icon mat-list-icon>accessibility</mat-icon>
-          <h4 *ngIf="!athlete.first_name" mat-line>{{ athlete.email }}</h4>
-          <h4 *ngIf="athlete.first_name" mat-line>{{ athlete.first_name + " " + athlete.last_name }}</h4>
-          <p style="color: red;" *ngIf="athlete.status == 'Unverified'">Not Verified Yet</p>
-          <p style="color: green;" *ngIf="athlete.status == 'Verified'">Verified</p>
-          <p mat-line> {{athlete.created_at | date}} </p>
-          <mat-divider></mat-divider>
-        </a>
-      </mat-nav-list>
+          <a mat-list-item *ngFor="let athlete of athletes" (click)="onAthleteClick(athlete._id)">
+            <mat-icon mat-list-icon>accessibility</mat-icon>
+            <h4 *ngIf="!athlete.first_name" mat-line>{{ athlete.email }}</h4>
+            <h4 *ngIf="athlete.first_name" mat-line>{{ athlete.first_name + " " + athlete.last_name }}</h4>
+            <p style="color: red;" *ngIf="athlete.status == 'Unverified'">Not Verified Yet</p>
+            <p style="color: green;" *ngIf="athlete.status == 'Verified'">Verified</p>
+            <p mat-line> {{athlete.created_at | date}} </p>
+            <mat-divider></mat-divider>
+          </a>
+        </mat-nav-list>
+      </div>
     </div>
   </div>
 </div>

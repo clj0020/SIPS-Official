@@ -15,6 +15,15 @@ export class ValidateService {
     }
   }
 
+  validateLogin(user) {
+    if (user.email == undefined || user.password == undefined) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  }
+
   validateAddOrganization(organization) {
     if (organization.title == undefined) {
       return false;

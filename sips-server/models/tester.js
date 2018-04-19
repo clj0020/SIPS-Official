@@ -36,7 +36,9 @@ module.exports.verifyTester = function(newTester, callback) {
 
 module.exports.getTestersFromOrganization = function(organizationId, callback) {
 	Tester.find({
-			"organization._id": organizationId
+			organization: {
+				$in: organizationId
+			}
 		})
 		.populate()
 		.sort({

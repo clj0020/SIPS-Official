@@ -78,18 +78,14 @@ router.post('/login', (req, res, next) => {
 	if (!req.body.email) {
 		return res.status(422).json({
 			success: false,
-			errors: {
-				email: "No email included in request."
-			}
+			msg: "Error: No email included in request."
 		});
 	}
 
 	if (!req.body.password) {
 		return res.status(422).json({
 			success: false,
-			errors: {
-				password: "No password included in request."
-			}
+			msg: "Error: No password included in request."
 		});
 	}
 
@@ -133,9 +129,9 @@ router.post('/login', (req, res, next) => {
 				});
 			}
 		} else {
-			return res.status(500).json({
+			return res.status(201).json({
 				success: false,
-				errors: info
+				msg: info
 			});
 		}
 	})(req, res, next);

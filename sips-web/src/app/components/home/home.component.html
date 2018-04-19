@@ -1,6 +1,6 @@
 <div class="row text-center h-100 justify-content-center align-items-center" *ngIf="user.kind == 'Admin'">
-  <app-organization-admin *ngIf="user.organization" [organizationId]="user.organization"></app-organization-admin>
-  <app-add-organization *ngIf="!user.organization"></app-add-organization>
+  <!-- <app-organization-admin *ngIf="user.organization !== undefined" [organizationId]="user.organization"></app-organization-admin>
+  <app-add-organization *ngIf="user.organization == undefined"></app-add-organization> -->
 </div>
 <div class="row text-center h-100 justify-content-center align-items-center" *ngIf="user.kind == 'Tester'">
   <div class="col-lg-12">

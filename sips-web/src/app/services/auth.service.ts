@@ -8,6 +8,7 @@ import { Observer } from 'rxjs/Observer';
 import { Subject } from 'rxjs/Subject';
 import { User } from '../classes/user';
 import { environment } from '../../environments/environment';
+import { LoaderService } from '../services/loader.service';
 
 @Injectable()
 export class AuthService {
@@ -19,7 +20,10 @@ export class AuthService {
   @Output() userEmitter: EventEmitter<any> = new EventEmitter();
   @Output() tokenEmitter: EventEmitter<any> = new EventEmitter();
 
-  constructor(private http: Http) {
+  constructor(
+    private http: Http,
+    private loaderService: LoaderService
+  ) {
     if (this.environmentName == 'dev') {
       this.serverUrl = "http://localhost:8080/"
     }
@@ -41,22 +45,43 @@ export class AuthService {
   }
 
   registerAdmin(admin) {
+    this.showLoader();
+
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
     let url = this.serverUrl + "admins/register";
 
-    return this.http.post(url, admin, { headers: headers })
+    return this.http.post(url, admin, { headers: headers }).catch(this.onCatch)
+      .do((res: Response) => {
+        this.onSuccess(res);
+      }, (error: any) => {
+        this.onError(error);
+      })
+      .finally(() => {
+        this.onEnd();
+      })
       .map(res => res.json());
   }
 
   authenticateUser(user) {
+    this.showLoader();
+
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
     let url = this.serverUrl + "users/login";
 
     return this.http.post(url, user, { headers: headers })
+      .catch(this.onCatch)
+      .do((res: Response) => {
+        this.onSuccess(res);
+      }, (error: any) => {
+        this.onError(error);
+      })
+      .finally(() => {
+        this.onEnd();
+      })
       .map(res => res.json());
   }
 
@@ -73,6 +98,8 @@ export class AuthService {
   }
 
   setUser(newUser) {
+    console.log("User object set in AuthService..");
+    console.log(newUser);
     this.user = newUser;
     this.userEmitter.emit(this.user);
     // this.userSubject.next(newUser);
@@ -116,6 +143,31 @@ export class AuthService {
     this.authToken = null;
     this.user = null;
     localStorage.clear();
+  }
+
+  onCatch(error: any, caught: Observable<any>): Observable<any> {
+    console.log("CAught exception: " + error.error);
+    return Observable.throw(error);
+  }
+
+  onSuccess(res: Response): void {
+    console.log('Request successful');
+  }
+
+  onError(res: Response): void {
+    console.log('Error, status code: ' + res.status);
+  }
+
+  onEnd(): void {
+    this.hideLoader();
+  }
+
+  showLoader(): void {
+    this.loaderService.show();
+  }
+
+  hideLoader(): void {
+    this.loaderService.hide();
   }
 
 

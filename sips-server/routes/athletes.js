@@ -97,7 +97,7 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester']), (r
 				mailOptions = {
 					to: athleteInfo.email,
 					subject: "Please confirm your Email account",
-					html: "<h3>Hello from SIPS!</h5><br> <h5>You've been added as an athlete, Please verify your email.</h5><br><a href=" + link + ">Click here to verify</a>"
+					html: "<h3>Hello from SIPS!</h5><br> <h5>You've been added as an athlete for the " + req.user.organization.title + "organization on the Sports Injury Prevention screening app! Please verify your email.</h5><br><a href=" + link + ">Click here to verify</a>"
 				}
 				smtpTransport.sendMail(mailOptions, function(error, response) {
 					if (error) {

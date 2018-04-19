@@ -1,50 +1,43 @@
-<div class="wrapper">
-  <div class="container">
-    <h1>Finish Creating your Account</h1>
+<div class="row h-100 justify-content-center align-items-center">
+  <div class="col-lg-6">
+    <h1 class="page-header">Finish Creating your Account</h1>
     <form (submit)="onVerifySubmit()">
-      <div class="form-group">
-        <label for="firstNameInput">First Name</label>
-        <input [(ngModel)]="first_name" name="first_name" type="personName" class="form-control" id="firstNameInput" placeholder="Enter first name..">
-      </div>
-      <div class="form-group">
-        <label for="lastNameInput">Last Name</label>
-        <input [(ngModel)]="last_name" name="last_name" type="personName" class="form-control" id="lastNameInput" placeholder="Enter last name..">
-      </div>
-      <div class="form-group">
-        <label for="dateOfBirthInput">Date Of Birth</label>
-        <input [(ngModel)]="date_of_birth" name="date_of_birth" type="date" class="form-control" id="dateOfBirthInput" placeholder="Enter date of birth..">
-      </div>
-      <div class="form-group">
-        <label>Height</label>
-        <div class="row">
-          <div class="col">
-            <!-- <label for="heightFeetInput">Feet</label> -->
-            <input [(ngModel)]="heightFeet" name="heightFeet" type="number" class="form-control" id="heightFeetInput" placeholder="Feet">
-          </div>
-          <div class="col">
-            <!-- <label for="heightInchesInput">Inches</label> -->
-            <input [(ngModel)]="heightInches" name="heightInches" type="number" class="form-control" id="heightInchesInput" placeholder="Inches">
-          </div>
-        </div>
+      <mat-form-field>
+        <input matInput type="text" [(ngModel)]="first_name" name="first_name" placeholder="First Name">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" [(ngModel)]="last_name" name="last_name" placeholder="Last Name">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [(ngModel)]="date_of_birth" [matDatepicker]="dateOfBirthPicker" (focus)="dateOfBirthPicker.open()" name="date_of_birth" id="dateOfBirthInput" placeholder="Date of Birth">
+        <!-- <mat-datepicker-toggle matSuffix [for]="dateOfBirthPicker"></mat-datepicker-toggle> -->
+        <mat-datepicker #dateOfBirthPicker disabled="false"></mat-datepicker>
+      </mat-form-field>
 
+      <div class="row">
+        <div class="col-lg-6">
+          <mat-form-field>
+            <input matInput [(ngModel)]="heightFeet" name="heightFeet" type="number" id="heightFeetInput" placeholder="Height (Feet)">
+          </mat-form-field>
+        </div>
+        <div class="col-lg-6">
+          <mat-form-field>
+            <input matInput [(ngModel)]="heightInches" name="heightInches" type="number" id="heightInchesInput" placeholder="Height (Inches)">
+          </mat-form-field>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="weightInput">Weight</label>
-        <input [(ngModel)]="weight" name="weight" type="number" class="form-control" id="weightInput" placeholder="Enter weight (in lbs)..">
-      </div>
-      <div class="form-group">
-        <label for="passwordInput">Password</label>
-        <input [(ngModel)]="password" name="password" type="password" class="form-control" id="passwordInput" placeholder="Password">
-      </div>
-      <div class="form-group">
-        <label for="confirmPasswordInput">Confirm Password</label>
-        <input [(ngModel)]="confirm_password" name="confirm_password" type="password" class="form-control" id="confirmPasswordInput" placeholder="Confirm Password">
-      </div>
-      <div class="form-check">
-        <input type="checkbox" class="form-check-input" id="termAgreementCheck">
-        <label class="form-check-label" for="termAgreementCheck">I agree to terms and services.</label>
-      </div>
-      <button type="submit" class="btn btn-primary" style="margin-top: 30px;">Finish</button>
+      <mat-form-field>
+        <input matInput [(ngModel)]="weight" name="weight" type="number" id="weightInput" placeholder="Weight (lbs)">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [(ngModel)]="password" name="password" type="password" id="passwordInput" placeholder="Password">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [(ngModel)]="confirm_password" name="confirm_password" type="password" id="confirmPasswordInput" placeholder="Confirm Password">
+      </mat-form-field>
+      <mat-checkbox>I agree to terms and services.</mat-checkbox>
+      <br>
+      <button type="submit" mat-raised-button color="primary" class="submitBtn">Submit</button>
     </form>
   </div>
 </div>

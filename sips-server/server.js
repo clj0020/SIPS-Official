@@ -21,6 +21,7 @@ mongoose.connection.on('connected', () => {
 		console.log('Connected to database ' + config.DBHost);
 		console.log("Current WebHost: " + config.WebHost);
 		console.log("Current ServerHost: " + config.ServerHost);
+		console.log("Gmail Sender Address: " + config.GMAIL_USERNAME);
 	}
 });
 
@@ -98,6 +99,17 @@ app.listen(port, () => {
 	if (config.util.getEnv('NODE_ENV') !== 'test') {
 		console.log('Server started on port ' + port);
 	}
+
+	if (config.util.getEnv('NODE_ENV') == 'dev') {
+		console.log("In DEV Mode.......");
+	} else if (config.util.getEnv('NODE_ENV') == 'production') {
+		console.log("In Production Mode.......");
+	} else if (config.util.getEnv('NODE_ENV') == 'default') {
+		console.log("In Default Mode.......");
+	} else if (config.util.getEnv('NODE_ENV') == 'test') {
+		console.log("In Test Mode.......");
+	}
+
 });
 
 module.exports = app;

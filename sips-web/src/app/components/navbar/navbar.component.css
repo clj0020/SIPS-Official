@@ -1,0 +1,16 @@
+.accent {
+  background-color: #69f0ae !important;
+  /* color: white; */
+}
+
+.primary {
+  background-color: #7b1fa2 !important;
+}
+
+.navbar-brand {
+  color: white;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: white;
+}

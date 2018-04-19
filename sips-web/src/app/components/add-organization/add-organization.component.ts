@@ -39,12 +39,18 @@ export class AddOrganizationComponent implements OnInit {
     // Register User
     this.organizationService.addOrganization(organization).subscribe(data => {
       if (data.success) {
-        console.log(data);
-        this.authService.setUser(data.user);
+
+        var user = data.user;
+        user.organization = data.organization._id;
+        console.log("Organization succesfully added, updated user object with ref..");
+        console.log(user);
+        this.authService.setUser(user);
+        this.authService.setToken(data.token);
+        this.organizationService.storeOrganization(data.organization);
         // this.authService.setToken(data.token);
         // this.authService.storeUserData(data.token, data.user);
         this.flashMessage.show('Successfully Added Organization!', { cssClass: 'alert-success', timeout: 3000 });
-        this.router.navigate(['/']);
+        this.router.navigate(['/admin/organization', data.organization._id]);
       }
       else {
         console.log(data);

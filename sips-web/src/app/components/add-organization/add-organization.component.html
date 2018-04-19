@@ -1,8 +1,18 @@
-<h2 class="page-header">Add Organization</h2>
-<form (submit)="onAddOrganizationSubmit()">
-  <div class="form-group">
-    <label>Organization Title</label>
-    <input type="text" [(ngModel)]="title" name="title" class="form-control">
+<div class="row text-center h-100 justify-content-center align-items-center">
+  <div class="col-lg-6">
+    <h2 class="page-header">Add Organization</h2>
+    <form (submit)="onAddOrganizationSubmit()">
+      <div class="row vertical-align">
+        <div class="col-lg-10">
+          <mat-form-field>
+            <input matInput type="text" id="title" [(ngModel)]="title" placeholder="Title" name="title">
+            <!-- <mat-placeholder>Title</mat-placeholder> -->
+          </mat-form-field>
+        </div>
+        <div class="col-lg-2">
+          <button type="submit" class="align-middle" mat-raised-button color="primary">Add</button>
+        </div>
+      </div>
+    </form>
   </div>
-  <input type="submit" class="btn btn-primary" value="Submit">
-</form>
+</div>

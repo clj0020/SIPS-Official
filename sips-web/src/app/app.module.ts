@@ -7,9 +7,18 @@ import { FlashMessagesModule } from 'angular2-flash-messages';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ChartsModule } from 'ng2-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatProgressSpinnerModule, MatListModule, MatIconModule, MatButtonModule, MatInputModule, MatCardModule } from '@angular/material';
+import {
+  MatProgressSpinnerModule,
+  MatListModule,
+  MatIconModule,
+  MatButtonModule,
+  MatInputModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatDatepickerModule,
+  MatNativeDateModule
+} from '@angular/material';
 import { PapaParseModule } from 'ngx-papaparse';
-
 
 // Components
 import { AppComponent } from './app.component';
@@ -37,10 +46,6 @@ import { LoaderService } from './services/loader.service';
 
 // Guards
 import { AuthGuard } from './guards/auth.guard';
-
-
-
-
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -91,6 +96,9 @@ const appRoutes: Routes = [
     MatButtonModule,
     MatInputModule,
     MatCardModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     BrowserAnimationsModule,
     PapaParseModule
   ],

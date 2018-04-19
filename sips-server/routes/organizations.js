@@ -84,11 +84,13 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Admin']), (req, res) =
 					});
 				} else {
 					let adminInfo = setAdminInfo(admin);
-					console.log(admin);
+					let newToken = 'JWT ' + generateToken(adminInfo);
+					console.log(adminInfo);
 					res.status(200).json({
 						success: true,
 						msg: 'Successfully added organization!',
 						organization: organization,
+						token: newToken,
 						user: adminInfo
 					});
 				}

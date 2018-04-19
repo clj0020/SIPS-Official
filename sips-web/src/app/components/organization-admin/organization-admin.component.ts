@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { Organization } from '../../classes/organization';
 import { OrganizationService } from '../../services/organization.service';
@@ -22,7 +22,7 @@ export class OrganizationAdminComponent implements OnInit {
   athleteEmail: string;
   athletes: any[] = [];
 
-  @Input() organizationId: string;
+  organizationId: string;
 
 
   constructor(
@@ -30,14 +30,20 @@ export class OrganizationAdminComponent implements OnInit {
     private organizationService: OrganizationService,
     private testerService: TesterService,
     private athleteService: AthleteService,
+    private route: ActivatedRoute,
     private router: Router,
     private flashMessage: FlashMessagesService,
-  ) { }
+  ) {
+
+  }
 
   ngOnInit() {
-    this.organization = this.authService.loadUser().organization;
-    this.loadAthletes(this.organizationId);
-    this.loadTesters(this.organizationId);
+    this.organizationId = this.route.snapshot.paramMap.get('organizationId');
+    this.loadOrganization(this.organizationId);
+    // this.loadAthletes(this.organization._id);
+    // this.loadTesters(this.organization._id);
+
+    console.log("Admin Panel");
   }
 
   onTesterAdded() {
@@ -83,6 +89,7 @@ export class OrganizationAdminComponent implements OnInit {
       if (data.success) {
         this.organizationService.storeOrganization(data.organization);
         this.organization = data.organization;
+        this.loadTesters(this.organization._id);
       }
       else {
         this.flashMessage.show(data.msg, {
@@ -113,6 +120,7 @@ export class OrganizationAdminComponent implements OnInit {
       if (data.success) {
         this.testerService.storeTesters(data.testers);
         this.testers = data.testers;
+        this.loadAthletes(this.organization._id);
       }
       else {
         this.flashMessage.show(data.msg, {

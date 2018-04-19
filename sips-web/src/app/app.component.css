@@ -7,3 +7,7 @@
   margin-right: 0;
   margin-left: 0;
 } */
+
+/deep/ .alert-success, /deep/ .alert-danger {
+  margin-top: 1em !important;
+}

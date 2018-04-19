@@ -62,7 +62,7 @@ function setUnVerifiedTesterInfo(request) {
 	};
 }
 
-router.post('/add', requireAuth, auth.roleAuthorization(['Admin']), (req, res, next) => {
+router.post('/add', requireAuth, auth.roleAuthorization(['Admin'], 'addTester'), (req, res, next) => {
 	let newTester = new Tester({
 		email: req.body.email,
 		organization: req.body.organization,
@@ -93,7 +93,7 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Admin']), (req, res, n
 				let token = generateToken(testerInfo);
 				// Send Email
 				host = req.get('host');
-				link = "http://" + config.WebHost + "/testers/verify?token=" + token;
+				link = config.WebHost + "/testers/verify?token=" + token;
 
 				mailOptions = {
 					to: testerInfo.email,
@@ -177,9 +177,10 @@ router.post('/verify', function(req, res) {
 });
 
 // Get list of testers from Organization
-router.get('/get-testers-from-organization', requireAuth, auth.roleAuthorization(['Admin']), (req, res, next) => {
-	let organizationId = req.params.organizationId;
-
+router.get('/organization', requireAuth, auth.roleAuthorization(['Admin'], 'getTestersFromOrganization'), (req, res, next) => {
+	let organizationId = req.user.organization;
+	console.log("Getting testers from Organization..");
+	console.log(organizationId);
 	// Call the getTestersFromOrganization method of Tester model.
 	Tester.getTestersFromOrganization(organizationId, (err, testers) => {
 		// If theres an error, success will be false

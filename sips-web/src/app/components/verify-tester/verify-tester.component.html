@@ -1,7 +1,23 @@
-<div class="wrapper">
-  <div class="container">
-    <h1>Finish Creating your Account</h1>
+<div class="row h-100 justify-content-center align-items-center">
+  <div class="col-lg-6">
+    <h1 class="page-header">Finish Creating your Account</h1>
     <form (submit)="onVerifySubmit()">
+      <mat-form-field>
+        <input matInput type="text" [(ngModel)]="first_name" name="first_name" placeholder="First Name">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" [(ngModel)]="last_name" name="last_name" placeholder="Last Name">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [(ngModel)]="password" name="password" type="password" id="passwordInput" placeholder="Password">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [(ngModel)]="confirm_password" name="confirm_password" type="password" id="confirmPasswordInput" placeholder="Confirm Password">
+      </mat-form-field>
+      <mat-checkbox>I agree to terms and services.</mat-checkbox>
+      <br>
+      <button type="submit" mat-raised-button color="primary" class="submitBtn">Submit</button>
+      <!-- 
       <div class="form-group">
         <label for="firstNameInput">First Name</label>
         <input [(ngModel)]="first_name" name="first_name" type="personName" class="form-control" id="firstNameInput" placeholder="Enter first name..">
@@ -22,7 +38,7 @@
         <input type="checkbox" class="form-check-input" id="termAgreementCheck">
         <label class="form-check-label" for="termAgreementCheck">I agree to terms and services.</label>
       </div>
-      <button type="submit" class="btn btn-primary" style="margin-top: 30px;">Finish</button>
+      <button type="submit" class="btn btn-primary" style="margin-top: 30px;">Finish</button> -->
     </form>
   </div>
 </div>

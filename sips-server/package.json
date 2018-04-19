@@ -4,9 +4,11 @@
   "description": "SIPS Server by Team 11.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "test": "mocha --timeout 10000",
-    "deploy": "gcloud preview app deploy app.yaml --promote"
+    "start": "cross-env NODE_ENV=\"default\" nodemon server.js",
+    "start-dev": "cross-env NODE_ENV=\"dev\" nodemon server.js",
+    "start-prod": "cross-env NODE_ENV=\"production\" nodemon server.js",
+    "test": "cross-env NODE_ENV=\"test\" mocha --timeout 10000",
+    "deploy": "gcloud app deploy"
   },
   "contributors": [{
       "name": "Carson Jones",
@@ -49,6 +51,8 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-http": "^2.0.1",
-    "mocha": "^2.4.5"
+    "cross-env": "^5.1.4",
+    "mocha": "^2.4.5",
+    "nodemon": "^1.17.3"
   }
 }

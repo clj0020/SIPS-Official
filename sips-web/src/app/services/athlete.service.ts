@@ -33,6 +33,8 @@ export class AthleteService {
   }
 
   addAthlete(athlete) {
+    this.showLoader();
+
     let headers = new Headers();
     this.authToken = this.authService.loadToken();
     headers.append('Authorization', this.authToken);
@@ -40,11 +42,21 @@ export class AthleteService {
 
     let url = this.serverUrl + "athletes/add";
 
-    return this.http.post(url, athlete, { headers: headers })
+    return this.http.post(url, athlete, { headers: headers }).catch(this.onCatch)
+      .do((res: Response) => {
+        this.onSuccess(res);
+      }, (error: any) => {
+        this.onError(error);
+      })
+      .finally(() => {
+        this.onEnd();
+      })
       .map(res => res.json());
   }
 
   verifyAthlete(athlete) {
+    this.showLoader();
+
     let headers = new Headers();
     this.authToken = this.authService.loadToken();
     headers.append('Authorization', this.authToken);
@@ -52,7 +64,15 @@ export class AthleteService {
 
     let url = this.serverUrl + "athletes/verify";
 
-    return this.http.post(url, athlete, { headers: headers })
+    return this.http.post(url, athlete, { headers: headers }).catch(this.onCatch)
+      .do((res: Response) => {
+        this.onSuccess(res);
+      }, (error: any) => {
+        this.onError(error);
+      })
+      .finally(() => {
+        this.onEnd();
+      })
       .map(res => res.json());
   }
 
