@@ -19,6 +19,8 @@ mongoose.connect(config.DBHost);
 mongoose.connection.on('connected', () => {
 	if (config.util.getEnv('NODE_ENV') !== 'test') {
 		console.log('Connected to database ' + config.DBHost);
+		console.log("Current WebHost: " + config.WebHost);
+		console.log("Current ServerHost: " + config.ServerHost);
 	}
 });
 

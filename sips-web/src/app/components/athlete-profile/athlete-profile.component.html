@@ -9,13 +9,22 @@
 
     <div class="row tests-row">
       <div class="col-lg-12 test-list-filled" *ngIf="testingData?.length > 0">
-        <p class="tests-header">Tests</p>
+        <!-- <p class="tests-header">Tests</p>
         <div class="list-group tests-list-group" *ngFor="let test of testingData">
           <button (click)="onTestingDataClick(test._id)" class="list-group-item">{{ formatDate(test.created_at) }}</button>
-        </div>
+        </div> -->
+        <mat-nav-list>
+          <h4 mat-header class="test-header">Tests</h4>
+          <a mat-list-item *ngFor="let test of testingData" (click)="onTestingDataClick(test._id)">
+            <mat-icon mat-list-icon>accessibility</mat-icon>
+            <p mat-line>{{ formatDate(test.created_at) }}</p>
+          </a>
+          <button mat-raised-button color="primary" class="downloadButton" (click)="onClickDownloadCSV()">Download CSV</button>
+        </mat-nav-list>
+
       </div>
       <div class="col-lg-12" *ngIf="!testingData?.length > 0">
-        <p class="tests-header">Tests</p>
+        <h4 mat-header class="test-header">Tests</h4>
         <p>No tests performed yet..</p>
       </div>
     </div>

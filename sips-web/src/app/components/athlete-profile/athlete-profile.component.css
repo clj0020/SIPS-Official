@@ -7,9 +7,10 @@ h2 {
   font-size: 1.5em;
 }
 
-.tests-header {
+.test-header {
   font-weight: bold;
-  margin-top: 1em;
+  margin-top: 0.7em;
+  margin-bottom: 0.7em;
 }
 
 .tests-row {
@@ -19,4 +20,21 @@ h2 {
 
 .test-list-filled {
   padding-bottom: 1em;
+}
+
+.downloadButton {
+  margin-top: 1.5em;
+}
+
+.mat-list-item {
+  color: black;
+  margin-top: 1em;
+  box-shadow: 0px 0px 0px grey;
+  -webkit-transition: box-shadow .6s ease-out;
+  box-shadow: .8px .9px 3px grey;
+}
+
+.mat-list-item:hover {
+  box-shadow: 1px 8px 20px grey;
+  -webkit-transition: box-shadow .6s ease-in;
 }

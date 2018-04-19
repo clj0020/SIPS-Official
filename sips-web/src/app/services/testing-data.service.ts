@@ -7,18 +7,29 @@ import { of } from 'rxjs/observable/of';
 import { Observer } from 'rxjs/Observer';
 import { Subject } from 'rxjs/Subject';
 import { User } from '../classes/user';
+import { TestData } from '../classes/test-data';
 import { AuthService } from '../services/auth.service';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class TestingDataService {
   authToken: string;
-  testData: any;
-  testingDataList: any[];
+  testData: TestData;
+  testingDataList: TestData[];
+  environmentName = environment.envName;
+  serverUrl: string;
 
   constructor(
     private http: Http,
     private authService: AuthService
-  ) { }
+  ) {
+    if (this.environmentName == 'dev') {
+      this.serverUrl = "http://localhost:8080/"
+    }
+    else if (this.environmentName == 'prod') {
+      this.serverUrl = "https://server-dot-sips-1350.appspot.com/";
+    }
+  }
 
   getTestingDataForAthlete(athleteId) {
     let headers = new Headers();
@@ -26,7 +37,7 @@ export class TestingDataService {
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
 
-    let url = 'http://localhost:8080/testingData/get-athlete-test-data/' + athleteId;
+    let url = this.serverUrl + 'testingData/get-athlete-test-data/' + athleteId;
 
     return this.http.get(url, { headers: headers })
       .map(res => res.json());
@@ -38,7 +49,7 @@ export class TestingDataService {
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
 
-    let url = 'http://localhost:8080/testingData/athlete/' + athleteId + '/' + id;
+    let url = this.serverUrl + 'testingData/athlete/' + athleteId + '/' + id;
 
     return this.http.get(url, { headers: headers })
       .map(res => res.json());

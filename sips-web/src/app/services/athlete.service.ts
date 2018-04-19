@@ -9,25 +9,38 @@ import { Subject } from 'rxjs/Subject';
 import { User } from '../classes/user';
 import { AuthService } from '../services/auth.service';
 import { LoaderService } from '../services/loader.service';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class AthleteService {
   authToken: string;
   athlete: any;
   athletes: any[];
+  environmentName = environment.envName;
+  serverUrl: string;
 
   constructor(
     private http: Http,
     private authService: AuthService,
     private loaderService: LoaderService
-  ) { }
+  ) {
+    if (this.environmentName == 'dev') {
+      this.serverUrl = "http://localhost:8080/"
+    }
+    else if (this.environmentName == 'prod') {
+      this.serverUrl = "https://server-dot-sips-1350.appspot.com/";
+    }
+  }
 
   addAthlete(athlete) {
     let headers = new Headers();
     this.authToken = this.authService.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
-    return this.http.post('http://localhost:8080/athletes/add', athlete, { headers: headers })
+
+    let url = this.serverUrl + "athletes/add";
+
+    return this.http.post(url, athlete, { headers: headers })
       .map(res => res.json());
   }
 
@@ -36,7 +49,10 @@ export class AthleteService {
     this.authToken = this.authService.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
-    return this.http.post('http://localhost:8080/athletes/verify', athlete, { headers: headers })
+
+    let url = this.serverUrl + "athletes/verify";
+
+    return this.http.post(url, athlete, { headers: headers })
       .map(res => res.json());
   }
 
@@ -47,7 +63,10 @@ export class AthleteService {
     this.authToken = this.authService.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('http://localhost:8080/athletes/get-athletes-from-organization', { headers: headers }).catch(this.onCatch)
+
+    let url = this.serverUrl + "athletes/get-athletes-from-organization";
+
+    return this.http.get(url, { headers: headers }).catch(this.onCatch)
       .do((res: Response) => {
         this.onSuccess(res);
       }, (error: any) => {
@@ -72,9 +91,7 @@ export class AthleteService {
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
 
-    let url = 'http://localhost:8080/athletes/' + id;
-
-    console.log(this.authToken);
+    let url = this.serverUrl + 'athletes/' + id;
 
     return this.http.get(url, { headers: headers }).catch(this.onCatch)
       .do((res: Response) => {

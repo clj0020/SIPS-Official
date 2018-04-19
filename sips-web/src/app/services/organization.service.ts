@@ -7,24 +7,37 @@ import { tokenNotExpired } from 'angular2-jwt';
 import { Organization } from '../classes/organization';
 import { AuthService } from '../services/auth.service';
 import { LoaderService } from '../services/loader.service';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class OrganizationService {
   authToken: any;
   organization: Organization;
+  environmentName = environment.envName;
+  serverUrl: string;
 
   constructor(
     private http: Http,
     private authService: AuthService,
     private loaderService: LoaderService
-  ) { }
+  ) {
+    if (this.environmentName == 'dev') {
+      this.serverUrl = "http://localhost:8080/"
+    }
+    else if (this.environmentName == 'prod') {
+      this.serverUrl = "https://server-dot-sips-1350.appspot.com/";
+    }
+  }
 
   addOrganization(organization) {
     let headers = new Headers();
     this.authToken = this.authService.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
-    return this.http.post('http://localhost:8080/organizations/add', organization, { headers: headers })
+
+    let url = this.serverUrl + "organizations/add";
+
+    return this.http.post(url, organization, { headers: headers })
       .map(res => res.json());
   }
 
@@ -36,10 +49,8 @@ export class OrganizationService {
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
 
-    console.log("AuthToken: " + this.authToken);
-    // let organizationId = this.authService.loadUser().organization;
-    // console.log(organizationId);
-    let url = 'http://localhost:8080/organizations/' + organizationId
+    let url = this.serverUrl + 'organizations/' + organizationId;
+
     return this.http.get(url, { headers: headers }).catch(this.onCatch)
       .do((res: Response) => {
         this.onSuccess(res);

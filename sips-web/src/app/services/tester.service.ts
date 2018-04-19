@@ -8,24 +8,36 @@ import { Observer } from 'rxjs/Observer';
 import { Subject } from 'rxjs/Subject';
 import { User } from '../classes/user';
 import { AuthService } from '../services/auth.service';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class TesterService {
   authToken: string;
   tester: any;
   testers: any[];
+  environmentName = environment.envName;
+  serverUrl: string;
 
   constructor(
     private http: Http,
     private authService: AuthService
-  ) { }
+  ) {
+    if (this.environmentName == 'dev') {
+      this.serverUrl = "http://localhost:8080/"
+    }
+    else if (this.environmentName == 'prod') {
+      this.serverUrl = "https://server-dot-sips-1350.appspot.com/";
+    }
+  }
 
   addTester(tester) {
     let headers = new Headers();
     this.authToken = this.authService.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
-    return this.http.post('http://localhost:8080/testers/add', tester, { headers: headers })
+
+    let url = this.serverUrl + "testers/add";
+    return this.http.post(url, tester, { headers: headers })
       .map(res => res.json());
   }
 
@@ -34,7 +46,8 @@ export class TesterService {
     this.authToken = this.authService.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
-    return this.http.post('http://localhost:8080/testers/verify', tester, { headers: headers })
+    let url = this.serverUrl + "testers/verify";
+    return this.http.post(url, tester, { headers: headers })
       .map(res => res.json());
   }
 
@@ -43,7 +56,8 @@ export class TesterService {
     this.authToken = this.authService.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('http://localhost:8080/testers/get-testers-from-organization', { headers: headers })
+    let url = this.serverUrl + "testers/get-testers-from-organization";
+    return this.http.get(url, { headers: headers })
       .map(res => res.json());
   }
 

@@ -6,6 +6,10 @@ import { FlashMessagesService } from 'angular2-flash-messages';
 import { AthleteService } from '../../services/athlete.service';
 import { OrganizationService } from '../../services/organization.service';
 import { TestingDataService } from '../../services/testing-data.service';
+import { PapaParseService } from 'ngx-papaparse';
+import { TestData } from '../../classes/test-data';
+import { Angular5Csv } from 'angular5-csv/Angular5-csv';
+
 
 @Component({
   selector: 'app-athlete-profile',
@@ -15,7 +19,7 @@ import { TestingDataService } from '../../services/testing-data.service';
 export class AthleteProfileComponent implements OnInit {
   athlete: any;
   organization: any;
-  testingData: any[] = [];
+  testingData: TestData[] = [];
 
   constructor(
     private authService: AuthService,
@@ -25,6 +29,7 @@ export class AthleteProfileComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private flashMessage: FlashMessagesService,
+    private papa: PapaParseService
   ) { }
 
   ngOnInit() {
@@ -91,6 +96,65 @@ export class AthleteProfileComponent implements OnInit {
 
   formatBirthday(birthdayDate): string {
     return moment(birthdayDate).format('MMMM Do, YYYY');
+  }
+
+  onClickDownloadCSV() {
+
+    var data = [];
+
+    for (var i = 0; i < this.testingData.length; i++) {
+      for (var j = 0; j < this.testingData[i].accelerometer_data.length; j++) {
+        data.push({
+          created_at: this.testingData[i].created_at,
+          sensor_type: "accelerometer",
+          test_id: this.testingData[i]._id,
+          athlete_id: this.testingData[i].athlete,
+          time: this.testingData[i].accelerometer_data[j].time,
+          x: this.testingData[i].accelerometer_data[j].x,
+          y: this.testingData[i].accelerometer_data[j].y,
+          z: this.testingData[i].accelerometer_data[j].z,
+        });
+      }
+      for (var j = 0; j < this.testingData[i].gyroscope_data.length; j++) {
+        data.push({
+          created_at: this.testingData[i].created_at,
+          sensor_type: "gyroscope",
+          test_id: this.testingData[i]._id,
+          athlete_id: this.testingData[i].athlete,
+          time: this.testingData[i].gyroscope_data[j].time,
+          x: this.testingData[i].gyroscope_data[j].x,
+          y: this.testingData[i].gyroscope_data[j].y,
+          z: this.testingData[i].gyroscope_data[j].z,
+        });
+      }
+      for (var j = 0; j < this.testingData[i].magnometer_data.length; j++) {
+        data.push({
+          created_at: this.testingData[i].created_at,
+          sensor_type: "magnometer",
+          test_id: this.testingData[i]._id,
+          athlete_id: this.testingData[i].athlete,
+          time: this.testingData[i].magnometer_data[j].time,
+          x: this.testingData[i].magnometer_data[j].x,
+          y: this.testingData[i].magnometer_data[j].y,
+          z: this.testingData[i].magnometer_data[j].z,
+        });
+      }
+    }
+
+    let options = {
+      fieldSeparator: ',',
+      quoteStrings: '"',
+      decimalseparator: '.',
+      showLabels: true,
+      showTitle: false,
+      useBom: true,
+      noDownload: false,
+      headers: ["created_at", "sensor_type", "test_id", "athlete_id", "time", "x", "y", "z"]
+    };
+
+    let csv_title = 'athlete_' + this.athlete._id + "_testing_data"
+
+    new Angular5Csv(data, csv_title, options);
   }
 
 }

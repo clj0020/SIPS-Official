@@ -4,11 +4,11 @@
   "description": "SIPS Server by Team 11.",
   "main": "server.js",
   "scripts": {
-    "start": "SET NODE_ENV=dev && node server.js",
-    "test": "mocha --timeout 10000"
+    "start": "node server.js",
+    "test": "mocha --timeout 10000",
+    "deploy": "gcloud preview app deploy app.yaml --promote"
   },
-  "contributors": [
-    {
+  "contributors": [{
       "name": "Carson Jones",
       "email": "clj0020@tigermail.auburn.edu",
       "url": "http://developer-carson-jones.com/"

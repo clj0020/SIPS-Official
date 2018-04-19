@@ -6,14 +6,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { FlashMessagesModule } from 'angular2-flash-messages';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ChartsModule } from 'ng2-charts';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatProgressSpinnerModule, MatListModule, MatIconModule, MatButtonModule, MatInputModule, MatCardModule } from '@angular/material';
+import { PapaParseModule } from 'ngx-papaparse';
 
 
 // Components
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AdminRegisterComponent } from './components/admin-register/admin-register.component';
@@ -44,7 +45,6 @@ import { AuthGuard } from './guards/auth.guard';
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-  { path: 'register', component: RegisterComponent },
   { path: 'admin/register', component: AdminRegisterComponent },
   { path: 'admin/add-organization', component: AddOrganizationComponent },
   { path: 'admin/organization/:organizationId', component: OrganizationAdminComponent },
@@ -66,7 +66,6 @@ const appRoutes: Routes = [
     AppComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent,
     NavbarComponent,
     ProfileComponent,
     AdminRegisterComponent,
@@ -86,7 +85,14 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     NgbModule.forRoot(),
     ChartsModule,
-    MatProgressBarModule
+    MatProgressSpinnerModule,
+    MatListModule,
+    MatIconModule,
+    MatButtonModule,
+    MatInputModule,
+    MatCardModule,
+    BrowserAnimationsModule,
+    PapaParseModule
   ],
   providers: [
     AuthService,

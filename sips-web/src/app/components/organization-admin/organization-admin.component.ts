@@ -6,6 +6,8 @@ import { Organization } from '../../classes/organization';
 import { OrganizationService } from '../../services/organization.service';
 import { TesterService } from '../../services/tester.service';
 import { AthleteService } from '../../services/athlete.service';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-organization-admin',

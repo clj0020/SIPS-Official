@@ -7,40 +7,56 @@ import { of } from 'rxjs/observable/of';
 import { Observer } from 'rxjs/Observer';
 import { Subject } from 'rxjs/Subject';
 import { User } from '../classes/user';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class AuthService {
   authToken: any;
   user: any;
+  environmentName = environment.envName;
+  serverUrl: string;
 
   @Output() userEmitter: EventEmitter<any> = new EventEmitter();
   @Output() tokenEmitter: EventEmitter<any> = new EventEmitter();
 
-  // user$: Observable<any>;
-  // private userSubject: Subject<any>;
-
   constructor(private http: Http) {
-    //    this.userSubject = new Subject<any>();
+    if (this.environmentName == 'dev') {
+      this.serverUrl = "http://localhost:8080/"
+    }
+    else if (this.environmentName == 'prod') {
+      this.serverUrl = "https://server-dot-sips-1350.appspot.com/";
+    }
+
+    console.log(this.environmentName);
   }
 
   registerUser(user) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post('http://localhost:8080/users/register', user, { headers: headers })
+
+    let url = this.serverUrl + "users/register";
+
+    return this.http.post(url, user, { headers: headers })
       .map(res => res.json());
   }
 
   registerAdmin(admin) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post('http://localhost:8080/admins/register', admin, { headers: headers })
+
+    let url = this.serverUrl + "admins/register";
+
+    return this.http.post(url, admin, { headers: headers })
       .map(res => res.json());
   }
 
   authenticateUser(user) {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post('http://localhost:8080/users/login', user, { headers: headers })
+
+    let url = this.serverUrl + "users/login";
+
+    return this.http.post(url, user, { headers: headers })
       .map(res => res.json());
   }
 
@@ -49,7 +65,10 @@ export class AuthService {
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
-    return this.http.get('http://localhost:8080/users/profile', { headers: headers })
+
+    let url = this.serverUrl + "users/profile";
+
+    return this.http.get(url, { headers: headers })
       .map(res => res.json());
   }
 

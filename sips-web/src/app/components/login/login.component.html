@@ -2,6 +2,14 @@
   <div class="col-lg-6">
     <h1>Login</h1>
     <form (submit)="onLoginSubmit()">
+      <mat-form-field>
+        <input matInput [(ngModel)]="email" name="email" type="email" placeholder="Email">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [(ngModel)]="password" name="password" type="password" placeholder="Password">
+      </mat-form-field>
+      <!--
+
       <div class="form-group">
         <label for="emailInput">Email address</label>
         <input [(ngModel)]="email" name="email" type="email" class="form-control" id="emailInput" aria-describedby="emailHelp" placeholder="Enter email..">
@@ -10,11 +18,13 @@
       <div class="form-group">
         <label for="passwordInput">Password</label>
         <input [(ngModel)]="password" name="password" type="password" class="form-control" id="passwordInput" placeholder="Enter password..">
-      </div>
-      <button type="submit" class="btn btn-primary login-button">Login</button>
+      </div> -->
+      <!-- <button type="submit" class="btn btn-primary login-button">Login</button> -->
+      <button type="submit" mat-raised-button color="primary">Login</button>
     </form>
 
-    <p>Want to Start using SIPS with your own Organization?<a [routerLink]="['/admin/register']" class="btn btn-primary" style="margin-left: 20px;">Sign Up as an Admin</a></p>
+    <p>Want to Start using SIPS with your own Organization?</p>
+    <button [routerLink]="['/admin/register']" mat-raised-button color="accent">Sign Up as an Admin</button>
   </div>
 
 </div>

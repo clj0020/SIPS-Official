@@ -223,4 +223,25 @@ export class TestDataComponent implements OnInit {
     return moment(created_at).format('MM/DD/YYYY hh:mmA');
   }
 
+  onClickDownloadCSV() {
+    // console.log(this.testData);
+    //
+    // let options = {
+    //   fieldSeparator: ',',
+    //   quoteStrings: '"',
+    //   decimalseparator: '.',
+    //   showLabels: true,
+    //   showTitle: true,
+    //   title: this.testData._id,
+    //   // useBom: true,
+    //   noDownload: false,
+    //   // headers: ["First Name", "Last Name", "ID"]
+    // };
+    //
+    // let fileName = "testid_" + this.testData._id + "_data_file"
+    //
+    // var csv = new Angular5Csv(this.testData, fileName, options);
+    // console.log(csv);
+  }
+
 }

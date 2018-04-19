@@ -92,7 +92,7 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester']), (r
 				let token = generateToken(athleteInfo);
 				// Send Email
 				host = req.get('host');
-				link = "http://" + config.WebHost + "/athletes/verify?token=" + token;
+				link = config.WebHost + "/athletes/verify?token=" + token;
 
 				mailOptions = {
 					to: athleteInfo.email,
@@ -160,7 +160,7 @@ router.post('/verify', function(req, res) {
 });
 
 // Get list of athletes from Organization
-router.get('/get-athletes-from-organization', requireAuth, auth.roleAuthorization(['Admin', 'Tester']), (req, res, next) => {
+router.get('/get-athletes-from-organization', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'getAthletesFromOrganization'), (req, res, next) => {
 	// let organizationId = req.params.organizationId;
 
 	let organizationId = req.user.organization
