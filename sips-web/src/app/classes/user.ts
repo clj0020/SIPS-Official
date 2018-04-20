@@ -7,5 +7,10 @@ export class User {
     public last_name: string,
     public email: string,
     private password: string,
-    public organization: string) { }
+    public organization: {
+      _id: string,
+      title: string,
+      createdAt: string,
+      creator: string
+    }) { }
 }

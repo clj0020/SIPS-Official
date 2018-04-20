@@ -41,7 +41,7 @@ export class AddOrganizationComponent implements OnInit {
       if (data.success) {
 
         var user = data.user;
-        user.organization = data.organization._id;
+        user.organization = data.organization;
         console.log("Organization succesfully added, updated user object with ref..");
         console.log(user);
         this.authService.setUser(user);

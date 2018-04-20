@@ -10,7 +10,6 @@ const TesterSchema = User.discriminator('Tester', new Schema({
 const Tester = module.exports = mongoose.model('Tester');
 
 module.exports.addUser = function(newUser, callback) {
-	console.log(newUser);
 	newUser.save(callback);
 };
 

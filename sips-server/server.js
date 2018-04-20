@@ -32,13 +32,16 @@ mongoose.connection.on('error', (err) => {
 
 
 // Body Parser Middleware
-app.use(bodyParser.json());
+app.use(bodyParser.json({
+	limit: '50mb',
+	type: 'application/json'
+}));
 app.use(bodyParser.urlencoded({
+	limit: '50mb',
 	extended: true
 }));
-app.use(bodyParser.text());
-app.use(bodyParser.json({
-	type: 'application/json'
+app.use(bodyParser.text({
+	limit: '50mb'
 }));
 
 // Include the Routes
@@ -46,7 +49,8 @@ const users = require('./routes/users');
 const admins = require('./routes/admins');
 const testers = require('./routes/testers');
 const athletes = require('./routes/athletes');
-const testingData = require('./routes/testingData')
+const testingData = require('./routes/testingData');
+const testTypes = require('./routes/testTypes');
 const organizations = require('./routes/organizations');
 
 // Port Number
@@ -70,6 +74,7 @@ app.use('/admins', admins);
 app.use('/testers', testers);
 app.use('/athletes', athletes);
 app.use('/testingData', testingData);
+app.use('/testTypes', testTypes);
 app.use('/organizations', organizations);
 
 // Index Route

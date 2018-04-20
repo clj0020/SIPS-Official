@@ -179,8 +179,7 @@ router.post('/verify', function(req, res) {
 // Get list of testers from Organization
 router.get('/organization', requireAuth, auth.roleAuthorization(['Admin'], 'getTestersFromOrganization'), (req, res, next) => {
 	let organizationId = req.user.organization;
-	console.log("Getting testers from Organization..");
-	console.log(organizationId);
+
 	// Call the getTestersFromOrganization method of Tester model.
 	Tester.getTestersFromOrganization(organizationId, (err, testers) => {
 		// If theres an error, success will be false

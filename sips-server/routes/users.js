@@ -26,51 +26,53 @@ function setUserInfo(request) {
 	return {
 		_id: request._id,
 		email: request.email,
-		name: request.name
+		first_name: request.first_name,
+		last_name: request.last_name,
+		organization: request.organization
 	};
 }
 
-// Register
-router.post('/register', (req, res, next) => {
-	let newUser = new User({
-		name: req.body.name,
-		email: req.body.email,
-		password: req.body.password,
-		role: req.body.role
-	});
-
-	User.findOne({
-		email: req.body.email
-	}, (err, existingUser) => {
-		if (err) {
-			return next(err);
-		}
-		if (existingUser) {
-			return res.status(422).json({
-				success: false,
-				msg: 'That email address is already in use.'
-			});
-		}
-
-		User.addUser(newUser, (err, user) => {
-			if (err) {
-				res.status(401).json({
-					success: false,
-					msg: 'Failed to register user!' + err.message
-				});
-			} else {
-				userInfo = setUserInfo(user);
-
-				res.status(200).json({
-					success: true,
-					msg: 'User registered!',
-					token: 'JWT ' + generateToken(userInfo),
-					user: userInfo
-				});
-			}
-		});
-	});
-});
+// // Register
+// router.post('/register', (req, res, next) => {
+// 	let newUser = new User({
+// 		name: req.body.name,
+// 		email: req.body.email,
+// 		password: req.body.password,
+// 		role: req.body.role
+// 	});
+//
+// 	User.findOne({
+// 		email: req.body.email
+// 	}, (err, existingUser) => {
+// 		if (err) {
+// 			return next(err);
+// 		}
+// 		if (existingUser) {
+// 			return res.status(422).json({
+// 				success: false,
+// 				msg: 'That email address is already in use.'
+// 			});
+// 		}
+//
+// 		User.addUser(newUser, (err, user) => {
+// 			if (err) {
+// 				res.status(401).json({
+// 					success: false,
+// 					msg: 'Failed to register user!' + err.message
+// 				});
+// 			} else {
+// 				userInfo = setUserInfo(user);
+//
+// 				res.status(200).json({
+// 					success: true,
+// 					msg: 'User registered!',
+// 					token: 'JWT ' + generateToken(userInfo),
+// 					user: userInfo
+// 				});
+// 			}
+// 		});
+// 	});
+// });
 
 // Authenticate
 router.post('/login', (req, res, next) => {

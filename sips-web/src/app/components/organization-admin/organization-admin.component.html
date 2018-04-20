@@ -50,5 +50,18 @@
         </mat-nav-list>
       </div>
     </div>
+    <div class="row text-center">
+      <div class="col-lg-12">
+        <h3>Test Types</h3>
+        <mat-nav-list id="testTypeList">
+          <a mat-list-item *ngFor="let testType of testTypes">
+            <h4 mat-line>{{ testType.title }}</h4>
+            <h6 mat-line>Description: {{ testType.description }}</h6>
+            <p mat-line>{{ testType.duration }} seconds</p>
+          </a>
+        </mat-nav-list>
+        <button mat-raised-button color="primary" (click)="onAddTestTypeClicked()" id="addTestTypeBtn">Add</button>
+      </div>
+    </div>
   </div>
 </div>

@@ -4,7 +4,7 @@
   "description": "SIPS Server by Team 11.",
   "main": "server.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=\"default\" nodemon server.js",
+    "start": "node server.js",
     "start-dev": "cross-env NODE_ENV=\"dev\" nodemon server.js",
     "start-prod": "cross-env NODE_ENV=\"production\" nodemon server.js",
     "test": "cross-env NODE_ENV=\"test\" mocha --timeout 10000",

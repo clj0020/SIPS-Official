@@ -1,0 +1,17 @@
+<div class="row text-center h-100 justify-content-center align-items-center">
+  <div class="col-lg-6">
+    <h2 class="page-header">Add Test Type</h2>
+    <form (submit)="onAddTestTypeSubmit()">
+      <mat-form-field>
+        <input matInput type="text" id="title" [(ngModel)]="title" placeholder="Title" name="title">
+      </mat-form-field>
+      <mat-form-field>
+        <textarea matInput type="test" id="description" [(ngModel)]="description" placeholder="Description" name="description"></textarea>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="number" id="duration" [(ngModel)]="duration" placeholder="Duration (seconds)" name="duration">
+      </mat-form-field>
+      <button type="submit" class="align-middle" mat-raised-button color="primary">Submit</button>
+    </form>
+  </div>
+</div>

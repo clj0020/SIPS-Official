@@ -18,6 +18,7 @@ import { TestingDataService } from '../../services/testing-data.service';
 export class TestDataComponent implements OnInit {
 
   testData: any;
+  testType: any;
 
   // Accelerometer Data
   accelerometer_time: Array<any> = [];
@@ -186,6 +187,7 @@ export class TestDataComponent implements OnInit {
     this.testingDataService.getTestDataById(id, athleteId).subscribe(data => {
       if (data.success) {
         this.testData = data.testData;
+        this.testType = data.testData.testType;
 
         for (var i = 0; i < this.testData.accelerometer_data.length; i++) {
           this.accelerometer_time.push(this.testData.accelerometer_data[i].time);

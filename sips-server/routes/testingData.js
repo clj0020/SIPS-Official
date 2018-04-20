@@ -34,14 +34,17 @@ var requireAuth = passport.authenticate('jwt', {
 router.post('/add', requireAuth, auth.roleAuthorization(['Tester'], 'addTestingData'), (req, res) => {
 
 	let newTestData = new TestData({
-		athlete: req.body.athleteId,
+		athlete: req.body.athlete,
 		tester: req.user,
+		testType: req.body.testType,
 		accelerometer_data: JSON.parse(req.body.accelerometer_data),
 		gyroscope_data: JSON.parse(req.body.gyroscope_data),
 		magnometer_data: JSON.parse(req.body.magnometer_data)
 	});
 
-	TestData.addTestData(newTestData, (err, testData) => {
+	console.log("Uploading Testing Data of type " + req.body.testType);
+
+	TestData.addTestData(newTestData, (err, addedTestData) => {
 		if (err) {
 			res.status(206).json({
 				success: false,
@@ -49,16 +52,19 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Tester'], 'addTestingD
 			})
 
 		} else {
+			console.log("AddedTestData" + addedTestData.testType);
+
 			res.status(200).json({
 				success: true,
 				msg: 'Successfully added testData!',
 				testData: {
-					_id: testData._id,
-					tester: testData.tester._id,
-					athlete: testData.athlete._id,
-					accelerometer_data: testData.accelerometer_data,
-					gyroscope_data: testData.gyroscope_data,
-					magnometer_data: testData.magnometer_data
+					_id: addedTestData._id,
+					tester: addedTestData.tester._id,
+					athlete: addedTestData.athlete._id,
+					testType: addedTestData.testType._id,
+					accelerometer_data: addedTestData.accelerometer_data,
+					gyroscope_data: addedTestData.gyroscope_data,
+					magnometer_data: addedTestData.magnometer_data
 				}
 			});
 		}

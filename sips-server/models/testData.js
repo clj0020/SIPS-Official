@@ -16,6 +16,10 @@ const TestDataSchema = new Schema({
 		type: Schema.ObjectId,
 		ref: 'Tester'
 	},
+	testType: {
+		type: Schema.ObjectId,
+		ref: 'TestType'
+	},
 	accelerometer_data: [{
 		time: Number,
 		x: Number,
@@ -41,7 +45,7 @@ const TestData = module.exports = mongoose.model('TestData', TestDataSchema);
 module.exports.getTestDataById = function(id, callback) {
 	TestData.findOne({
 		'_id': id
-	}, callback);
+	}).populate('testType').exec(callback);
 };
 
 module.exports.addTestData = function(newTestData, callback) {
@@ -54,6 +58,7 @@ module.exports.getAthleteTestData = function(athleteId, callback) {
 				$in: athleteId
 			}
 		})
+		.populate('testType')
 		.sort({
 			'created_at': -1
 		})
@@ -64,6 +69,7 @@ module.exports.getTesterTestData = function(testerId, callback) {
 	TestData.find({
 			'tester._id': testerId
 		})
+		.populate('testType')
 		.sort({
 			'created_at': -1
 		})

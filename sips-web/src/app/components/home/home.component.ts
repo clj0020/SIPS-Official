@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit {
       console.log(this.user.organization);
 
       if (this.user.organization !== undefined) {
-        this.router.navigate(['/admin/organization', this.user.organization]);
+        this.router.navigate(['/admin/organization', this.user.organization._id]);
       }
       else {
         this.router.navigate(['/admin/add-organization']);
@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit {
         console.log("Admin User found in HomeEmitter..");
         console.log(this.user.organization);
         if (this.user.organization !== undefined) {
-          this.router.navigate(['/admin/organization', this.user.organization]);
+          this.router.navigate(['/admin/organization', this.user.organization._id]);
         }
         else {
           this.router.navigate(['/admin/add-organization']);

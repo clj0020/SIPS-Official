@@ -33,6 +33,16 @@ export class ValidateService {
     }
   }
 
+  validateAddTestType(testType) {
+    if (testType.title == undefined || testType.description == undefined ||
+      testType.duration == undefined) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  }
+
   validateTesterVerification(tester) {
     if (tester.first_name == undefined || tester.last_name == undefined ||
       tester.password == undefined) {

@@ -5,21 +5,21 @@ export class TestData {
     public athlete: string,
     public tester: string,
     public accelerometer_data: [{
-      _id: number,
+      _id: string,
       time: number,
       x: number,
       y: number,
       z: number
     }],
     public gyroscope_data: [{
-      _id: number,
+      _id: string,
       time: number,
       x: number,
       y: number,
       z: number
     }],
     public magnometer_data: [{
-      _id: number,
+      _id: string,
       time: number,
       x: number,
       y: number,

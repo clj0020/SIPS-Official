@@ -45,7 +45,7 @@ module.exports.getUserByEmail = function(email, callback) {
 	const query = {
 		email: email
 	};
-	User.findOne(query).populate().exec(callback);
+	User.findOne(query).populate('organization').exec(callback);
 };
 
 module.exports.addUser = function(newUser, callback) {

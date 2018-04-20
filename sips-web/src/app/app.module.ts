@@ -34,6 +34,7 @@ import { VerifyAthleteComponent } from './components/verify-athlete/verify-athle
 import { AthleteProfileComponent } from './components/athlete-profile/athlete-profile.component';
 import { TestDataComponent } from './components/testdata/testdata.component';
 import { LoaderComponent } from './components/loader/loader.component';
+import { AddTestTypeComponent } from './components/add-test-type/add-test-type.component';
 
 // Services
 import { AuthService } from './services/auth.service';
@@ -43,9 +44,11 @@ import { TesterService } from './services/tester.service';
 import { AthleteService } from './services/athlete.service';
 import { TestingDataService } from './services/testing-data.service';
 import { LoaderService } from './services/loader.service';
+import { TestTypeService } from './services/test-type.service';
 
 // Guards
 import { AuthGuard } from './guards/auth.guard';
+
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -58,7 +61,7 @@ const appRoutes: Routes = [
   { path: 'athletes/athlete/:id', component: AthleteProfileComponent },
   { path: 'login', component: LoginComponent },
   { path: 'tests/athlete/:athleteId/:id', component: TestDataComponent },
-
+  { path: 'organization/testTypes/add', component: AddTestTypeComponent },
   // {path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
   // {path: 'profile', component: ProfileComponent, canActivate:[AuthGuard]},
   // {path: 'users', component: UserListComponent},
@@ -80,7 +83,8 @@ const appRoutes: Routes = [
     VerifyAthleteComponent,
     AthleteProfileComponent,
     TestDataComponent,
-    LoaderComponent
+    LoaderComponent,
+    AddTestTypeComponent
   ],
   imports: [
     BrowserModule,
@@ -107,6 +111,7 @@ const appRoutes: Routes = [
     OrganizationService,
     TesterService,
     TestingDataService,
+    TestTypeService,
     LoaderService,
     AthleteService,
     ValidateService,

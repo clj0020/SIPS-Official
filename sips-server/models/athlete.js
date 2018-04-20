@@ -25,7 +25,6 @@ module.exports.getAthleteById = function(id, callback) {
 };
 
 module.exports.addAthlete = function(newAthlete, callback) {
-	console.log(newAthlete);
 	newAthlete.save(callback);
 };
 
@@ -53,8 +52,6 @@ module.exports.verifyAthlete = function(newAthlete, callback) {
 };
 
 module.exports.getAthletesFromOrganization = function(organizationId, callback) {
-	console.log("OrganizationID: " + organizationId);
-
 	Athlete.find({
 			organization: {
 				$in: organizationId

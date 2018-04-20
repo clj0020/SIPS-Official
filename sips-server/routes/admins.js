@@ -38,8 +38,6 @@ router.post('/register', (req, res, next) => {
 		password: req.body.password
 	});
 
-	console.log(newAdmin);
-
 	Admin.findOne({
 		email: req.body.email
 	}, (err, existingAdmin) => {
@@ -75,7 +73,7 @@ router.post('/register', (req, res, next) => {
 
 router.post('/update', (req, res, next) => {
 	let admin = req.body._id;
-	// console.log(admin);
+
 	Admin.updateAdmin(admin, (err, admin) => {
 		if (err) {
 			res.status(401).json({

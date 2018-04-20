@@ -6,6 +6,7 @@ import { Organization } from '../../classes/organization';
 import { OrganizationService } from '../../services/organization.service';
 import { TesterService } from '../../services/tester.service';
 import { AthleteService } from '../../services/athlete.service';
+import { TestTypeService } from '../../services/test-type.service';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -22,6 +23,8 @@ export class OrganizationAdminComponent implements OnInit {
   athleteEmail: string;
   athletes: any[] = [];
 
+  testTypes: any[] = [];
+
   organizationId: string;
 
 
@@ -30,6 +33,7 @@ export class OrganizationAdminComponent implements OnInit {
     private organizationService: OrganizationService,
     private testerService: TesterService,
     private athleteService: AthleteService,
+    private testTypeService: TestTypeService,
     private route: ActivatedRoute,
     private router: Router,
     private flashMessage: FlashMessagesService,
@@ -105,6 +109,7 @@ export class OrganizationAdminComponent implements OnInit {
       if (data.success) {
         this.athleteService.storeAthletes(data.athletes);
         this.athletes = data.athletes;
+        this.loadTestTypes(this.organization._id);
       }
       else {
         this.flashMessage.show(data.msg, {
@@ -131,13 +136,28 @@ export class OrganizationAdminComponent implements OnInit {
     });
   }
 
-  onAddOrganizationClick() {
-    this.router.navigate(['/admin/add-organization']);
-    return false;
+  loadTestTypes(organizationId) {
+    this.testTypeService.getTestTypesFromOrganization(organizationId).subscribe(data => {
+      if (data.success) {
+        this.testTypeService.storeTestTypes(data.testTypes);
+        this.testTypes = data.testTypes;
+      }
+      else {
+        this.flashMessage.show(data.msg, {
+          cssClass: 'alert-danger',
+          timeout: 5000
+        });
+      }
+    });
   }
 
   onAthleteClick(id) {
     this.router.navigate(['/athletes/athlete', id]);
+    return false;
+  }
+
+  onAddTestTypeClicked() {
+    this.router.navigate(['organization/testTypes/add']);
     return false;
   }
 
