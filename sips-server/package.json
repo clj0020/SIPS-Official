@@ -10,7 +10,8 @@
     "test": "cross-env NODE_ENV=\"test\" mocha --timeout 10000",
     "deploy": "gcloud app deploy"
   },
-  "contributors": [{
+  "contributors": [
+    {
       "name": "Carson Jones",
       "email": "clj0020@tigermail.auburn.edu",
       "url": "http://developer-carson-jones.com/"
@@ -33,6 +34,7 @@
   ],
   "license": "ISC",
   "dependencies": {
+    "@sendgrid/mail": "^6.2.1",
     "bcryptjs": "*",
     "body-parser": "*",
     "config": "^1.30.0",
@@ -46,7 +48,8 @@
     "nodemailer-smtp-transport": "^2.7.4",
     "passport": "*",
     "passport-jwt": "^3.0.1",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "sendgrid": "^5.2.3"
   },
   "devDependencies": {
     "chai": "^3.5.0",

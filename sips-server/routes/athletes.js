@@ -9,6 +9,12 @@ const Organization = require('../models/organization');
 var nodemailer = require("nodemailer");
 var smtpTransport = require('nodemailer-smtp-transport');
 
+// Setting Up SendGrid
+const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || config.SENDGRID_API_KEY;
+const SENDGRID_SENDER = process.env.SENDGRID_SENDER || config.SENDGRID_SENDER;
+
+const sendGridMail = require('@sendgrid/mail');
+
 /*
     Here we are configuring our SMTP Server details.
     STMP is mail server which is responsible for sending and recieving email.
@@ -61,12 +67,14 @@ function setUnVerifiedAthleteInfo(request) {
 	};
 }
 
-router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester']), (req, res, next) => {
+router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'addAthlete'), (req, res, next) => {
 	let newAthlete = new Athlete({
 		email: req.body.email,
 		organization: req.body.organization,
 		status: 'Unverified'
 	});
+
+	console.log("Add Athlete");
 
 	Athlete.findOne({
 		email: req.body.email
@@ -94,16 +102,35 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester']), (r
 				host = req.get('host');
 				link = config.WebHost + "/athletes/verify?token=" + token;
 
-				mailOptions = {
+				const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || config.SENDGRID_API_KEY;
+				sendGridMail.setApiKey(SENDGRID_API_KEY);
+				const msg = {
 					to: athleteInfo.email,
-					subject: "Please confirm your Email account",
+					from: "clj0020@gmail.com",
+					subject: 'You were invited to join the Sports Injury Prevention Screening App!',
 					html: "<h3>Hello from SIPS!</h5><br> <h5>You've been added as an athlete for the " + req.user.organization.title + "organization on the Sports Injury Prevention screening app! Please verify your email.</h5><br><a href=" + link + ">Click here to verify</a>"
-				}
-				smtpTransport.sendMail(mailOptions, function(error, response) {
+				};
+				sendGridMail.send(msg, (error, result) => {
 					if (error) {
-						res.status(401).json({
+						//Log friendly error
+						console.error(error.toString());
+
+						//Extract error msg
+						const {
+							message,
+							code,
+							response
+						} = error;
+
+						//Extract response msg
+						const {
+							headers,
+							body
+						} = response;
+
+						res.status(201).json({
 							success: false,
-							msg: 'Failed to send athlete email! Error:' + error.message
+							msg: 'Failed to send athlete email! Error:' + error.toString()
 						});
 					} else {
 						res.status(200).json({

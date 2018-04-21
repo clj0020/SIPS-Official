@@ -6,22 +6,13 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const Tester = require('../models/tester');
 var nodemailer = require("nodemailer");
-var smtpTransport = require('nodemailer-smtp-transport');
 
-/*
-    Here we are configuring our SMTP Server details.
-    STMP is mail server which is responsible for sending and recieving email.
-*/
-var smtpTransport = nodemailer.createTransport("smtps://" + config.GMAIL_USERNAME + "%40gmail.com:" + encodeURIComponent(config.GMAIL_PASS) + "@smtp.gmail.com:465");
+// Setting Up SendGrid
+const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || config.SENDGRID_API_KEY;
+const SENDGRID_SENDER = process.env.SENDGRID_SENDER || config.SENDGRID_SENDER;
 
-// var smtpTransport = nodemailer.createTransport("SMTP", {
-// 	service: "Gmail",
-// 	auth: {
-// 		user: config.GMAIL_USERNAME,
-// 		pass: config.GMAIL_PASS
-// 	}
-// });
-var rand, mailOptions, host, link;
+const sendGridMail = require('@sendgrid/mail');
+
 /*------------------SMTP Over-----------------------------*/
 
 var requireAuth = passport.authenticate('jwt', {
@@ -95,16 +86,36 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Admin'], 'addTester'),
 				host = req.get('host');
 				link = config.WebHost + "/testers/verify?token=" + token;
 
-				mailOptions = {
+				const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || config.SENDGRID_API_KEY;
+				sendGridMail.setApiKey(SENDGRID_API_KEY);
+				const msg = {
 					to: testerInfo.email,
-					subject: "Please confirm your Email account",
-					html: "<h3>Hello from SIPS!</h5><br> <h5>You've been added as a tester, Please verify your email.</h5><br><a href=" + link + ">Click here to verify</a>"
-				}
-				smtpTransport.sendMail(mailOptions, function(error, response) {
+					from: "clj0020@gmail.com",
+					subject: 'You were invited to join the Sports Injury Prevention Screening App!',
+					html: "<h3>Hello from SIPS!</h5><br> <h5>You've been added as a tester for the " + req.user.organization.title + "organization on the Sports Injury Prevention screening app! Please verify your email.</h5><br><a href=" + link + ">Click here to verify</a>"
+				};
+
+				sendGridMail.send(msg, (error, result) => {
 					if (error) {
+						//Log friendly error
+						console.error(error.toString());
+
+						//Extract error msg
+						const {
+							message,
+							code,
+							response
+						} = error;
+
+						//Extract response msg
+						const {
+							headers,
+							body
+						} = response;
+
 						res.status(401).json({
 							success: false,
-							msg: 'Failed to send tester email! Error:' + error.message
+							msg: 'Failed to send tester email! Error:' + error.toString()
 						});
 					} else {
 						res.status(200).json({
@@ -114,6 +125,7 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Admin'], 'addTester'),
 						});
 					}
 				});
+
 			}
 		});
 	});

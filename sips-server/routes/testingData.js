@@ -31,7 +31,7 @@ var requireAuth = passport.authenticate('jwt', {
 						msg: String (),
 						testData: TestData ()
 */
-router.post('/add', requireAuth, auth.roleAuthorization(['Tester'], 'addTestingData'), (req, res) => {
+router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'addTestingData'), (req, res) => {
 
 	let newTestData = new TestData({
 		athlete: req.body.athlete,
