@@ -5,4 +5,4 @@ automatic_scaling:
   min_num_instances: 1
 
 env_variables:
-  SENDGRID_API_KEY: "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"
+  SENDGRID_API_KEY: "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"
