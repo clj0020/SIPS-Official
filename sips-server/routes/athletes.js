@@ -6,30 +6,11 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const Athlete = require('../models/athlete');
 const Organization = require('../models/organization');
-var nodemailer = require("nodemailer");
-var smtpTransport = require('nodemailer-smtp-transport');
 
-// Setting Up SendGrid
 const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || config.SENDGRID_API_KEY;
 const SENDGRID_SENDER = process.env.SENDGRID_SENDER || config.SENDGRID_SENDER;
-
 const sendGridMail = require('@sendgrid/mail');
 
-/*
-    Here we are configuring our SMTP Server details.
-    STMP is mail server which is responsible for sending and recieving email.
-*/
-var smtpTransport = nodemailer.createTransport("smtps://" + config.GMAIL_USERNAME + "%40gmail.com:" + encodeURIComponent(config.GMAIL_PASS) + "@smtp.gmail.com:465");
-
-// var smtpTransport = nodemailer.createTransport("SMTP", {
-// 	service: "Gmail",
-// 	auth: {
-// 		user: config.GMAIL_USERNAME,
-// 		pass: config.GMAIL_PASS
-// 	}
-// });
-var rand, mailOptions, host, link;
-/*------------------SMTP Over-----------------------------*/
 
 var requireAuth = passport.authenticate('jwt', {
 	session: false

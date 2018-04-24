@@ -34,8 +34,7 @@ Either locally or hosted on a site like mLab.
   "secret": "EXAMPLE_SECRET_KEY",
   "ServerHost": "SERVER URL in Production (Google Cloud)",
   "WebHost": "WEB APP URL in Production (Google Cloud)",
-  "GMAIL_USERNAME": "exampleGmailUsername (dont include @gmail.com)",
-  "GMAIL_PASS": "exampleGmailPassword"
+  "SENDGRID_API_KEY": "Api Key from a SendGrid account"
 }
 ```
 
@@ -47,8 +46,7 @@ Either locally or hosted on a site like mLab.
   "secret": "EXAMPLE_SECRET_KEY",
   "ServerHost": "http://localhost:8080",
   "WebHost": "http://localhost:4200",
-  "GMAIL_USERNAME": "exampleGmailUsername (dont include @gmail.com)",
-  "GMAIL_PASS": "exampleGmailPassword"
+  "SENDGRID_API_KEY": "Api Key from a SendGrid account"
 }
 ```
 
@@ -60,8 +58,7 @@ Either locally or hosted on a site like mLab.
   "secret": "EXAMPLE_SECRET_KEY",
   "ServerHost": "SERVER URL in Production (Google Cloud)",
   "WebHost": "WEB APP URL in Production (Google Cloud)",
-  "GMAIL_USERNAME": "exampleGmailUsername (dont include @gmail.com)",
-  "GMAIL_PASS": "exampleGmailPassword"
+  "SENDGRID_API_KEY": "Api Key from a SendGrid account"
 }
 ```
 ##### test.json
@@ -72,38 +69,59 @@ Either locally or hosted on a site like mLab.
   "secret": "EXAMPLE_SECRET_KEY",
   "ServerHost": "http://localhost:8080",
   "WebHost": "http://localhost:4200",
-  "GMAIL_USERNAME": "exampleGmailUsername (dont include @gmail.com)",
-  "GMAIL_PASS": "exampleGmailPassword"
+  "SENDGRID_API_KEY": "Api Key from a SendGrid account"
 }
 ```
 
+### 4. Create an app.yaml file in the root of sips-server for Google Cloud
 
-### 4a. To run project in Default Mode:
+##### app.yaml
+```yaml
+
+service: server
+runtime: nodejs
+env: flex
+automatic_scaling:
+  min_num_instances: 1
+
+env_variables:
+  SENDGRID_API_KEY: "API key from a SendGrid account"
+
+```
+
+### 5a. To run project in Default Mode:
 
 ```command prompt
 
 npm start
 ```
 
-### 4b. To run project in Development mode:
+### 5b. To run project in Development mode:
 
 ```command prompt
 
 npm run start-dev
 ```
 
-### 4c. To run project in Production mode:
+### 5c. To run project in Production mode:
 
 ```command prompt
 
 npm run start-prod
 ```
 
-### 4d. To run tests
+### 5d. To run tests
 
 ```command prompt
 
 npm test
+```
+
+### 5e. To deploy to Google Cloud
+
+```command prompt
+
+npm run deploy
 ```
 
 

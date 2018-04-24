@@ -5,15 +5,10 @@ const auth = require('../middleware/auth');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const Tester = require('../models/tester');
-var nodemailer = require("nodemailer");
 
-// Setting Up SendGrid
 const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || config.SENDGRID_API_KEY;
 const SENDGRID_SENDER = process.env.SENDGRID_SENDER || config.SENDGRID_SENDER;
-
 const sendGridMail = require('@sendgrid/mail');
-
-/*------------------SMTP Over-----------------------------*/
 
 var requireAuth = passport.authenticate('jwt', {
 	session: false
