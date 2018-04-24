@@ -108,7 +108,7 @@ router.get('/athlete/:athleteId/:id', requireAuth, auth.roleAuthorization(['Admi
 });
 
 /** Get All TestData for an athlete */
-router.get('/get-athlete-test-data/:athleteId', requireAuth, auth.roleAuthorization(['Admin'], 'getAthletesTestData'), (req, res) => {
+router.get('/get-athlete-test-data/:athleteId', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'getAthletesTestData'), (req, res) => {
 	let athleteId = req.params.athleteId;
 
 	TestData.getAthleteTestData(athleteId, (err, testDataList) => {
