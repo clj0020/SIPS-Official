@@ -10,9 +10,7 @@ var requireAuth = passport.authenticate('jwt', {
 	session: false
 });
 
-/**
-  TestData routes
-*/
+/** TestData routes */
 
 /** Add TestData
 
@@ -52,20 +50,12 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'ad
 			})
 
 		} else {
-			console.log("AddedTestData" + addedTestData.testType);
+			console.log("AddedTestData: " + addedTestData);
 
 			res.status(200).json({
 				success: true,
 				msg: 'Successfully added testData!',
-				testData: {
-					_id: addedTestData._id,
-					tester: addedTestData.tester._id,
-					athlete: addedTestData.athlete._id,
-					testType: addedTestData.testType._id,
-					accelerometer_data: addedTestData.accelerometer_data,
-					gyroscope_data: addedTestData.gyroscope_data,
-					magnometer_data: addedTestData.magnometer_data
-				}
+				testData: addedTestData
 			});
 		}
 	});

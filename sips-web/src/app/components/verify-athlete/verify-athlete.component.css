@@ -32,6 +32,10 @@
   color: #7b1fa2 !important;
 }
 
+/deep/ .mat-form-field-label {
+  color: #606060 !important;
+}
+
 /* /deep/ .mat-form-field-label .mat-form-field-empty {
   color: black !important;
 } */

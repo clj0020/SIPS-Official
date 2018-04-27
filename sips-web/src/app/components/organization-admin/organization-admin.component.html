@@ -1,3 +1,9 @@
+<script type="text/javascript">
+  $(function() {
+    $('.unverified-indicator').tooltip()
+  })
+</script>
+
 <div class="row text-center h-100 justify-content-center align-items-center">
   <div class="col-sm-8 text-center" *ngIf="organization">
     <h3>{{ organization.title }}</h3>
@@ -16,11 +22,10 @@
             </div>
           </div>
           <a mat-list-item *ngFor="let tester of testers">
-            <mat-icon mat-list-icon>accessibility</mat-icon>
+            <mat-icon mat-list-icon aria-hidden="true">accessibility <span class="cdk-visually-hidden">Tester</span></mat-icon>
             <h4 *ngIf="!tester.first_name" mat-line>{{ tester.email }}</h4>
             <h4 *ngIf="tester.first_name" mat-line>{{ tester.first_name + " " + tester.last_name }}</h4>
-            <p style="color: red;" *ngIf="tester.status == 'Unverified'">Not Verified Yet</p>
-            <p style="color: green;" *ngIf="tester.status == 'Verified'">Verified</p>
+            <mat-icon *ngIf="tester.status == 'Unverified'" matTooltip="Unverified" tooltip-position='above' aria-hidden="true" class="unverified-indicator" data-toggle="tooltip" title="Unverified">warning <span class="cdk-visually-hidden">Unverified</span></mat-icon>
             <p mat-line> {{tester.created_at | date}} </p>
           </a>
         </mat-nav-list>
@@ -39,11 +44,12 @@
             </div>
           </div>
           <a mat-list-item *ngFor="let athlete of athletes" (click)="onAthleteClick(athlete._id)">
-            <mat-icon mat-list-icon>accessibility</mat-icon>
+            <mat-icon mat-list-icon aria-hidden="true">accessibility <span class="cdk-visually-hidden">Athlete</span></mat-icon>
             <h4 *ngIf="!athlete.first_name" mat-line>{{ athlete.email }}</h4>
             <h4 *ngIf="athlete.first_name" mat-line>{{ athlete.first_name + " " + athlete.last_name }}</h4>
-            <p style="color: red;" *ngIf="athlete.status == 'Unverified'">Not Verified Yet</p>
-            <p style="color: green;" *ngIf="athlete.status == 'Verified'">Verified</p>
+            <mat-icon *ngIf="athlete.status == 'Unverified'" matTooltip="Unverified" tooltip-position='above' aria-hidden="true" class="unverified-indicator" data-toggle="tooltip" title="Unverified">warning <span class="cdk-visually-hidden">Unverified</span></mat-icon>
+            <!-- <p style="color: red;" *ngIf="athlete.status == 'Unverified'">Not Verified Yet</p>
+            <p style="color: green;" *ngIf="athlete.status == 'Verified'">Verified</p> -->
             <p mat-line> {{athlete.created_at | date}} </p>
             <mat-divider></mat-divider>
           </a>

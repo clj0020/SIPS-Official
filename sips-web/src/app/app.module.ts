@@ -16,7 +16,8 @@ import {
   MatCardModule,
   MatCheckboxModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatTooltipModule
 } from '@angular/material';
 import { PapaParseModule } from 'ngx-papaparse';
 
@@ -103,6 +104,7 @@ const appRoutes: Routes = [
     MatCheckboxModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatTooltipModule,
     BrowserAnimationsModule,
     PapaParseModule
   ],

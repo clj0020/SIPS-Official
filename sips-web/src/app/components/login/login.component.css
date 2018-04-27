@@ -25,3 +25,7 @@ p {
 .mat-form-field-hide-placeholder .mat-input-element::-moz-placeholder {
   color: black !important;
 }
+
+/deep/ .mat-form-field-label {
+  color: #606060 !important;
+}

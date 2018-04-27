@@ -33,7 +33,7 @@ function setAthleteInfo(request) {
 		date_of_birth: request.date_of_birth,
 		height: request.height,
 		weight: request.weight,
-		organization: request.organization
+		organization: request.organization,
 	};
 }
 

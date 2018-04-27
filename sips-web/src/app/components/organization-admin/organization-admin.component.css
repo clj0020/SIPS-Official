@@ -19,6 +19,10 @@ h4 {
   margin-bottom: 1em;
 }
 
+.unverified-indicator {
+  color: red;
+}
+
 .mat-list-item {
   color: black;
   margin-top: 1em;
@@ -34,6 +38,10 @@ h4 {
 
 .mat-form-field {
   width: 100%;
+}
+
+/deep/ .mat-form-field-label {
+  color: #606060 !important;
 }
 
 /deep/ .mat-input-underline {
