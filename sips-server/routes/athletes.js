@@ -5,6 +5,7 @@ const auth = require('../middleware/auth');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const Athlete = require('../models/athlete');
+const Injury = require('../models/injury');
 const Organization = require('../models/organization');
 
 const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || config.SENDGRID_API_KEY;
@@ -33,6 +34,8 @@ function setAthleteInfo(request) {
 		date_of_birth: request.date_of_birth,
 		height: request.height,
 		weight: request.weight,
+		sport: request.sport,
+		position: request.position,
 		organization: request.organization,
 	};
 }
@@ -144,27 +147,50 @@ router.post('/verify', function(req, res) {
 		date_of_birth: req.body.date_of_birth,
 		height: req.body.height,
 		weight: req.body.weight,
+		sport: req.body.sport,
+		position: req.body.position,
 		organization: decodedToken.organization,
 		password: req.body.password
 	};
 
-	Athlete.verifyAthlete(athlete, (err, newAthlete) => {
+
+	let newInjuries = [];
+	for (let injury of req.body.injuries) {
+		const newInjury = new Injury({
+			title: injury.title,
+			date_occurred: injury.date_occurred,
+			athlete: decodedToken._id
+		});
+
+		newInjuries.push(newInjury);
+	}
+
+	Injury.collection.insert(newInjuries, (err, injuries) => {
 		if (err) {
 			res.status(401).json({
 				success: false,
-				msg: 'Failed to verify athlete! Error:' + err.message
+				msg: 'Failed to add injuries! Error:' + err.message
 			});
 		} else {
-			let athleteInfo = setAthleteInfo(newAthlete);
+			Athlete.verifyAthlete(athlete, (err, newAthlete) => {
+				if (err) {
+					res.status(401).json({
+						success: false,
+						msg: 'Failed to verify athlete! Error:' + err.message
+					});
+				} else {
+					let athleteInfo = setAthleteInfo(newAthlete);
 
-			res.status(200).json({
-				success: true,
-				msg: 'Athlete registered and confirmation email sent!',
-				athlete: athleteInfo,
-				token: 'JWT ' + generateToken(athleteInfo)
+					res.status(200).json({
+						success: true,
+						msg: 'Athlete registered and confirmation email sent!',
+						athlete: athleteInfo,
+						token: 'JWT ' + generateToken(athleteInfo)
+					});
+				}
 			});
 		}
-	});
+	})
 });
 
 // Get list of athletes from Organization

@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { FlashMessagesModule } from 'angular2-flash-messages';
@@ -17,7 +17,9 @@ import {
   MatCheckboxModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatSelectModule,
+  MatStepperModule
 } from '@angular/material';
 import { PapaParseModule } from 'ngx-papaparse';
 
@@ -40,6 +42,7 @@ import { AddTestTypeComponent } from './components/add-test-type/add-test-type.c
 // Services
 import { AuthService } from './services/auth.service';
 import { ValidateService } from './services/validate.service';
+import { InjuryService } from './services/injury.service';
 import { OrganizationService } from './services/organization.service';
 import { TesterService } from './services/tester.service';
 import { AthleteService } from './services/athlete.service';
@@ -90,6 +93,7 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     FlashMessagesModule.forRoot(),
     RouterModule.forRoot(appRoutes),
@@ -105,6 +109,8 @@ const appRoutes: Routes = [
     MatDatepickerModule,
     MatNativeDateModule,
     MatTooltipModule,
+    MatSelectModule,
+    MatStepperModule,
     BrowserAnimationsModule,
     PapaParseModule
   ],
@@ -116,6 +122,7 @@ const appRoutes: Routes = [
     TestTypeService,
     LoaderService,
     AthleteService,
+    InjuryService,
     ValidateService,
     AuthGuard
   ],

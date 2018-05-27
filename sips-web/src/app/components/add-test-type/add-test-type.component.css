@@ -37,3 +37,7 @@
 /deep/ .mat-form-field-label {
   color: black !important;
 }
+
+/deep/ .mat-form-field-label {
+  color: #606060 !important;
+}

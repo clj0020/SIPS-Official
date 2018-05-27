@@ -13,7 +13,9 @@ const AthleteSchema = User.discriminator('Athlete', new Schema({
 		type: Date
 	},
 	height: Number,
-	weight: Number
+	weight: Number,
+	sport: String,
+	position: String
 }));
 
 const Athlete = module.exports = mongoose.model('Athlete');
@@ -43,6 +45,8 @@ module.exports.verifyAthlete = function(newAthlete, callback) {
 				'height': newAthlete.height,
 				'weight': newAthlete.weight,
 				'status': newAthlete.status,
+				'sport': newAthlete.sport,
+				'position': newAthlete.position,
 				'password': hash
 			}, {
 				new: true

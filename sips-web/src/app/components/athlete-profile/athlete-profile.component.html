@@ -1,31 +1,49 @@
 <div class="row text-center h-100 justify-content-center align-items-center">
   <div class="col-lg-6" *ngIf="athlete">
     <h1>{{ athlete.first_name + " " + athlete.last_name }}</h1>
-    <h2>{{ athlete.email }}</h2>
-    <p>DOB: {{ formatBirthday(athlete.date_of_birth) }}</p>
-    <p>Weight: {{ athlete.weight }} lbs</p>
-    <p>Height: {{ athlete.height }} inches</p>
-    <p *ngIf="organization">Organization: {{ organization.title }}</p>
-
-    <div class="row tests-row">
-      <div class="col-lg-12 test-list-filled" *ngIf="testingData?.length > 0">
-        <!-- <p class="tests-header">Tests</p>
-        <div class="list-group tests-list-group" *ngFor="let test of testingData">
-          <button (click)="onTestingDataClick(test._id)" class="list-group-item">{{ formatDate(test.created_at) }}</button>
-        </div> -->
-        <mat-nav-list>
-          <h4 mat-header class="test-header">Tests</h4>
-          <a mat-list-item *ngFor="let test of testingData" (click)="onTestingDataClick(test._id)">
-            <mat-icon mat-list-icon>accessibility</mat-icon>
-            <p mat-line>{{ formatDate(test.created_at) }}</p>
-          </a>
-          <button mat-raised-button color="primary" class="downloadButton" (click)="onClickDownloadCSV()">Download CSV</button>
-        </mat-nav-list>
-
+    <p>{{ athlete.email }}</p>
+    <h2 *ngIf="organization">{{ organization.title }}</h2>
+    <h3>{{ athlete.position }}</h3>
+    <p>{{ formatBirthday(athlete.date_of_birth) }}</p>
+    <p>{{ athlete.height }} inches, {{ athlete.weight }} lbs</p>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="row tests-row">
+          <div class="col-lg-12 test-list-filled" *ngIf="testingData?.length > 0">
+            <mat-nav-list>
+              <h4 mat-header class="test-header">Tests</h4>
+              <a mat-list-item *ngFor="let test of testingData" (click)="onTestingDataClick(test._id)">
+                <mat-icon mat-list-icon>accessibility</mat-icon>
+                <p mat-line>{{ formatDate(test.created_at) }}</p>
+              </a>
+            </mat-nav-list>
+            <button mat-raised-button color="primary" class="downloadButton" (click)="onClickDownloadCSV()">Download CSV</button>
+          </div>
+          <div class="col-lg-12" *ngIf="!testingData?.length > 0">
+            <h4 mat-header class="test-header">Tests</h4>
+            <p>No tests performed yet..</p>
+          </div>
+        </div>
       </div>
-      <div class="col-lg-12" *ngIf="!testingData?.length > 0">
-        <h4 mat-header class="test-header">Tests</h4>
-        <p>No tests performed yet..</p>
+      <div class="col-lg-6">
+        <div class="row injuries-row">
+          <div class="col-lg-12 injury-list-filled" *ngIf="injuries?.length > 0">
+            <mat-nav-list>
+              <h4 mat-header class="injury-header">Past Injuries</h4>
+              <a mat-list-item *ngFor="let injury of injuries">
+                <mat-icon mat-list-icon>accessibility</mat-icon>
+                <h4 mat-line>{{ injury.title }}</h4>
+                <p mat-line>{{ formatDate(injury.date_occurred) }}</p>
+              </a>
+            </mat-nav-list>
+            <button mat-raised-button class="addInjuryButton" color="primary" (click)="addInjury()">Add</button>
+          </div>
+          <div class="col-lg-12" *ngIf="!injuries?.length > 0">
+            <h4 mat-header class="injury-header">Past Injuries</h4>
+            <p>Yay! You haven't been injured!</p>
+            <button mat-raised-button class="addInjuryButton" color="primary" (click)="addInjury()">Add</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

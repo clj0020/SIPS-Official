@@ -56,7 +56,8 @@ export class ValidateService {
   validateAthleteVerification(athlete) {
     if (athlete.first_name == undefined || athlete.last_name == undefined ||
       athlete.date_of_birth == undefined || athlete.height == undefined ||
-      athlete.weight == undefined || athlete.password == undefined) {
+      athlete.weight == undefined || athlete.password == undefined ||
+      athlete.sport == undefined || athlete.position == undefined) {
       return false;
     }
     else {

@@ -21,7 +21,6 @@ exports.roleAuthorization = function(roles, method) {
 			} else if (method == "getAthlete") {
 				if (foundUser.kind == 'Athlete') {
 					if (foundUser._id == req.params.id) {
-						console.log('Athlete viewing own profile.');
 						return next();
 					} else {
 						return next(err);
@@ -30,7 +29,6 @@ exports.roleAuthorization = function(roles, method) {
 			} else if (method == 'getTestDataInstance') {
 				if (foundUser.kind == 'Athlete') {
 					if (foundUser._id == req.params.athleteId) {
-						console.log('Athlete viewing own test data instance.');
 						return next();
 					} else {
 						return next(err);
@@ -39,7 +37,6 @@ exports.roleAuthorization = function(roles, method) {
 			} else if (method == 'getAthletesTestData') {
 				if (foundUser.kind == 'Athlete') {
 					if (foundUser._id == req.params.athleteId) {
-						console.log('Athlete viewing own test data list.');
 						return next();
 					} else {
 						return next(err);
@@ -47,14 +44,19 @@ exports.roleAuthorization = function(roles, method) {
 				}
 			} else if (method == 'getOrganization') {
 				if (foundUser.organization == req.params.id) {
-					console.log('User accessing their own organization.');
 					return next();
 				} else {
 					return next(err);
 				}
+			} else if (method == 'getAthleteInjuries') {
+				if (foundUser.kind == 'Athlete') {
+					if (foundUser._id == req.params.athleteId) {
+						return next();
+					} else {
+						return next(err);
+					}
+				}
 			}
-
-
 
 			res.status(401).json({
 				error: 'You are not authorized to view this content.'

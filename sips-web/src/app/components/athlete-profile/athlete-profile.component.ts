@@ -5,8 +5,10 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { AthleteService } from '../../services/athlete.service';
 import { OrganizationService } from '../../services/organization.service';
+import { InjuryService } from '../../services/injury.service';
 import { TestingDataService } from '../../services/testing-data.service';
 import { PapaParseService } from 'ngx-papaparse';
+import { Injury } from '../../classes/injury';
 import { TestData } from '../../classes/test-data';
 import { Angular5Csv } from 'angular5-csv/Angular5-csv';
 
@@ -20,10 +22,12 @@ export class AthleteProfileComponent implements OnInit {
   athlete: any;
   organization: any;
   testingData: TestData[] = [];
+  injuries: Injury[] = [];
 
   constructor(
     private authService: AuthService,
     private athleteService: AthleteService,
+    private injuryService: InjuryService,
     private organizationService: OrganizationService,
     private testingDataService: TestingDataService,
     private route: ActivatedRoute,
@@ -41,6 +45,7 @@ export class AthleteProfileComponent implements OnInit {
         this.athlete = data.athlete;
         this.loadOrganization(data.athlete.organization);
         this.loadTestingData(data.athlete._id);
+        this.loadInjuries(data.athlete._id);
       }
       else {
         this.flashMessage.show(data.msg, {
@@ -73,6 +78,21 @@ export class AthleteProfileComponent implements OnInit {
       if (data.success) {
         this.testingDataService.storeTestingData(data.testDataList);
         this.testingData = data.testDataList;
+      }
+      else {
+        this.flashMessage.show(data.msg, {
+          cssClass: 'alert-danger',
+          timeout: 5000
+        });
+      }
+    });
+  }
+
+  loadInjuries(athleteId) {
+    this.injuryService.getAthleteInjuries(athleteId).subscribe(data => {
+      if (data.success) {
+        this.injuryService.storeInjuries(data.injuries);
+        this.injuries = data.injuries;
       }
       else {
         this.flashMessage.show(data.msg, {

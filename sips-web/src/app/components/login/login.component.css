@@ -29,3 +29,8 @@ p {
 /deep/ .mat-form-field-label {
   color: #606060 !important;
 }
+
+/* 
+.mat-form-field-label, .mat-hint {
+  color: #606060 !important;
+} */

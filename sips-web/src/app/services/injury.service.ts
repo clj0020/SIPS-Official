@@ -1,21 +1,19 @@
-import { Injectable, Output, EventEmitter } from '@angular/core';
-import { Http, Headers, URLSearchParams, RequestOptions } from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http, Headers, URLSearchParams } from '@angular/http';
 import 'rxjs/add/operator/map';
-import { tokenNotExpired } from 'angular2-jwt';
 import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { Observer } from 'rxjs/Observer';
-import { Subject } from 'rxjs/Subject';
-import { User } from '../classes/user';
+import 'rxjs/Rx';
+import { tokenNotExpired } from 'angular2-jwt';
+import { Injury } from '../classes/injury';
 import { AuthService } from '../services/auth.service';
 import { LoaderService } from '../services/loader.service';
 import { environment } from '../../environments/environment';
 
 @Injectable()
-export class AthleteService {
-  authToken: string;
-  athlete: any;
-  athletes: any[];
+export class InjuryService {
+  authToken: any;
+  injury: any;
+  injuries: any[];
   environmentName = environment.envName;
   serverUrl: string;
 
@@ -32,60 +30,13 @@ export class AthleteService {
     }
   }
 
-  addAthlete(athlete) {
+  getAthleteInjuries(athleteId) {
     this.showLoader();
-
     let headers = new Headers();
     this.authToken = this.authService.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
-
-    let url = this.serverUrl + "athletes/add";
-
-    return this.http.post(url, athlete, { headers: headers }).catch(this.onCatch)
-      .do((res: Response) => {
-        this.onSuccess(res);
-      }, (error: any) => {
-        this.onError(error);
-      })
-      .finally(() => {
-        this.onEnd();
-      })
-      .map(res => res.json());
-  }
-
-  verifyAthlete(athlete) {
-    this.showLoader();
-
-    let headers = new Headers();
-    this.authToken = this.authService.loadToken();
-    headers.append('Authorization', this.authToken);
-    headers.append('Content-Type', 'application/json');
-
-    let url = this.serverUrl + "athletes/verify";
-
-    return this.http.post(url, athlete, { headers: headers }).catch(this.onCatch)
-      .do((res: Response) => {
-        this.onSuccess(res);
-      }, (error: any) => {
-        this.onError(error);
-      })
-      .finally(() => {
-        this.onEnd();
-      })
-      .map(res => res.json());
-  }
-
-  getAthletesFromOrganization(organizationId) {
-    this.showLoader();
-
-    let headers = new Headers();
-    this.authToken = this.authService.loadToken();
-    headers.append('Authorization', this.authToken);
-    headers.append('Content-Type', 'application/json');
-
-    let url = this.serverUrl + "athletes/get-athletes-from-organization";
-
+    let url = this.serverUrl + "injuries/athlete/" + athleteId;
     return this.http.get(url, { headers: headers }).catch(this.onCatch)
       .do((res: Response) => {
         this.onSuccess(res);
@@ -96,10 +47,9 @@ export class AthleteService {
         this.onEnd();
       })
       .map(res => res.json());
-
   }
 
-  getAthleteById(id) {
+  getInjuryById(id) {
     this.showLoader();
 
     let headers = new Headers();
@@ -107,7 +57,7 @@ export class AthleteService {
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
 
-    let url = this.serverUrl + 'athletes/' + id;
+    let url = this.serverUrl + 'injuries/' + id;
 
     return this.http.get(url, { headers: headers }).catch(this.onCatch)
       .do((res: Response) => {
@@ -121,8 +71,8 @@ export class AthleteService {
       .map(res => res.json());
   }
 
-  storeAthletes(athletes) {
-    this.athletes = athletes;
+  storeInjuries(injuries) {
+    this.injuries = injuries;
   }
 
   onCatch(error: any, caught: Observable<any>): Observable<any> {
@@ -148,5 +98,4 @@ export class AthleteService {
   hideLoader(): void {
     this.loaderService.hide();
   }
-
 }
