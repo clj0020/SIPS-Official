@@ -64,14 +64,14 @@
           </div>
         </form>
       </mat-step>
-      <mat-step [stepControl]="pastInjuriesFormGroup">
+      <mat-step [stepControl]="pastInjuriesFormGroup" optional>
         <form [formGroup]="pastInjuriesFormGroup">
           <ng-template matStepLabel>Past injuries</ng-template>
           <div formArrayName="injuries">
-            <div *ngFor="let injury of pastInjuriesFormGroup.controls.injuries.controls; let i=index">
+            <div *ngFor="let injury of pastInjuriesFormGroup['controls'].injuries['controls']; let i=index">
               <div>
                 <span>Injury {{i + 1}}</span>
-                <button *ngIf="pastInjuriesFormGroup.controls.injuries.controls.length > 0" mat-icon-button (click)="removeInjury(i)" style="float: right">
+                <button *ngIf="pastInjuriesFormGroup['controls'].injuries['controls'].length > 0" mat-icon-button (click)="removeInjury(i)" style="float: right">
                   <mat-icon aria-label="Delete Injury">remove</mat-icon>
                 </button>
               </div>

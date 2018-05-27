@@ -95,9 +95,7 @@ export class VerifyAthleteComponent implements OnInit {
     });
 
     this.pastInjuriesFormGroup = this._formBuilder.group({
-      injuries: this._formBuilder.array([
-
-      ])
+      injuries: this._formBuilder.array([])
     });
 
     this.passwordFormGroup = this._formBuilder.group({

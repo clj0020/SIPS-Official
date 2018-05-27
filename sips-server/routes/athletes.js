@@ -165,32 +165,52 @@ router.post('/verify', function(req, res) {
 		newInjuries.push(newInjury);
 	}
 
-	Injury.collection.insert(newInjuries, (err, injuries) => {
-		if (err) {
-			res.status(401).json({
-				success: false,
-				msg: 'Failed to add injuries! Error:' + err.message
-			});
-		} else {
-			Athlete.verifyAthlete(athlete, (err, newAthlete) => {
-				if (err) {
-					res.status(401).json({
-						success: false,
-						msg: 'Failed to verify athlete! Error:' + err.message
-					});
-				} else {
-					let athleteInfo = setAthleteInfo(newAthlete);
+	if (!newInjuries.size == 0) {
+		Injury.collection.insert(newInjuries, (err, injuries) => {
+			if (err) {
+				res.status(401).json({
+					success: false,
+					msg: 'Failed to add injuries! Error:' + err.message
+				});
+			} else {
+				Athlete.verifyAthlete(athlete, (err, newAthlete) => {
+					if (err) {
+						res.status(401).json({
+							success: false,
+							msg: 'Failed to verify athlete! Error:' + err.message
+						});
+					} else {
+						let athleteInfo = setAthleteInfo(newAthlete);
 
-					res.status(200).json({
-						success: true,
-						msg: 'Athlete registered and confirmation email sent!',
-						athlete: athleteInfo,
-						token: 'JWT ' + generateToken(athleteInfo)
-					});
-				}
-			});
-		}
-	})
+						res.status(200).json({
+							success: true,
+							msg: 'Athlete registered and confirmation email sent!',
+							athlete: athleteInfo,
+							token: 'JWT ' + generateToken(athleteInfo)
+						});
+					}
+				});
+			}
+		});
+	} else {
+		Athlete.verifyAthlete(athlete, (err, newAthlete) => {
+			if (err) {
+				res.status(401).json({
+					success: false,
+					msg: 'Failed to verify athlete! Error:' + err.message
+				});
+			} else {
+				let athleteInfo = setAthleteInfo(newAthlete);
+
+				res.status(200).json({
+					success: true,
+					msg: 'Athlete registered and confirmation email sent!',
+					athlete: athleteInfo,
+					token: 'JWT ' + generateToken(athleteInfo)
+				});
+			}
+		});
+	}
 });
 
 // Get list of athletes from Organization
