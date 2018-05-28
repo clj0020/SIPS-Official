@@ -22,7 +22,6 @@ import {
   MatSelectModule,
   MatStepperModule
 } from '@angular/material';
-import { PapaParseModule } from 'ngx-papaparse';
 
 // Components
 import { AppComponent } from './app.component';
@@ -117,7 +116,6 @@ const appRoutes: Routes = [
     MatSelectModule,
     MatStepperModule,
     BrowserAnimationsModule,
-    PapaParseModule,
     AngularFontAwesomeModule
   ],
   providers: [

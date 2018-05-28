@@ -7,7 +7,6 @@ import { AthleteService } from '../../services/athlete.service';
 import { OrganizationService } from '../../services/organization.service';
 import { InjuryService } from '../../services/injury.service';
 import { TestingDataService } from '../../services/testing-data.service';
-import { PapaParseService } from 'ngx-papaparse';
 import { Injury } from '../../classes/injury';
 import { TestData } from '../../classes/test-data';
 import { Angular5Csv } from 'angular5-csv/Angular5-csv';
@@ -32,8 +31,7 @@ export class AthleteProfileComponent implements OnInit {
     private testingDataService: TestingDataService,
     private route: ActivatedRoute,
     private router: Router,
-    private flashMessage: FlashMessagesService,
-    private papa: PapaParseService
+    private flashMessage: FlashMessagesService
   ) { }
 
   ngOnInit() {

@@ -7,21 +7,35 @@ skip_files:
 
 handlers:
 # Routing for bundles to serve directly
-- url: /((?:inline|main|polyfills|styles|vendor)\.[a-z0-9]+\.bundle\.js)
+- url: /((?:runtime|main|polyfills|styles|vendor)\.[a-z0-9]+\.js)
+  secure: always
+  redirect_http_response_code: 301
+  static_files: dist/\1
+  upload: dist/.*
+
+# Routing for bundle maps to serve directly
+- url: /((?:runtime|main|polyfills|styles|vendor)\.[a-z0-9]+\.js\.map)
   secure: always
   redirect_http_response_code: 301
   static_files: dist/\1
   upload: dist/.*
 
 # Routing for a prod styles.bundle.css to serve directly
-- url: /(styles\.[a-z0-9]+\.bundle\.css)
+- url: /(styles\.[a-z0-9]+\.css)
   secure: always
   redirect_http_response_code: 301
   static_files: dist/\1
   upload: dist/.*
 
-# Routing for typedoc, assets and favicon.ico to serve directly
+# Routing for typedoc, assets, and favicon.ico to serve directly
 - url: /((?:assets|docs)/.*|favicon\.ico)
+  secure: always
+  redirect_http_response_code: 301
+  static_files: dist/\1
+  upload: dist/.*
+
+# Routing for service worker files serve directly
+- url: /(manifest\.json|ngsw\.json|ngsw-worker\.js|safety-worker\.js|worker-basic\.min\.js|ngsw_worker\.es6\.js\.map)
   secure: always
   redirect_http_response_code: 301
   static_files: dist/\1

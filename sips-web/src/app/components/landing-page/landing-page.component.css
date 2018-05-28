@@ -1,7 +1,9 @@
 header.masthead {
   position: relative;
   background-color: #343a40;
-  background: url("../../../assets/img/bg-masthead.png") no-repeat center center;
+  background-repeat: no-repeat;
+  background-position: center center;
+  /* background: url("../../../assets/img/bg-masthead.png") no-repeat center center; */
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -89,7 +91,9 @@ header.masthead h1 {
 .call-to-action {
   position: relative;
   background-color: #343a40;
-  background: url("../../../assets/img/bg-masthead.png") no-repeat center center;
+  background-repeat: no-repeat;
+  background-position: center center;
+  /* background: url("../../../assets/img/bg-masthead.png") no-repeat center center; */
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
