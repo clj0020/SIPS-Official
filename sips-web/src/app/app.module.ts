@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FlashMessagesModule } from 'angular2-flash-messages';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ChartsModule } from 'ng2-charts';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatProgressSpinnerModule,
@@ -38,6 +39,8 @@ import { AthleteProfileComponent } from './components/athlete-profile/athlete-pr
 import { TestDataComponent } from './components/testdata/testdata.component';
 import { LoaderComponent } from './components/loader/loader.component';
 import { AddTestTypeComponent } from './components/add-test-type/add-test-type.component';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 // Services
 import { AuthService } from './services/auth.service';
@@ -53,9 +56,9 @@ import { TestTypeService } from './services/test-type.service';
 // Guards
 import { AuthGuard } from './guards/auth.guard';
 
-
 const appRoutes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: '', component: HomeComponent },
+  { path: 'landing', component: LandingPageComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'admin/register', component: AdminRegisterComponent },
   { path: 'admin/add-organization', component: AddOrganizationComponent },
@@ -88,7 +91,9 @@ const appRoutes: Routes = [
     AthleteProfileComponent,
     TestDataComponent,
     LoaderComponent,
-    AddTestTypeComponent
+    AddTestTypeComponent,
+    LandingPageComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
@@ -112,7 +117,8 @@ const appRoutes: Routes = [
     MatSelectModule,
     MatStepperModule,
     BrowserAnimationsModule,
-    PapaParseModule
+    PapaParseModule,
+    AngularFontAwesomeModule
   ],
   providers: [
     AuthService,

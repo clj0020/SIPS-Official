@@ -22,28 +22,14 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private flashMessage: FlashMessagesService
   ) {
-    this.user = authService.loadUser();
 
-    if (this.user.kind == "Admin") {
-      console.log("Admin User found in HomeConstructor");
-      console.log(this.user.organization);
-
-      if (this.user.organization !== undefined) {
-        this.router.navigate(['/admin/organization', this.user.organization._id]);
-      }
-      else {
-        this.router.navigate(['/admin/add-organization']);
-      }
-    }
-  }
-
-  ngOnInit() {
-    this.authService.userEmitter.subscribe(user => {
-      this.user = user;
+    if (authService.loggedIn()) {
+      this.user = authService.loadUser();
 
       if (this.user.kind == "Admin") {
-        console.log("Admin User found in HomeEmitter..");
+        console.log("Admin User found in HomeConstructor");
         console.log(this.user.organization);
+
         if (this.user.organization !== undefined) {
           this.router.navigate(['/admin/organization', this.user.organization._id]);
         }
@@ -51,8 +37,40 @@ export class HomeComponent implements OnInit {
           this.router.navigate(['/admin/add-organization']);
         }
       }
+    }
+    else {
+      this.router.navigate(['/landing']);
+    }
+  }
 
-    });
+  ngOnInit() {
+    if (this.authService.loggedIn()) {
+      this.authService.userEmitter.subscribe(user => {
+        this.user = user;
+
+        if (this.user.kind == "Admin") {
+          console.log("Admin User found in HomeEmitter..");
+          console.log(this.user.organization);
+          if (this.user.organization !== undefined) {
+            this.router.navigate(['/admin/organization', this.user.organization._id]);
+          }
+          else {
+            this.router.navigate(['/admin/add-organization']);
+          }
+        }
+
+      });
+    }
+  }
+
+  areNullOrUndefined(arr) {
+    for (var i = 0; i < arr.length; i++) {
+      var itm = arr[i];
+      if (itm === null || itm === undefined) {
+        return true;
+      }
+    }
+    return false;
   }
 
 
