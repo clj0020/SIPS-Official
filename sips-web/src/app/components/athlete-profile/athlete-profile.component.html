@@ -1,11 +1,20 @@
+<button mat-icon-button class="delete-athlete-btn" (click)="openDeleteAthleteDialog()" *ngIf="user.kind == 'Admin'">
+    <mat-icon class="delete-athlete-icon" aria-label="Delete Athlete">delete</mat-icon>
+</button>
 <div class="row text-center h-100 justify-content-center align-items-center">
   <div class="col-lg-6" *ngIf="athlete">
-    <h1>{{ athlete.first_name + " " + athlete.last_name }}</h1>
-    <p>{{ athlete.email }}</p>
-    <h2 *ngIf="organization">{{ organization.title }}</h2>
-    <h3>{{ athlete.position }}</h3>
-    <p>{{ formatBirthday(athlete.date_of_birth) }}</p>
-    <p>{{ athlete.height }} inches, {{ athlete.weight }} lbs</p>
+    <div *ngIf="athlete.status == 'Verified'">
+      <h1>{{ athlete.first_name + " " + athlete.last_name }}</h1>
+      <p>{{ athlete.email }}</p>
+      <h2 *ngIf="organization">{{ organization.title }}</h2>
+      <h3>{{ athlete.position }}</h3>
+      <p>{{ formatBirthday(athlete.date_of_birth) }}</p>
+      <p>{{ athlete.height }} inches, {{ athlete.weight }} lbs</p>
+    </div>
+    <div *ngIf="athlete.status != 'Verified'">
+      <h1>{{ athlete.email }}</h1>
+      <h2 *ngIf="organization">{{ organization.title }}</h2>
+    </div>
     <div class="row">
       <div class="col-lg-6">
         <div class="row tests-row">

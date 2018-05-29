@@ -44,10 +44,6 @@ export class OrganizationAdminComponent implements OnInit {
   ngOnInit() {
     this.organizationId = this.route.snapshot.paramMap.get('organizationId');
     this.loadOrganization(this.organizationId);
-    // this.loadAthletes(this.organization._id);
-    // this.loadTesters(this.organization._id);
-
-    console.log("Admin Panel");
   }
 
   onTesterAdded() {
@@ -153,6 +149,11 @@ export class OrganizationAdminComponent implements OnInit {
 
   onAthleteClick(id) {
     this.router.navigate(['/athletes/athlete', id]);
+    return false;
+  }
+
+  onTesterClick(id) {
+    this.router.navigate(['testers/tester', id]);
     return false;
   }
 

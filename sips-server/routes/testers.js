@@ -163,40 +163,39 @@ router.post('/verify', function(req, res) {
 			});
 		}
 	});
+});
 
+// Get a single tester
+router.get('/tester/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'getTester'), (req, res, next) => {
+	const id = req.params.id;
 
-	//
-	// return jwt.sign(user, config.secret, {
-	// 	expiresIn: 10080
-	// });
-	//
-	//
-	// if ((req.protocol + "://" + req.get('host')) == ("http://" + host)) {
-	// 	console.log("Domain is matched. Information is from Authentic email");
-	// 	if (req.query.id == rand) {
-	// 		res.end("<h1>" + mailOptions.to + " has been successfully verified! You are now a tester!");
-	// 	} else {
-	// 		res.end("<h1>Bad Request</h1>");
-	// 	}
-	// } else {
-	// 	res.end("<h1>Request is from unknown source");
-	// }
+	Tester.getTesterById(id, (err, tester) => {
+		if (err) {
+			res.json({
+				success: false,
+				msg: 'Failed to find tester.'
+			});
+		} else {
+			res.json({
+				success: true,
+				msg: 'Successfully found tester.',
+				tester: tester
+			});
+		}
+	});
 });
 
 // Get list of testers from Organization
 router.get('/organization', requireAuth, auth.roleAuthorization(['Admin'], 'getTestersFromOrganization'), (req, res, next) => {
 	let organizationId = req.user.organization;
 
-	// Call the getTestersFromOrganization method of Tester model.
 	Tester.getTestersFromOrganization(organizationId, (err, testers) => {
-		// If theres an error, success will be false
 		if (err) {
 			return res.json({
 				success: false,
 				msg: 'Failed to retrieve testers: ' + err
 			});
 		} else {
-			// Success! Send back testers
 			res.status(200).json({
 				success: true,
 				msg: 'Got your testers.',
@@ -205,6 +204,25 @@ router.get('/organization', requireAuth, auth.roleAuthorization(['Admin'], 'getT
 		}
 	});
 });
+
+router.delete('/:id', requireAuth, auth.roleAuthorization(['Admin'], 'deleteTester'), (req, res, next) => {
+	const id = req.params.id;
+
+	Tester.deleteTesterById(id, (err) => {
+		if (err) {
+			res.json({
+				success: false,
+				msg: 'Failed to delete tester.'
+			});
+		} else {
+			res.json({
+				success: true,
+				msg: 'Successfully deleted tester.'
+			});
+		}
+	});
+});
+
 
 
 module.exports = router;

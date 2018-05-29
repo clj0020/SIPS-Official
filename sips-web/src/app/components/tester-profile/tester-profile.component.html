@@ -1,0 +1,8 @@
+<button mat-icon-button class="delete-tester-btn" (click)="openDeleteTesterDialog()" *ngIf="user.kind == 'Admin'">
+    <mat-icon class="delete-tester-icon" aria-label="Delete Tester">delete</mat-icon>
+</button>
+<div class="row text-center h-100 justify-content-center align-items-center">
+  <div class="col-lg-6" *ngIf="tester">
+    <h1>{{ tester.email }}</h1>
+  </div>
+</div>

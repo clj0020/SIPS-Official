@@ -10,6 +10,8 @@ import { TestingDataService } from '../../services/testing-data.service';
 import { Injury } from '../../classes/injury';
 import { TestData } from '../../classes/test-data';
 import { Angular5Csv } from 'angular5-csv/Angular5-csv';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 
 @Component({
@@ -18,10 +20,13 @@ import { Angular5Csv } from 'angular5-csv/Angular5-csv';
   styleUrls: ['./athlete-profile.component.css']
 })
 export class AthleteProfileComponent implements OnInit {
+  user: any;
   athlete: any;
   organization: any;
   testingData: TestData[] = [];
   injuries: Injury[] = [];
+
+  dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
   constructor(
     private authService: AuthService,
@@ -31,13 +36,15 @@ export class AthleteProfileComponent implements OnInit {
     private testingDataService: TestingDataService,
     private route: ActivatedRoute,
     private router: Router,
-    private flashMessage: FlashMessagesService
-  ) { }
+    private flashMessage: FlashMessagesService,
+    private dialog: MatDialog
+  ) {
+    this.user = this.authService.loadUser();
+  }
 
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get('id');
 
-    // this.athlete = this.authService.loadUser();
     this.athleteService.getAthleteById(id).subscribe(data => {
       if (data.success) {
         this.athlete = data.athlete;
@@ -62,7 +69,6 @@ export class AthleteProfileComponent implements OnInit {
         this.organization = data.organization;
       }
       else {
-        console.log(data)
         this.flashMessage.show(data.msg, {
           cssClass: 'alert-danger',
           timeout: 5000
@@ -104,6 +110,35 @@ export class AthleteProfileComponent implements OnInit {
   onTestingDataClick(testDataId) {
     this.router.navigate(['/tests/athlete', this.athlete._id, testDataId]);
     return false;
+  }
+
+  openDeleteAthleteDialog() {
+    this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      disableClose: false
+    });
+    this.dialogRef.componentInstance.confirmMessage = "Are you sure you want to delete?"
+
+    this.dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.athleteService.deleteAthlete(this.athlete._id).subscribe(data => {
+          if (data.success) {
+            this.flashMessage.show(data.msg, {
+              cssClass: 'alert-success',
+              timeout: 5000
+            });
+
+            this.router.navigate(['/']);
+          }
+          else {
+            this.flashMessage.show(data.msg, {
+              cssClass: 'alert-danger',
+              timeout: 5000
+            });
+          }
+        });
+      }
+      this.dialogRef = null;
+    });
   }
 
   formatDate(created_at): string {
@@ -174,5 +209,4 @@ export class AthleteProfileComponent implements OnInit {
 
     new Angular5Csv(data, csv_title, options);
   }
-
 }

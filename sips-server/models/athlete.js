@@ -65,3 +65,9 @@ module.exports.getAthletesFromOrganization = function(organizationId, callback) 
 		.select('-password')
 		.exec(callback);
 }
+
+module.exports.deleteAthleteById = function(athleteId, callback) {
+	Athlete.findByIdAndRemove({
+		'_id': athleteId
+	}, callback);
+}

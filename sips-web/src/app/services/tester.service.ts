@@ -53,6 +53,28 @@ export class TesterService {
       .map(res => res.json());
   }
 
+  deleteTester(testerId) {
+    this.showLoader();
+
+    let headers = new Headers();
+    this.authToken = this.authService.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type', 'application/json');
+
+    let url = this.serverUrl + "testers/" + testerId;
+
+    return this.http.delete(url, { headers: headers }).catch(this.onCatch)
+      .do((res: Response) => {
+        this.onSuccess(res);
+      }, (error: any) => {
+        this.onError(error);
+      })
+      .finally(() => {
+        this.onEnd();
+      })
+      .map(res => res.json());
+  }
+
   verifyTester(tester) {
     this.showLoader();
 
@@ -73,8 +95,34 @@ export class TesterService {
       .map(res => res.json());
   }
 
+  getTesterById(id) {
+    this.showLoader();
+    console.log("Getting tester");
+
+    let headers = new Headers();
+    this.authToken = this.authService.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type', 'application/json');
+
+    let url = this.serverUrl + 'testers/tester/' + id;
+
+    return this.http.get(url, { headers: headers }).catch(this.onCatch)
+      .do((res: Response) => {
+        this.onSuccess(res);
+      }, (error: any) => {
+        this.onError(error);
+      })
+      .finally(() => {
+        this.onEnd();
+      })
+      .map(res => res.json());
+  }
+
+
   getTestersFromOrganization(organizationId) {
     this.showLoader();
+
+    console.log("Getting testers from org");
 
     let headers = new Headers();
     this.authToken = this.authService.loadToken();

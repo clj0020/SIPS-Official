@@ -20,7 +20,8 @@ import {
   MatNativeDateModule,
   MatTooltipModule,
   MatSelectModule,
-  MatStepperModule
+  MatStepperModule,
+  MatDialogModule
 } from '@angular/material';
 
 // Components
@@ -40,6 +41,8 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { AddTestTypeComponent } from './components/add-test-type/add-test-type.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { TesterProfileComponent } from './components/tester-profile/tester-profile.component';
 
 // Services
 import { AuthService } from './services/auth.service';
@@ -55,6 +58,8 @@ import { TestTypeService } from './services/test-type.service';
 // Guards
 import { AuthGuard } from './guards/auth.guard';
 
+
+
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'landing', component: LandingPageComponent },
@@ -65,13 +70,10 @@ const appRoutes: Routes = [
   { path: 'testers/verify', component: VerifyTesterComponent },
   { path: 'athletes/verify', component: VerifyAthleteComponent },
   { path: 'athletes/athlete/:id', component: AthleteProfileComponent },
+  { path: 'testers/tester/:id', component: TesterProfileComponent },
   { path: 'login', component: LoginComponent },
   { path: 'tests/athlete/:athleteId/:id', component: TestDataComponent },
   { path: 'organization/testTypes/add', component: AddTestTypeComponent },
-  // {path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
-  // {path: 'profile', component: ProfileComponent, canActivate:[AuthGuard]},
-  // {path: 'users', component: UserListComponent},
-  // {path: 'users/:username', component: UserProfileComponent}
 ]
 
 
@@ -92,7 +94,9 @@ const appRoutes: Routes = [
     LoaderComponent,
     AddTestTypeComponent,
     LandingPageComponent,
-    FooterComponent
+    FooterComponent,
+    ConfirmationDialogComponent,
+    TesterProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -115,6 +119,7 @@ const appRoutes: Routes = [
     MatTooltipModule,
     MatSelectModule,
     MatStepperModule,
+    MatDialogModule,
     BrowserAnimationsModule,
     AngularFontAwesomeModule
   ],
@@ -130,6 +135,7 @@ const appRoutes: Routes = [
     ValidateService,
     AuthGuard
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ConfirmationDialogComponent]
 })
 export class AppModule { }

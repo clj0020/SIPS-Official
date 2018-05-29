@@ -9,6 +9,12 @@ const TesterSchema = User.discriminator('Tester', new Schema({
 
 const Tester = module.exports = mongoose.model('Tester');
 
+module.exports.getTesterById = function(id, callback) {
+	Tester.findOne({
+		'_id': id
+	}, callback);
+};
+
 module.exports.addUser = function(newUser, callback) {
 	newUser.save(callback);
 };
@@ -44,4 +50,10 @@ module.exports.getTestersFromOrganization = function(organizationId, callback) {
 			'createdAt': -1
 		})
 		.exec(callback);
+}
+
+module.exports.deleteTesterById = function(testerId, callback) {
+	Tester.findByIdAndRemove({
+		'_id': testerId
+	}, callback);
 }

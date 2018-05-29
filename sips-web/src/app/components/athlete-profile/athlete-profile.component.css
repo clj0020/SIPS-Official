@@ -13,11 +13,6 @@ h2 {
   margin-bottom: 0.7em;
 }
 
-.tests-row {
-  /* border-style: solid;
-  border-width: 1px; */
-}
-
 .test-list-filled {
   padding-bottom: 1em;
 }
@@ -42,3 +37,22 @@ h2 {
 .mat-nav-list {
   margin-bottom: 2em;
 }
+
+.delete-athlete-btn {
+  margin: 1em;
+  position: relative;
+  width: 3.5em;
+  height: 3.5em;
+  float: right;
+}
+
+.delete-athlete-icon {
+  font-size: 3em !important;
+  position: absolute;
+  top: 0.3em;
+  left: 0.1em;
+}
+
+/* ::ng-deep .mat-icon {
+  font-size: 3em !important;
+} */

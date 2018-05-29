@@ -58,8 +58,6 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'ad
 		status: 'Unverified'
 	});
 
-	console.log("Add Athlete");
-
 	Athlete.findOne({
 		email: req.body.email
 	}, (err, existingAthlete) => {
@@ -256,7 +254,24 @@ router.get('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'get
 			});
 		}
 	});
+});
 
+router.delete('/:id', requireAuth, auth.roleAuthorization(['Admin'], 'deleteAthlete'), (req, res, next) => {
+	const id = req.params.id;
+
+	Athlete.deleteAthleteById(id, (err) => {
+		if (err) {
+			res.json({
+				success: false,
+				msg: 'Failed to delete athlete.'
+			});
+		} else {
+			res.json({
+				success: true,
+				msg: 'Successfully deleted athlete.'
+			});
+		}
+	});
 });
 
 
