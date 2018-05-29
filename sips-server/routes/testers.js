@@ -165,6 +165,68 @@ router.post('/verify', function(req, res) {
 	});
 });
 
+router.get('/resend-verification/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'resendTesterVerification'), (req, res, next) => {
+	let id = req.params.id;
+
+	console.log("Resending verification email to tester " + id);
+
+	Tester.getTesterById(id, (err, tester) => {
+		if (err) {
+			res.json({
+				success: false,
+				msg: 'Failed to find tester.'
+			});
+		} else {
+			testerInfo = setUnVerifiedTesterInfo(tester);
+			let token = generateToken(testerInfo);
+			// Send Email
+			host = req.get('host');
+			link = config.WebHost + "/testers/verify?token=" + token;
+
+			const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || config.SENDGRID_API_KEY;
+			sendGridMail.setApiKey(SENDGRID_API_KEY);
+			const msg = {
+				to: testerInfo.email,
+				from: "clj0020@gmail.com",
+				subject: 'Your invitation from the SIPS application has been resent.',
+				html: "<h3>Hello from SIPS!</h5><br> <h5>You've been added as tester for the " + req.user.organization.title + " organization on the Sports Injury Prevention screening app! Please verify your email.</h5><br><a href=" + link + ">Click here to verify</a>"
+			};
+			sendGridMail.send(msg, (error, result) => {
+				if (error) {
+					//Log friendly error
+					console.error(error.toString());
+
+					//Extract error msg
+					const {
+						message,
+						code,
+						response
+					} = error;
+
+					//Extract response msg
+					const {
+						headers,
+						body
+					} = response;
+
+					res.status(201).json({
+						success: false,
+						msg: 'Failed to send tester email! Error:' + error.toString()
+					});
+				} else {
+					res.status(200).json({
+						success: true,
+						msg: 'Tester confirmation email resent!',
+						tester: testerInfo
+					});
+				}
+			});
+		}
+	})
+
+});
+
+
 // Get a single tester
 router.get('/tester/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'getTester'), (req, res, next) => {
 	const id = req.params.id;

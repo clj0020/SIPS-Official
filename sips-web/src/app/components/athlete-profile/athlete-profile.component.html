@@ -1,6 +1,17 @@
-<button mat-icon-button class="delete-athlete-btn" (click)="openDeleteAthleteDialog()" *ngIf="user.kind == 'Admin'">
-    <mat-icon class="delete-athlete-icon" aria-label="Delete Athlete">delete</mat-icon>
+<div class="row text-center h-100 justify-content-center align-items-center" *ngIf="athlete.status != 'Verified'">
+  <div class="col-12">
+    <button mat-icon-button class="resend-verification-btn" (click)="openResendConfirmationEmailDialog()" matTooltip="Click to resend email." tooltip-position='above' aria-hidden="true" data-toggle="tooltip" title="Click to resend email.">
+  <mat-icon class="unverified-icon" >warning</mat-icon>
 </button>
+  </div>
+</div>
+<div class="row text-center h-100 justify-content-center align-items-center">
+  <div class="col-2 offset-10" *ngIf="athlete">
+    <button *ngIf="user.kind == 'Admin'" (click)="openDeleteAthleteDialog()" mat-icon-button class="delete-athlete-btn" matTooltip="Delete Athlete" tooltip-position='above' aria-hidden="true" data-toggle="tooltip" title="Delete Athlete">
+      <mat-icon class="delete-athlete-icon" aria-label="Delete Athlete">delete</mat-icon>
+    </button>
+  </div>
+</div>
 <div class="row text-center h-100 justify-content-center align-items-center">
   <div class="col-lg-6" *ngIf="athlete">
     <div *ngIf="athlete.status == 'Verified'">
@@ -12,7 +23,9 @@
       <p>{{ athlete.height }} inches, {{ athlete.weight }} lbs</p>
     </div>
     <div *ngIf="athlete.status != 'Verified'">
+
       <h1>{{ athlete.email }}</h1>
+      <!-- <a (click)="onResendConfirmationEmailClick()" class="text-muted" matTooltip="Click to resend email." tooltip-position='above' aria-hidden="true" data-toggle="tooltip" title="Click to resend email." href="javascript:void(0)">(Unverified)</a> -->
       <h2 *ngIf="organization">{{ organization.title }}</h2>
     </div>
     <div class="row">
@@ -20,7 +33,7 @@
         <div class="row tests-row">
           <div class="col-lg-12 test-list-filled" *ngIf="testingData?.length > 0">
             <mat-nav-list>
-              <h4 mat-header class="test-header">Tests</h4>
+              <h2 mat-header class="list-header">Tests</h2>
               <a mat-list-item *ngFor="let test of testingData" (click)="onTestingDataClick(test._id)">
                 <mat-icon mat-list-icon>accessibility</mat-icon>
                 <p mat-line>{{ formatDate(test.created_at) }}</p>
@@ -29,7 +42,7 @@
             <button mat-raised-button color="primary" class="downloadButton" (click)="onClickDownloadCSV()">Download CSV</button>
           </div>
           <div class="col-lg-12" *ngIf="!testingData?.length > 0">
-            <h4 mat-header class="test-header">Tests</h4>
+            <h2 mat-header class="list-header">Tests</h2>
             <p>No tests performed yet..</p>
           </div>
         </div>
@@ -38,7 +51,7 @@
         <div class="row injuries-row">
           <div class="col-lg-12 injury-list-filled" *ngIf="injuries?.length > 0">
             <mat-nav-list>
-              <h4 mat-header class="injury-header">Past Injuries</h4>
+              <h2 mat-header class="list-header">Past Injuries</h2>
               <a mat-list-item *ngFor="let injury of injuries">
                 <mat-icon mat-list-icon>accessibility</mat-icon>
                 <h4 mat-line>{{ injury.title }}</h4>
@@ -48,8 +61,8 @@
             <button mat-raised-button class="addInjuryButton" color="primary" (click)="addInjury()">Add</button>
           </div>
           <div class="col-lg-12" *ngIf="!injuries?.length > 0">
-            <h4 mat-header class="injury-header">Past Injuries</h4>
-            <p>Yay! You haven't been injured!</p>
+            <h2 mat-header class="list-header">Past Injuries</h2>
+            <p>Yay! No injuries!</p>
             <button mat-raised-button class="addInjuryButton" color="primary" (click)="addInjury()">Add</button>
           </div>
         </div>

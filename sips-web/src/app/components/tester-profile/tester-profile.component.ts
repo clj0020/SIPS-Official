@@ -45,6 +45,34 @@ export class TesterProfileComponent implements OnInit {
     });
   }
 
+  openResendConfirmationEmailDialog() {
+    this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      disableClose: false
+    });
+    this.dialogRef.componentInstance.confirmMessage = "Resend confirmation email?"
+
+    this.dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.testerService.resendTesterVerificationEmail(this.tester._id).subscribe(data => {
+          if (data.success) {
+            this.flashMessage.show(data.msg, {
+              cssClass: 'alert-success',
+              timeout: 5000
+            });
+          }
+          else {
+            this.flashMessage.show(data.msg, {
+              cssClass: 'alert-danger',
+              timeout: 5000
+            });
+          }
+        });
+      }
+      this.dialogRef = null;
+    });
+  }
+
+
   openDeleteTesterDialog() {
     this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       disableClose: false

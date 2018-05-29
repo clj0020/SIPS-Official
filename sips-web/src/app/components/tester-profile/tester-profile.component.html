@@ -1,8 +1,22 @@
-<button mat-icon-button class="delete-tester-btn" (click)="openDeleteTesterDialog()" *ngIf="user.kind == 'Admin'">
-    <mat-icon class="delete-tester-icon" aria-label="Delete Tester">delete</mat-icon>
-</button>
+<div class="row text-center h-100 justify-content-center align-items-center" *ngIf="tester && tester.status != 'Verified'">
+  <div class="col-12">
+    <button mat-icon-button class="resend-verification-btn" (click)="openResendConfirmationEmailDialog()" matTooltip="Click to resend email." tooltip-position='above' aria-hidden="true" data-toggle="tooltip" title="Click to resend email.">
+      <mat-icon class="unverified-icon" >warning</mat-icon>
+    </button>
+  </div>
+</div>
 <div class="row text-center h-100 justify-content-center align-items-center">
-  <div class="col-lg-6" *ngIf="tester">
-    <h1>{{ tester.email }}</h1>
+  <div class="col-2 offset-10" *ngIf="tester">
+    <button *ngIf="user.kind == 'Admin'" (click)="openDeleteTesterDialog()" mat-icon-button class="delete-tester-btn" matTooltip="Delete Tester" tooltip-position='above' aria-hidden="true" data-toggle="tooltip" title="Delete Tester">
+        <mat-icon class="delete-tester-icon" aria-label="Delete Tester">delete</mat-icon>
+    </button>
+  </div>
+</div>
+<div class="row text-center h-100 justify-content-center align-items-center">
+  <div class="col-lg-6 col-10" *ngIf="tester">
+    <h1>
+      {{ tester.email }}
+      <small class="text-muted">(Tester)</small>
+    </h1>
   </div>
 </div>

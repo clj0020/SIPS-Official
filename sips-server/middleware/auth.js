@@ -56,6 +56,13 @@ exports.roleAuthorization = function(roles, method) {
 						return next(err);
 					}
 				}
+			} else if (method == 'resendAthleteVerification') {
+				console.log("Resend verification auth check.");
+				if (foundUser.kind == 'Admin') {
+					return next();
+				} else {
+					return next(err);
+				}
 			}
 
 			res.status(401).json({

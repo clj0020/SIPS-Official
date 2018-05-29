@@ -107,11 +107,6 @@ export class AthleteProfileComponent implements OnInit {
     });
   }
 
-  onTestingDataClick(testDataId) {
-    this.router.navigate(['/tests/athlete', this.athlete._id, testDataId]);
-    return false;
-  }
-
   openDeleteAthleteDialog() {
     this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       disableClose: false
@@ -141,20 +136,35 @@ export class AthleteProfileComponent implements OnInit {
     });
   }
 
-  formatDate(created_at): string {
-    // return ISODate(created_at).toLocaleTimeString();
-    // moment(created_at, "YYYY-MM-DD HH:mm:ss.")
-    return moment(created_at).format('MM/DD/YYYY [at] hh:mmA');
-  }
+  openResendConfirmationEmailDialog() {
+    this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      disableClose: false
+    });
+    this.dialogRef.componentInstance.confirmMessage = "Resend confirmation email?"
 
-  formatBirthday(birthdayDate): string {
-    return moment(birthdayDate).format('MMMM Do, YYYY');
+    this.dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.athleteService.resendAthleteVerificationEmail(this.athlete._id).subscribe(data => {
+          if (data.success) {
+            this.flashMessage.show(data.msg, {
+              cssClass: 'alert-success',
+              timeout: 5000
+            });
+          }
+          else {
+            this.flashMessage.show(data.msg, {
+              cssClass: 'alert-danger',
+              timeout: 5000
+            });
+          }
+        });
+      }
+      this.dialogRef = null;
+    });
   }
 
   onClickDownloadCSV() {
-
     var data = [];
-
     for (var i = 0; i < this.testingData.length; i++) {
       for (var j = 0; j < this.testingData[i].accelerometer_data.length; j++) {
         data.push({
@@ -193,7 +203,6 @@ export class AthleteProfileComponent implements OnInit {
         });
       }
     }
-
     let options = {
       fieldSeparator: ',',
       quoteStrings: '"',
@@ -204,9 +213,20 @@ export class AthleteProfileComponent implements OnInit {
       noDownload: false,
       headers: ["created_at", "sensor_type", "test_id", "athlete_id", "time", "x", "y", "z"]
     };
-
     let csv_title = 'athlete_' + this.athlete._id + "_testing_data"
-
     new Angular5Csv(data, csv_title, options);
+  }
+
+  onTestingDataClick(testDataId) {
+    this.router.navigate(['/tests/athlete', this.athlete._id, testDataId]);
+    return false;
+  }
+
+  formatDate(created_at): string {
+    return moment(created_at).format('MM/DD/YYYY [at] hh:mmA');
+  }
+
+  formatBirthday(birthdayDate): string {
+    return moment(birthdayDate).format('MMMM Do, YYYY');
   }
 }

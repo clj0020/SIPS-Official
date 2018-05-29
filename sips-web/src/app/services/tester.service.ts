@@ -95,6 +95,28 @@ export class TesterService {
       .map(res => res.json());
   }
 
+  resendTesterVerificationEmail(testerId) {
+    this.showLoader();
+
+    let headers = new Headers();
+    this.authToken = this.authService.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type', 'application/json');
+
+    let url = this.serverUrl + "testers/resend-verification/" + testerId;
+
+    return this.http.get(url, { headers: headers }).catch(this.onCatch)
+      .do((res: Response) => {
+        this.onSuccess(res);
+      }, (error: any) => {
+        this.onError(error);
+      })
+      .finally(() => {
+        this.onEnd();
+      })
+      .map(res => res.json());
+  }
+
   getTesterById(id) {
     this.showLoader();
     console.log("Getting tester");
