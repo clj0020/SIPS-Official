@@ -7,6 +7,7 @@ import { AthleteService } from '../../services/athlete.service';
 import { OrganizationService } from '../../services/organization.service';
 import { InjuryService } from '../../services/injury.service';
 import { TestingDataService } from '../../services/testing-data.service';
+import { MachineLearnerService } from '../../services/machine-learner.service';
 import { Injury } from '../../classes/injury';
 import { TestData } from '../../classes/test-data';
 import { Angular5Csv } from 'angular5-csv/Angular5-csv';
@@ -34,6 +35,7 @@ export class AthleteProfileComponent implements OnInit {
     private injuryService: InjuryService,
     private organizationService: OrganizationService,
     private testingDataService: TestingDataService,
+    private machineLearnerService: MachineLearnerService,
     private route: ActivatedRoute,
     private router: Router,
     private flashMessage: FlashMessagesService,
@@ -217,8 +219,30 @@ export class AthleteProfileComponent implements OnInit {
     new Angular5Csv(data, csv_title, options);
   }
 
+  onClickMachineLearner() {
+    this.machineLearnerService.callMachineLearner().subscribe(data => {
+      if (data.success) {
+        this.flashMessage.show(data.msg, {
+          cssClass: 'alert-success',
+          timeout: 5000
+        });
+      }
+      else {
+        this.flashMessage.show(data.msg, {
+          cssClass: 'alert-danger',
+          timeout: 5000
+        });
+      }
+    })
+  }
+
   onTestingDataClick(testDataId) {
     this.router.navigate(['/tests/athlete', this.athlete._id, testDataId]);
+    return false;
+  }
+
+  addInjury(athleteId) {
+    this.router.navigate(['/athletes/injuries/add', this.athlete._id]);
     return false;
   }
 

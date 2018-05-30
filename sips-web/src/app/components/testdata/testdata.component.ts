@@ -16,7 +16,6 @@ import { TestingDataService } from '../../services/testing-data.service';
   styleUrls: ['./testdata.component.css']
 })
 export class TestDataComponent implements OnInit {
-
   testData: any;
   testType: any;
 
@@ -32,7 +31,6 @@ export class TestDataComponent implements OnInit {
     { data: this.accelerometer_y, label: 'Y-Axis' },
     { data: this.accelerometer_z, label: 'Z-Axis' }
   ];
-
   accelerometerLineChartOptions: any = {
     title: {
       display: true,
@@ -65,14 +63,12 @@ export class TestDataComponent implements OnInit {
   gyroscope_x: Array<any> = [];
   gyroscope_y: Array<any> = [];
   gyroscope_z: Array<any> = [];
-
   gyroscopeLineChartLabels: Array<any> = this.gyroscope_time;
   gyroscopeLineChartData: Array<any> = [
     { data: this.gyroscope_x, label: 'X-Axis' },
     { data: this.gyroscope_y, label: 'Y-Axis' },
     { data: this.gyroscope_z, label: 'Z-Axis' }
   ];
-
   gyroscopeLineChartOptions: any = {
     title: {
       display: true,
@@ -105,14 +101,12 @@ export class TestDataComponent implements OnInit {
   magnometer_x: Array<any> = [];
   magnometer_y: Array<any> = [];
   magnometer_z: Array<any> = [];
-
   magnometerLineChartLabels: Array<any> = this.magnometer_time;
   magnometerLineChartData: Array<any> = [
     { data: this.magnometer_x, label: 'X-Axis' },
     { data: this.magnometer_y, label: 'Y-Axis' },
     { data: this.magnometer_z, label: 'Z-Axis' }
   ];
-
   magnometerLineChartOptions: any = {
     title: {
       display: true,
@@ -139,7 +133,6 @@ export class TestDataComponent implements OnInit {
       }],
     }
   }
-
   lineChartLegend: boolean = true;
   lineChartType: string = 'line';
   lineChartColors: Array<any> = [
@@ -220,30 +213,6 @@ export class TestDataComponent implements OnInit {
   }
 
   formatDate(created_at): string {
-    // return ISODate(created_at).toLocaleTimeString();
-    // moment(created_at, "YYYY-MM-DD HH:mm:ss.")
     return moment(created_at).format('MM/DD/YYYY hh:mmA');
   }
-
-  onClickDownloadCSV() {
-    // console.log(this.testData);
-    //
-    // let options = {
-    //   fieldSeparator: ',',
-    //   quoteStrings: '"',
-    //   decimalseparator: '.',
-    //   showLabels: true,
-    //   showTitle: true,
-    //   title: this.testData._id,
-    //   // useBom: true,
-    //   noDownload: false,
-    //   // headers: ["First Name", "Last Name", "ID"]
-    // };
-    //
-    // let fileName = "testid_" + this.testData._id + "_data_file"
-    //
-    // var csv = new Angular5Csv(this.testData, fileName, options);
-    // console.log(csv);
-  }
-
 }

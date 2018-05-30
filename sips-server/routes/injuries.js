@@ -52,8 +52,32 @@ router.get('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'get
 			});
 		}
 	});
-
 });
+
+router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester', 'Athlete'], 'addInjury'), (req, res) => {
+	const injury = new Injury({
+		title: req.body.title,
+		athlete: req.body.athlete,
+		date_occurred: req.body.date_occurred
+	});
+
+	Injury.addInjury(injury, (err, addedInjury) => {
+		if (err) {
+			res.status(206).json({
+				success: false,
+				msg: 'Error adding injury: ' + err
+			})
+
+		} else {
+			res.status(200).json({
+				success: true,
+				msg: 'Successfully added injury.',
+				injury: addedInjury
+			});
+		}
+	});
+});
+
 
 
 module.exports = router;

@@ -1,0 +1,15 @@
+<div class="row h-100 justify-content-center align-items-center">
+  <div class="col-lg-6 col-10">
+    <h2 class="page-header">Add an Injury</h2>
+    <form (submit)="onAddInjurySubmit()">
+      <mat-form-field>
+        <input matInput placeholder="Injury" [(ngModel)]="title" name="title" type="text">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [(ngModel)]="date_occurred" name="date_occurred" [matDatepicker]="dateOccurredPicker" (focus)="dateOccurredPicker.open()" id="dateOccurredInput" placeholder="Date Injury Occurred">
+        <mat-datepicker #dateOccurredPicker disabled="false"></mat-datepicker>
+      </mat-form-field>
+      <button type="submit" mat-raised-button color="primary">Submit</button>
+    </form>
+  </div>
+</div>

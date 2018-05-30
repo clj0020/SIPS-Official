@@ -15,7 +15,6 @@ export class AddTestTypeComponent implements OnInit {
   description: string;
   duration: string;
 
-
   constructor(
     private validateService: ValidateService,
     private testTypeService: TestTypeService,

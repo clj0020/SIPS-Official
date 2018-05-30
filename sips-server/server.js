@@ -21,7 +21,6 @@ mongoose.connection.on('connected', () => {
 		console.log('Connected to database ' + config.DBHost);
 		console.log("Current WebHost: " + config.WebHost);
 		console.log("Current ServerHost: " + config.ServerHost);
-		console.log("Gmail Sender Address: " + config.GMAIL_USERNAME);
 	}
 });
 
@@ -53,6 +52,7 @@ const injuries = require('./routes/injuries');
 const testingData = require('./routes/testingData');
 const testTypes = require('./routes/testTypes');
 const organizations = require('./routes/organizations');
+const machineLearner = require('./routes/machine-learner');
 
 // Port Number
 const port = process.env.PORT || 8080;
@@ -78,6 +78,7 @@ app.use('/injuries', injuries);
 app.use('/testingData', testingData);
 app.use('/testTypes', testTypes);
 app.use('/organizations', organizations);
+app.use('/machine-learner', machineLearner);
 
 // Index Route
 app.get('/', (req, res) => {

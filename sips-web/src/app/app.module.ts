@@ -43,6 +43,7 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 import { FooterComponent } from './components/footer/footer.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { TesterProfileComponent } from './components/tester-profile/tester-profile.component';
+import { AddInjuryComponent } from './components/add-injury/add-injury.component';
 
 // Services
 import { AuthService } from './services/auth.service';
@@ -54,9 +55,11 @@ import { AthleteService } from './services/athlete.service';
 import { TestingDataService } from './services/testing-data.service';
 import { LoaderService } from './services/loader.service';
 import { TestTypeService } from './services/test-type.service';
+import { MachineLearnerService } from './services/machine-learner.service';
 
 // Guards
 import { AuthGuard } from './guards/auth.guard';
+
 
 
 
@@ -74,6 +77,7 @@ const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'tests/athlete/:athleteId/:id', component: TestDataComponent },
   { path: 'organization/testTypes/add', component: AddTestTypeComponent },
+  { path: 'athletes/injuries/add/:athleteId', component: AddInjuryComponent }
 ]
 
 
@@ -96,7 +100,8 @@ const appRoutes: Routes = [
     LandingPageComponent,
     FooterComponent,
     ConfirmationDialogComponent,
-    TesterProfileComponent
+    TesterProfileComponent,
+    AddInjuryComponent
   ],
   imports: [
     BrowserModule,
@@ -133,6 +138,7 @@ const appRoutes: Routes = [
     AthleteService,
     InjuryService,
     ValidateService,
+    MachineLearnerService,
     AuthGuard
   ],
   bootstrap: [AppComponent],
