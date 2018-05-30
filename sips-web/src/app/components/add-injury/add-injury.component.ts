@@ -12,9 +12,9 @@ import * as moment from 'moment';
   styleUrls: ['./add-injury.component.css']
 })
 export class AddInjuryComponent implements OnInit {
-  private athleteId: string;
-  private title: string;
-  private date_occurred: Date;
+  athleteId: string;
+  title: string;
+  date_occurred: Date;
 
   constructor(
     private authService: AuthService,
