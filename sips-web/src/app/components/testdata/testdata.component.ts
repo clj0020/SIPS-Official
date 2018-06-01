@@ -13,7 +13,7 @@ import { TestingDataService } from '../../services/testing-data.service';
 @Component({
   selector: 'app-testdata',
   templateUrl: './testdata.component.html',
-  styleUrls: ['./testdata.component.css']
+  styleUrls: ['./testdata.component.scss']
 })
 export class TestDataComponent implements OnInit {
   testData: any;

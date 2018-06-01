@@ -1,9 +1,11 @@
+@import './variables';
+@import './mixins';
 /* You can add global styles to this file, and also import other style files */
-
 @import url("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css");
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 @import url("https://use.fontawesome.com/releases/v5.0.13/css/all.css");
 @import '~@angular/material/prebuilt-themes/purple-green.css';
+
 body {
   margin: 0;
   font-family: Roboto, sans-serif;
@@ -14,22 +16,22 @@ body {
   flex-direction: row;
 }
 
-.vertical-align>[class^="col-"], .vertical-align>[class*=" col-"] {
+.vertical-align > [class^="col-"],
+.vertical-align > [class*=" col-"] {
   display: flex;
   align-items: center;
   justify-content: center;
   /* Optional, to align inner items
                               horizontally inside the column */
 }
-
 /**
  *  Do NOT include this part into your stylesheet.
  *  "flex: 1" or "flex-grow: 1" is added to make the inner div
  *  - Which is also a flex-item - take up all the horizontal space
  *  available space inside the flex container (.col-* elements)
  */
-
-.vertical-align>[class^="col-"]>div, .vertical-align>[class*=" col-"]>div {
+.vertical-align > [class^="col-"] > div,
+.vertical-align > [class*=" col-"] > div {
   /* flex: 1; */
   flex-grow: 1;
 }

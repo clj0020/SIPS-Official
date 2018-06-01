@@ -14,7 +14,7 @@ import * as moment from 'moment'; // add this 1 of 4
 @Component({
   selector: 'app-verify-athlete',
   templateUrl: './verify-athlete.component.html',
-  styleUrls: ['./verify-athlete.component.css'],
+  styleUrls: ['./verify-athlete.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class VerifyAthleteComponent implements OnInit {

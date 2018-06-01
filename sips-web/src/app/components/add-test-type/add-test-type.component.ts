@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-add-test-type',
   templateUrl: './add-test-type.component.html',
-  styleUrls: ['./add-test-type.component.css']
+  styleUrls: ['./add-test-type.component.scss']
 })
 export class AddTestTypeComponent implements OnInit {
   title: string;

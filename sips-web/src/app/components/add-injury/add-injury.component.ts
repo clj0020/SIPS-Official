@@ -9,7 +9,7 @@ import * as moment from 'moment';
 @Component({
   selector: 'app-add-injury',
   templateUrl: './add-injury.component.html',
-  styleUrls: ['./add-injury.component.css']
+  styleUrls: ['./add-injury.component.scss']
 })
 export class AddInjuryComponent implements OnInit {
   athleteId: string;

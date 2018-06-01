@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-admin-register',
   templateUrl: './admin-register.component.html',
-  styleUrls: ['./admin-register.component.css']
+  styleUrls: ['./admin-register.component.scss']
 })
 export class AdminRegisterComponent implements OnInit {
   first_name: string;

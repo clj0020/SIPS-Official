@@ -1,0 +1,32 @@
+@import '~sass/variables';
+
+h1 {
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+}
+
+p {
+  margin-top: 2em;
+  font-size: 1em;
+  font-weight: bolder;
+}
+
+.login-button {
+  margin-top: 0.5em;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+/deep/ .mat-input-underline {
+  background-color: black;
+}
+
+.mat-form-field-hide-placeholder .mat-input-element::-moz-placeholder {
+  color: black !important;
+}
+
+/deep/ .mat-form-field-label {
+  color: #606060 !important;
+}

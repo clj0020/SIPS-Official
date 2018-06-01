@@ -1,4 +1,7 @@
-/deep/ .alert-success, /deep/ .alert-danger {
+@import '~sass/variables';
+
+/deep/ .alert-danger,
+/deep/ .alert-success {
   margin-top: 1em !important;
 }
 

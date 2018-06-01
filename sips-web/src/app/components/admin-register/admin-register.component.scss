@@ -1,16 +1,7 @@
-h1 {
-  margin-top: 2em;
-  margin-bottom: 0.5em;
-}
+@import '~sass/variables';
 
-p {
+.page-header {
   margin-top: 2em;
-  font-size: 1em;
-  font-weight: bolder;
-}
-
-.login-button {
-  margin-top: 0.5em;
 }
 
 .mat-form-field {
@@ -19,7 +10,6 @@ p {
 
 /deep/ .mat-input-underline {
   background-color: black;
-  /* replace this color with your accent color hex code */
 }
 
 .mat-form-field-hide-placeholder .mat-input-element::-moz-placeholder {
@@ -29,8 +19,3 @@ p {
 /deep/ .mat-form-field-label {
   color: #606060 !important;
 }
-
-/* 
-.mat-form-field-label, .mat-hint {
-  color: #606060 !important;
-} */

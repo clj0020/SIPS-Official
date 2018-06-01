@@ -10,7 +10,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 @Component({
   selector: 'app-tester-profile',
   templateUrl: './tester-profile.component.html',
-  styleUrls: ['./tester-profile.component.css']
+  styleUrls: ['./tester-profile.component.scss']
 })
 export class TesterProfileComponent implements OnInit {
   user: any;

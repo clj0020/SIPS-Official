@@ -1,3 +1,5 @@
+@import '~sass/variables';
+
 h1 {
   font-size: 3em;
   margin-top: 2em;
@@ -28,14 +30,14 @@ h3 {
 .mat-list-item {
   color: black;
   margin-top: 1em;
-  box-shadow: 0px 0px 0px grey;
-  -webkit-transition: box-shadow .6s ease-out;
-  box-shadow: .8px .9px 3px grey;
-}
+  box-shadow: 0 0 0 grey;
+  -webkit-transition: box-shadow 0.6s ease-out;
+  box-shadow: 0.8px 0.9px 3px grey;
 
-.mat-list-item:hover {
-  box-shadow: 1px 8px 20px grey;
-  -webkit-transition: box-shadow .6s ease-in;
+  &:hover {
+    box-shadow: 1px 8px 20px grey;
+    -webkit-transition: box-shadow 0.6s ease-in;
+  }
 }
 
 .mat-nav-list {
@@ -65,14 +67,15 @@ h3 {
   top: 0.3em;
   left: 0.1em;
 }
-
 @media only screen and (max-width: 450px) {
   h1 {
     font-size: 1.5em;
   }
+
   h2 {
     font-size: 1em;
   }
+
   .delete-athlete-btn {
     margin: 1em;
     position: relative;
@@ -80,6 +83,7 @@ h3 {
     height: 3em;
     float: right;
   }
+
   .delete-athlete-icon {
     font-size: 2em !important;
     position: absolute;

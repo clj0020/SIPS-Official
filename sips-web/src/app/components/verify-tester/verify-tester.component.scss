@@ -1,3 +1,5 @@
+@import '~sass/variables';
+
 .page-header {
   margin-top: 2em;
 }
@@ -12,7 +14,6 @@
 
 /deep/ .mat-input-underline {
   background-color: black;
-  /* replace this color with your accent color hex code */
 }
 
 .mat-form-field-hide-placeholder .mat-input-element::-moz-placeholder {
@@ -24,18 +25,13 @@
 }
 
 :host /deep/ .mat-checkbox-frame {
-  /* border-color: black */
   border: black solid 1px;
 }
 
 /deep/ .mat-form-field-label:not(.mat-form-field-empty) {
-  color: #7b1fa2 !important;
+  color: $primary-color !important;
 }
 
 /deep/ .mat-form-field-label {
   color: #606060 !important;
 }
-
-/* /deep/ .mat-form-field-label .mat-form-field-empty {
-  color: black !important;
-} */

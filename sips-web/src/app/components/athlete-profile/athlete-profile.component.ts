@@ -18,7 +18,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 @Component({
   selector: 'app-athlete-profile',
   templateUrl: './athlete-profile.component.html',
-  styleUrls: ['./athlete-profile.component.css']
+  styleUrls: ['./athlete-profile.component.scss']
 })
 export class AthleteProfileComponent implements OnInit {
   user: any;

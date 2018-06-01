@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-organization-admin',
   templateUrl: './organization-admin.component.html',
-  styleUrls: ['./organization-admin.component.css']
+  styleUrls: ['./organization-admin.component.scss']
 })
 export class OrganizationAdminComponent implements OnInit {
   organization: Organization;

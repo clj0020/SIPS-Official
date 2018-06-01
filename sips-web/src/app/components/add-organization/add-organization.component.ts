@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-add-organization',
   templateUrl: './add-organization.component.html',
-  styleUrls: ['./add-organization.component.css']
+  styleUrls: ['./add-organization.component.scss']
 })
 export class AddOrganizationComponent implements OnInit {
   title: string;

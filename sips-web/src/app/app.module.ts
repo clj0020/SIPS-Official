@@ -29,7 +29,6 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { ProfileComponent } from './components/profile/profile.component';
 import { AdminRegisterComponent } from './components/admin-register/admin-register.component';
 import { AddOrganizationComponent } from './components/add-organization/add-organization.component';
 import { OrganizationAdminComponent } from './components/organization-admin/organization-admin.component';
@@ -40,7 +39,6 @@ import { TestDataComponent } from './components/testdata/testdata.component';
 import { LoaderComponent } from './components/loader/loader.component';
 import { AddTestTypeComponent } from './components/add-test-type/add-test-type.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
-import { FooterComponent } from './components/footer/footer.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { TesterProfileComponent } from './components/tester-profile/tester-profile.component';
 import { AddInjuryComponent } from './components/add-injury/add-injury.component';
@@ -60,24 +58,20 @@ import { MachineLearnerService } from './services/machine-learner.service';
 // Guards
 import { AuthGuard } from './guards/auth.guard';
 
-
-
-
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'landing', component: LandingPageComponent },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'login', component: LoginComponent },
   { path: 'admin/register', component: AdminRegisterComponent },
   { path: 'admin/add-organization', component: AddOrganizationComponent },
   { path: 'admin/organization/:organizationId', component: OrganizationAdminComponent },
-  { path: 'testers/verify', component: VerifyTesterComponent },
   { path: 'athletes/verify', component: VerifyAthleteComponent },
   { path: 'athletes/athlete/:id', component: AthleteProfileComponent },
-  { path: 'testers/tester/:id', component: TesterProfileComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'tests/athlete/:athleteId/:id', component: TestDataComponent },
+  { path: 'athletes/injuries/add/:athleteId', component: AddInjuryComponent },
   { path: 'organization/testTypes/add', component: AddTestTypeComponent },
-  { path: 'athletes/injuries/add/:athleteId', component: AddInjuryComponent }
+  { path: 'testers/verify', component: VerifyTesterComponent },
+  { path: 'testers/tester/:id', component: TesterProfileComponent },
+  { path: 'tests/athlete/:athleteId/:id', component: TestDataComponent },
 ]
 
 
@@ -87,7 +81,6 @@ const appRoutes: Routes = [
     HomeComponent,
     LoginComponent,
     NavbarComponent,
-    ProfileComponent,
     AdminRegisterComponent,
     AddOrganizationComponent,
     OrganizationAdminComponent,
@@ -98,7 +91,6 @@ const appRoutes: Routes = [
     LoaderComponent,
     AddTestTypeComponent,
     LandingPageComponent,
-    FooterComponent,
     ConfirmationDialogComponent,
     TesterProfileComponent,
     AddInjuryComponent

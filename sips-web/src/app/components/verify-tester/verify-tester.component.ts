@@ -9,7 +9,7 @@ import 'rxjs/add/operator/filter';
 @Component({
   selector: 'app-verify-tester',
   templateUrl: './verify-tester.component.html',
-  styleUrls: ['./verify-tester.component.css']
+  styleUrls: ['./verify-tester.component.scss']
 })
 export class VerifyTesterComponent implements OnInit {
   token: string;
