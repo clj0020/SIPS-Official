@@ -2,15 +2,25 @@
   <div class="row text-center h-100 justify-content-center align-items-center" *ngIf="athlete.status != 'Verified'">
     <div class="col-12">
       <button mat-icon-button class="resend-verification-btn" (click)="openResendConfirmationEmailDialog()" matTooltip="Click to resend email." tooltip-position='above' aria-hidden="true" data-toggle="tooltip" title="Click to resend email.">
-  <mat-icon class="unverified-icon" >warning</mat-icon>
-</button>
+        <mat-icon class="unverified-icon" >warning</mat-icon>
+      </button>
     </div>
   </div>
   <div class="row text-center h-100 justify-content-center align-items-center">
-    <div class="col-2 offset-10" *ngIf="athlete">
-      <button *ngIf="user.kind == 'Admin'" (click)="openDeleteAthleteDialog()" mat-icon-button class="delete-athlete-btn" matTooltip="Delete Athlete" tooltip-position='above' aria-hidden="true" data-toggle="tooltip" title="Delete Athlete">
-      <mat-icon class="delete-athlete-icon" aria-label="Delete Athlete">delete</mat-icon>
-    </button>
+    <div class="col-1 offset-11" *ngIf="athlete">
+      <button mat-icon-button [matMenuTriggerFor]="menu" class="athlete-menu-btn">
+        <mat-icon class="athlete-menu-icon">more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="onClickEditAthlete()">
+          <mat-icon>edit</mat-icon>
+          <span>Edit</span>
+        </button>
+        <button mat-menu-item (click)="openDeleteAthleteDialog()">
+          <mat-icon>delete</mat-icon>
+          <span>Delete</span>
+        </button>
+      </mat-menu>
     </div>
   </div>
   <div class="row text-center h-100 justify-content-center align-items-center">

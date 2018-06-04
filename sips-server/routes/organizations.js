@@ -133,7 +133,24 @@ router.get('/:id', requireAuth, auth.roleAuthorization([], 'getOrganization'), (
 	});
 });
 
-
+router.put('/:id', requireAuth, auth.roleAuthorization(['Admin'], 'getOrganization'), (req, res, next) => {
+	Organization.findOneAndUpdate(req.body._id, req.body, {
+		new: true
+	}, (err, newOrganization) => {
+		if (err) {
+			res.json({
+				success: false,
+				msg: 'Failed to update organization.'
+			});
+		} else {
+			res.json({
+				success: true,
+				msg: 'Successfully edited organization.',
+				organization: newOrganization
+			});
+		}
+	});
+});
 
 
 module.exports = router;

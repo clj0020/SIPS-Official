@@ -1,0 +1,73 @@
+<div *ngIf="athlete" class="row text-center h-100 justify-content-center align-items-center">
+  <div class="col-lg-6 col-10">
+    <h2 class="page-header">Edit Athlete</h2>
+    <mat-tab-group class="tab-group">
+      <mat-tab label="Personal">
+        <h4 class="tab-header">Edit Personal Info</h4>
+        <form (submit)="onPersonalSubmit()">
+          <div class="row name-row">
+            <div class="col-6 name-col-1">
+              <mat-form-field>
+                <input matInput type="text" [(ngModel)]="first_name" name="first_name" placeholder="First Name">
+              </mat-form-field>
+            </div>
+            <div class="col-6 name-col-2">
+              <mat-form-field>
+                <input matInput type="text" [(ngModel)]="last_name" name="last_name" placeholder="Last Name">
+              </mat-form-field>
+            </div>
+          </div>
+          <mat-form-field>
+            <input matInput type="text" [(ngModel)]="email" name="email" placeholder="Email">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput [matDatepicker]="dateOfBirthPicker" (focus)="dateOfBirthPicker.open()" [(ngModel)]="date_of_birth" name="date_of_birth" id="dateOfBirthInput" placeholder="Date of Birth">
+            <mat-datepicker #dateOfBirthPicker disabled="false"></mat-datepicker>
+          </mat-form-field>
+          <button type="submit" mat-raised-button color="primary">Submit</button>
+        </form>
+      </mat-tab>
+      <mat-tab label="Sport">
+        <h4 class="tab-header">Edit Sport Related Info</h4>
+        <form (submit)="onSportSubmit()">
+          <div class="row height-row">
+            <div class="col-6 height-col-1">
+              <mat-form-field>
+                <input matInput id="heightFeetInput" type="number" placeholder="Height (Feet)" name="heightFeet" [(ngModel)]="heightFeet" value="getHeightFeet(athlete.height)">
+              </mat-form-field>
+            </div>
+            <div class="col-6 height-col-2">
+              <mat-form-field>
+                <input matInput id="heightInchesInput" type="number" placeholder="Height (Inches)" name="heightInches" [(ngModel)]="heightInches" value="getHeightInches(athlete.height)">
+              </mat-form-field>
+            </div>
+          </div>
+          <mat-form-field>
+            <input matInput id="weightInput" type="number" placeholder="Weight (lbs)" name="weight" [(ngModel)]="weight" value="athlete.weight">
+          </mat-form-field>
+          <div class="row sport-row">
+            <div class="col-6 sport-col-1">
+              <mat-form-field>
+                <mat-select placeholder="Sport" [(ngModel)]="selectedSport" name="selectedSport">
+                  <mat-option *ngFor="let sport of sports" [value]="sport">
+                    {{sport.title}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-6 sport-col-2">
+              <mat-form-field>
+                <mat-select placeholder="Position" [(ngModel)]="position" name="position">
+                  <mat-option *ngFor="let position of selectedSport?.positions" [value]="position">
+                    {{position}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <button type="submit" mat-raised-button color="primary">Submit</button>
+        </form>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

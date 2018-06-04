@@ -9,6 +9,20 @@ h4 {
   margin-bottom: 0.8em;
 }
 
+.organization-title {
+  cursor: pointer;
+
+  &:hover {
+    font-size: 2rem;
+  }
+}
+
+#editOrganizationInput {
+  margin-top: 2em;
+  margin-bottom: 1em;
+  font-size: 1.75rem;
+}
+
 #testTypeList {
   margin-bottom: 1em;
 }

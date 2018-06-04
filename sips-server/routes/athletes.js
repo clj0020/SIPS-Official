@@ -317,6 +317,27 @@ router.get('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'get
 	});
 });
 
+router.put('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester', 'Athlete'], 'editAthlete'), (req, res, next) => {
+
+	Athlete.findByIdAndUpdate(req.body._id, req.body, {
+		new: true
+	}, (err, newAthlete) => {
+		if (err) {
+			res.json({
+				success: false,
+				msg: 'Failed to edit athlete.'
+			});
+		} else {
+			res.json({
+				success: true,
+				msg: 'Successfully edited athlete.',
+				athlete: newAthlete
+			});
+		}
+	});
+
+});
+
 router.delete('/:id', requireAuth, auth.roleAuthorization(['Admin'], 'deleteAthlete'), (req, res, next) => {
 	const id = req.params.id;
 

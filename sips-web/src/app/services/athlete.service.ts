@@ -54,6 +54,28 @@ export class AthleteService {
       .map(res => res.json());
   }
 
+  editAthlete(athlete) {
+    this.showLoader();
+
+    let headers = new Headers();
+    this.authToken = this.authService.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type', 'application/json');
+
+    let url = this.serverUrl + "athletes/" + athlete._id;
+
+    return this.http.put(url, athlete, { headers: headers }).catch(this.onCatch)
+      .do((res: Response) => {
+        this.onSuccess(res);
+      }, (error: any) => {
+        this.onError(error);
+      })
+      .finally(() => {
+        this.onEnd();
+      })
+      .map(res => res.json());
+  }
+
   deleteAthlete(athleteId) {
     this.showLoader();
 

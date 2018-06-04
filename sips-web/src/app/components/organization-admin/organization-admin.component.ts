@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FlashMessagesService } from 'angular2-flash-messages';
@@ -9,6 +9,8 @@ import { AthleteService } from '../../services/athlete.service';
 import { TestTypeService } from '../../services/test-type.service';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-organization-admin',
@@ -16,6 +18,9 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./organization-admin.component.scss']
 })
 export class OrganizationAdminComponent implements OnInit {
+
+  @ViewChild('editOrganizationInput') editOrganizationElement: ElementRef;
+
   organization: Organization;
   testerEmail: string;
   testers: any[] = [];
@@ -27,6 +32,8 @@ export class OrganizationAdminComponent implements OnInit {
 
   organizationId: string;
 
+  editMode: boolean = false;
+  dialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
   constructor(
     private authService: AuthService,
@@ -37,6 +44,7 @@ export class OrganizationAdminComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private flashMessage: FlashMessagesService,
+    private dialog: MatDialog
   ) {
 
   }
@@ -44,6 +52,49 @@ export class OrganizationAdminComponent implements OnInit {
   ngOnInit() {
     this.organizationId = this.route.snapshot.paramMap.get('organizationId');
     this.loadOrganization(this.organizationId);
+  }
+
+  onClickOrganizationTitle() {
+    this.editMode = true;
+    setTimeout(() => {
+      this.editOrganizationElement.nativeElement.focus();
+    }, 0);
+  }
+
+  updateOrganizationTitle() {
+    this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      disableClose: false
+    });
+    this.dialogRef.componentInstance.confirmMessage = "Are you sure you want to change your organization's title to '" + this.organization.title + "'?"
+
+    this.dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.organizationService.updateOrganization(this.organization).subscribe(data => {
+          if (data.success) {
+            this.organization = data.organization;
+
+            this.flashMessage.show(data.msg, {
+              cssClass: 'alert-success',
+              timeout: 5000
+            });
+
+            this.editMode = false;
+          }
+          else {
+            this.flashMessage.show(data.msg, {
+              cssClass: 'alert-danger',
+              timeout: 5000
+            });
+
+            this.editMode = false;
+          }
+        });
+      }
+      else {
+        this.editMode = false;
+      }
+      this.dialogRef = null;
+    });
   }
 
   onTesterAdded() {

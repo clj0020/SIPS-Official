@@ -87,24 +87,6 @@
             </div>
             <button mat-raised-button color="primary" class="add-injury-button" (click)="addInjury()">Add Injury</button>
           </div>
-          <!-- <mat-nav-list>
-            <a mat-list-item *ngFor="let injury of injuries">
-              <mat-icon mat-list-icon aria-hidden="true">accessibility <span class="cdk-visually-hidden">Injury</span></mat-icon>
-              <h4 *ngIf="!injury.title" mat-line>{{ injury.title }}</h4>
-            </a>
-          </mat-nav-list>
-          <div class="row">
-            <div class="col-lg-12">
-              <mat-form-field>
-                <input matInput placeholder="Injury" [(ngModel)]="injury">
-              </mat-form-field>
-              <mat-form-field>
-                <input matInput [matDatepicker]="dateOccurredPicker" (focus)="dateOccurredPicker.open()" [(ngModel)]="date_occurred" id="dateOccurredInput" placeholder="Date Injury Occurred">
-                <mat-datepicker #dateOccurredPicker disabled="false"></mat-datepicker>
-              </mat-form-field>
-              <button mat-raised-button color="primary" class="add-injury-button" (click)="onInjuryAdded()">Add</button>
-            </div>
-          </div> -->
           <div class="stepper-buttons">
             <button mat-raised-button color="accent" matStepperPrevious class="back-button">Back</button>
             <button mat-raised-button color="primary" matStepperNext class="next-button">Next</button>

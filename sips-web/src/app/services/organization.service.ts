@@ -73,6 +73,28 @@ export class OrganizationService {
       .map(res => res.json());
   }
 
+  updateOrganization(organization) {
+    this.showLoader();
+
+    let headers = new Headers();
+    this.authToken = this.authService.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type', 'application/json');
+
+    let url = this.serverUrl + 'organizations/' + organization._id;
+
+    return this.http.put(url, organization, { headers: headers }).catch(this.onCatch)
+      .do((res: Response) => {
+        this.onSuccess(res);
+      }, (error: any) => {
+        this.onError(error);
+      })
+      .finally(() => {
+        this.onEnd();
+      })
+      .map(res => res.json());
+  }
+
   storeOrganization(organization) {
     localStorage.setItem('organization', organization);
     this.organization = organization;

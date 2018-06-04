@@ -165,6 +165,11 @@ export class AthleteProfileComponent implements OnInit {
     });
   }
 
+  onClickEditAthlete() {
+    this.router.navigate(['/athletes/athlete/edit', this.athlete._id]);
+    return false;
+  }
+
   onClickDownloadCSV() {
     var data = [];
     for (var i = 0; i < this.testingData.length; i++) {

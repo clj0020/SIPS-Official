@@ -21,7 +21,9 @@ import {
   MatTooltipModule,
   MatSelectModule,
   MatStepperModule,
-  MatDialogModule
+  MatDialogModule,
+  MatMenuModule,
+  MatTabsModule
 } from '@angular/material';
 
 // Components
@@ -35,6 +37,7 @@ import { OrganizationAdminComponent } from './components/organization-admin/orga
 import { VerifyTesterComponent } from './components/verify-tester/verify-tester.component';
 import { VerifyAthleteComponent } from './components/verify-athlete/verify-athlete.component';
 import { AthleteProfileComponent } from './components/athlete-profile/athlete-profile.component';
+import { AthleteEditComponent } from './components/athlete-edit/athlete-edit.component';
 import { TestDataComponent } from './components/testdata/testdata.component';
 import { LoaderComponent } from './components/loader/loader.component';
 import { AddTestTypeComponent } from './components/add-test-type/add-test-type.component';
@@ -67,6 +70,7 @@ const appRoutes: Routes = [
   { path: 'admin/organization/:organizationId', component: OrganizationAdminComponent },
   { path: 'athletes/verify', component: VerifyAthleteComponent },
   { path: 'athletes/athlete/:id', component: AthleteProfileComponent },
+  { path: 'athletes/athlete/edit/:id', component: AthleteEditComponent },
   { path: 'athletes/injuries/add/:athleteId', component: AddInjuryComponent },
   { path: 'organization/testTypes/add', component: AddTestTypeComponent },
   { path: 'testers/verify', component: VerifyTesterComponent },
@@ -93,7 +97,8 @@ const appRoutes: Routes = [
     LandingPageComponent,
     ConfirmationDialogComponent,
     TesterProfileComponent,
-    AddInjuryComponent
+    AddInjuryComponent,
+    AthleteEditComponent
   ],
   imports: [
     BrowserModule,
@@ -117,6 +122,8 @@ const appRoutes: Routes = [
     MatSelectModule,
     MatStepperModule,
     MatDialogModule,
+    MatMenuModule,
+    MatTabsModule,
     BrowserAnimationsModule,
     AngularFontAwesomeModule
   ],

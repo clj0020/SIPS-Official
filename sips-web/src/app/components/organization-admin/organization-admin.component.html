@@ -1,12 +1,7 @@
-<script type="text/javascript">
-  $(function() {
-    $('.unverified-indicator').tooltip()
-  })
-</script>
-
 <div class="row text-center h-100 justify-content-center align-items-center">
   <div class="col-sm-8 text-center" *ngIf="organization">
-    <h3>{{ organization.title }}</h3>
+    <h3 *ngIf="!editMode" (click)="onClickOrganizationTitle()" class="organization-title">{{ organization.title }}</h3>
+    <input #editOrganizationInput *ngIf="editMode" (blur)="updateOrganizationTitle()" (keyup.enter)="updateOrganizationTitle()" type="text" value="{{organization.title}}" [(ngModel)]="organization.title" id="editOrganizationInput">
     <div class="row text-center">
       <div class="col-lg-6 offset-lg-0 col-10 offset-1" id="athleteCol" *ngIf="athletes?.length > 0">
         <mat-nav-list>
