@@ -45,6 +45,8 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { TesterProfileComponent } from './components/tester-profile/tester-profile.component';
 import { AddInjuryComponent } from './components/add-injury/add-injury.component';
+import { TestTypeComponent } from './components/test-type/test-type.component';
+
 
 // Services
 import { AuthService } from './services/auth.service';
@@ -76,6 +78,7 @@ const appRoutes: Routes = [
   { path: 'testers/verify', component: VerifyTesterComponent },
   { path: 'testers/tester/:id', component: TesterProfileComponent },
   { path: 'tests/athlete/:athleteId/:id', component: TestDataComponent },
+  { path: 'tests/test-types/:id', component: TestTypeComponent }
 ]
 
 
@@ -98,7 +101,8 @@ const appRoutes: Routes = [
     ConfirmationDialogComponent,
     TesterProfileComponent,
     AddInjuryComponent,
-    AthleteEditComponent
+    AthleteEditComponent,
+    TestTypeComponent
   ],
   imports: [
     BrowserModule,

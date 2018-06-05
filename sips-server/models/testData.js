@@ -65,6 +65,18 @@ module.exports.getAthleteTestData = function(athleteId, callback) {
 		.exec(callback);
 }
 
+module.exports.getTestTypeTestData = function(testTypeId, callback) {
+	TestData.find({
+			testType: {
+				$in: testTypeId
+			}
+		})
+		.sort({
+			'created_at': -1
+		})
+		.exec(callback);
+}
+
 module.exports.getTesterTestData = function(testerId, callback) {
 	TestData.find({
 			'tester._id': testerId

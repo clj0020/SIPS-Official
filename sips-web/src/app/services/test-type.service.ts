@@ -33,7 +33,42 @@ export class TestTypeService {
     }
   }
 
-  addTestType(testType) {
+  addTestType(testType, testTypeImageFile) {
+    this.showLoader();
+
+    let headers = new Headers();
+    this.authToken = this.authService.loadToken();
+    headers.append('Authorization', this.authToken);
+    // headers.append('Content-Type', 'multipart/form-data');
+    headers.delete('Content-Type');
+    headers.append('Accept', 'application/json');
+
+    let formData: FormData = new FormData();
+
+    if (testTypeImageFile) {
+      formData.append('cover', testTypeImageFile, testTypeImageFile.name);
+    }
+
+    formData.append('title', testType.title);
+    formData.append('description', testType.description);
+    formData.append('duration', testType.duration);
+    formData.append('organization', testType.organization);
+
+    let url = this.serverUrl + "testTypes/add";
+
+    return this.http.post(url, formData, { headers: headers }).catch(this.onCatch)
+      .do((res: Response) => {
+        this.onSuccess(res);
+      }, (error: any) => {
+        this.onError(error);
+      })
+      .finally(() => {
+        this.onEnd();
+      })
+      .map(res => res.json());
+  }
+
+  getTestTypeById(id) {
     this.showLoader();
 
     let headers = new Headers();
@@ -41,9 +76,9 @@ export class TestTypeService {
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
 
-    let url = this.serverUrl + "testTypes/add";
+    let url = this.serverUrl + "testTypes/" + id;
 
-    return this.http.post(url, testType, { headers: headers }).catch(this.onCatch)
+    return this.http.get(url, { headers: headers }).catch(this.onCatch)
       .do((res: Response) => {
         this.onSuccess(res);
       }, (error: any) => {
@@ -75,11 +110,6 @@ export class TestTypeService {
         this.onEnd();
       })
       .map(res => res.json());
-
-    // .map((res: Response) => {
-    //   let body = res.json();
-    //   return body || {};
-    // });
   }
 
   storeTestTypes(testTypes) {

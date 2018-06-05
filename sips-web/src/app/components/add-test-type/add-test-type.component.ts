@@ -14,6 +14,7 @@ export class AddTestTypeComponent implements OnInit {
   title: string;
   description: string;
   duration: string;
+  file: File;
 
   constructor(
     private validateService: ValidateService,
@@ -39,7 +40,7 @@ export class AddTestTypeComponent implements OnInit {
       return false;
     }
 
-    this.testTypeService.addTestType(testType).subscribe(data => {
+    this.testTypeService.addTestType(testType, this.file).subscribe(data => {
       if (data.success) {
         console.log("Test Type successfully added..");
         console.log(data);
@@ -54,6 +55,15 @@ export class AddTestTypeComponent implements OnInit {
 
     });
 
+
+  }
+
+  fileChange(event) {
+    let fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      this.file = fileList[0];
+      console.log(this.file);
+    }
 
   }
 

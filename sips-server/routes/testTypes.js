@@ -5,6 +5,23 @@ const auth = require('../middleware/auth');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const TestType = require('../models/testType');
+const multer = require('multer');
+
+const upload = multer({
+	storage: multer.memoryStorage(),
+	limits: {
+		fileSize: 5 * 1024 * 1024
+	}
+});
+
+var gcloud = require('google-cloud');
+
+var storage = gcloud.storage({
+	projectId: config.projectId,
+	keyFilename: config.keyFilename
+});
+
+var bucket = storage.bucket(config.bucketName);
 
 var requireAuth = passport.authenticate('jwt', {
 	session: false
@@ -31,7 +48,7 @@ var requireAuth = passport.authenticate('jwt', {
 						msg: String (),
 						testData: TestData ()
 */
-router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'addTestingData'), (req, res) => {
+router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'addTestingData'), upload.single('cover'), (req, res) => {
 
 	let newTestType = new TestType({
 		title: req.body.title,
@@ -40,28 +57,65 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'ad
 		organization: req.user.organization,
 	});
 
-	TestType.addTestType(newTestType, (err, testType) => {
-		if (err) {
-			res.status(206).json({
-				success: false,
-				msg: 'Error adding test type: ' + err
-			})
+	if (req.file) {
+		uploadCoverImage(req.file.buffer, (err, imageUrl) => {
+			if (err) {
+				console.log(err);
+				return res.status(206).json({
+					success: false,
+					msg: 'Error adding test type image: ' + err
+				});
+			} else {
+				newTestType.imageUrl = imageUrl;
 
-		} else {
-			res.status(200).json({
-				success: true,
-				msg: 'Successfully added test type!',
-				testType: {
-					_id: testType._id,
-					created_at: testType.created_at,
-					title: testType.title,
-					description: testType.description,
-					duration: testType.duration,
-					organization: testType.organization,
-				}
-			});
-		}
-	});
+				TestType.addTestType(newTestType, (err, testType) => {
+					if (err) {
+						console.log(err);
+						return res.status(206).json({
+							success: false,
+							msg: 'Error adding test type: ' + err
+						});
+					} else {
+						res.status(200).json({
+							success: true,
+							msg: 'Successfully added test type!',
+							testType: {
+								_id: testType._id,
+								created_at: testType.created_at,
+								title: testType.title,
+								description: testType.description,
+								duration: testType.duration,
+								organization: testType.organization,
+							}
+						});
+					}
+				});
+			}
+		});
+	} else {
+		TestType.addTestType(newTestType, (err, testType) => {
+			if (err) {
+				console.log(err);
+				return res.status(206).json({
+					success: false,
+					msg: 'Error adding test type: ' + err
+				});
+			} else {
+				res.status(200).json({
+					success: true,
+					msg: 'Successfully added test type!',
+					testType: {
+						_id: testType._id,
+						created_at: testType.created_at,
+						title: testType.title,
+						description: testType.description,
+						duration: testType.duration,
+						organization: testType.organization,
+					}
+				});
+			}
+		});
+	}
 });
 
 /** Get Single TestType
@@ -117,6 +171,23 @@ router.get('/organization/:organizationId', requireAuth, auth.roleAuthorization(
 		}
 	});
 });
+
+function uploadCoverImage(coverImageData, callback) {
+	// Generate a unique filename for this image
+	var filename = '' + new Date().getTime() + "-" + Math.random();
+	var file = bucket.file('test-types/' + filename);
+	var imageUrl = 'https://' + config.bucketName + '.storage.googleapis.com/test-types/' + filename;
+	var stream = file.createWriteStream();
+	stream.on('error', callback);
+	stream.on('finish', function() {
+		// Set this file to be publicly readable
+		file.makePublic(function(err) {
+			if (err) return callback(err);
+			callback(null, imageUrl);
+		});
+	});
+	stream.end(coverImageData);
+}
 
 
 

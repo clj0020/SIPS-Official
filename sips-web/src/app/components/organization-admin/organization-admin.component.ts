@@ -208,6 +208,11 @@ export class OrganizationAdminComponent implements OnInit {
     return false;
   }
 
+  onTestTypeClick(id) {
+    this.router.navigate(['tests/test-types', id]);
+    return false;
+  }
+
   onAddTestTypeClicked() {
     this.router.navigate(['organization/testTypes/add']);
     return false;

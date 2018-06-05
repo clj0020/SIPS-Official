@@ -1,0 +1,25 @@
+<div class="row text-center h-100 justify-content-center align-items-center" *ngIf="testType">
+  <div class="col-12">
+    <img class="img-fluid" src="{{ testType.imageUrl }}">
+    <h1 class="page-header">{{ testType.title }}</h1>
+    <p class="lead">{{ testType.description }}</p>
+    <mat-icon>alarm</mat-icon>
+    <p>{{ testType.duration }} seconds</p>
+    <div class="row tests-row">
+      <div class="col-lg-12 test-list-filled" *ngIf="testingData?.length > 0">
+        <mat-nav-list>
+          <h2 mat-header class="list-header">Tests</h2>
+          <a mat-list-item *ngFor="let test of testingData" (click)="onTestingDataClick(test._id, test.athlete)">
+            <mat-icon mat-list-icon>accessibility</mat-icon>
+            <p mat-line>{{ formatDate(test.created_at) }}</p>
+          </a>
+        </mat-nav-list>
+        <button mat-raised-button color="primary" class="downloadButton" (click)="onClickDownloadCSV()">Download CSV</button>
+      </div>
+      <div class="col-lg-12" *ngIf="!testingData?.length > 0">
+        <h2 mat-header class="list-header">Tests</h2>
+        <p>No tests performed yet..</p>
+      </div>
+    </div>
+  </div>
+</div>

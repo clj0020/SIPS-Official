@@ -120,4 +120,28 @@ router.get('/get-athlete-test-data/:athleteId', requireAuth, auth.roleAuthorizat
 	});
 });
 
+/** Get All TestData for an athlete */
+router.get('/testType/:testTypeId', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'getTestTypeTestData'), (req, res) => {
+	let testTypeId = req.params.testTypeId;
+
+	TestData.getTestTypeTestData(testTypeId, (err, testDataList) => {
+		// If theres an error, success will be false
+		if (err) {
+			return res.json({
+				success: false,
+				msg: 'Failed to locate testing data: ' + err
+			});
+		}
+
+		// Success! Send back testing data array
+		res.status(200).json({
+			success: true,
+			msg: 'Got your testing data.',
+			testDataList: testDataList
+		});
+
+	});
+});
+
+
 module.exports = router;

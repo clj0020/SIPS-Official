@@ -11,6 +11,7 @@ const TestTypeSchema = new Schema({
 	title: String,
 	description: String,
 	duration: Number,
+	imageUrl: String,
 	organization: {
 		type: Schema.ObjectId,
 		ref: 'Organization'

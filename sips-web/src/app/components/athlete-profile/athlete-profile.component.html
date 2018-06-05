@@ -1,80 +1,78 @@
-<div *ngIf="athlete">
-  <div class="row text-center h-100 justify-content-center align-items-center" *ngIf="athlete.status != 'Verified'">
-    <div class="col-12">
-      <button mat-icon-button class="resend-verification-btn" (click)="openResendConfirmationEmailDialog()" matTooltip="Click to resend email." tooltip-position='above' aria-hidden="true" data-toggle="tooltip" title="Click to resend email.">
+<div class="row text-center h-100 justify-content-center align-items-center" *ngIf="athlete && athlete.status != 'Verified'">
+  <div class="col-12">
+    <button mat-icon-button class="resend-verification-btn" (click)="openResendConfirmationEmailDialog()" matTooltip="Click to resend email." tooltip-position='above' aria-hidden="true" data-toggle="tooltip" title="Click to resend email.">
         <mat-icon class="unverified-icon" >warning</mat-icon>
       </button>
-    </div>
   </div>
-  <div class="row text-center h-100 justify-content-center align-items-center">
-    <div class="col-1 offset-11" *ngIf="athlete">
-      <button mat-icon-button [matMenuTriggerFor]="menu" class="athlete-menu-btn">
+</div>
+<div class="row text-center h-100 justify-content-center align-items-center" *ngIf="athlete">
+  <div class="col-1 offset-11">
+    <button mat-icon-button [matMenuTriggerFor]="menu" class="athlete-menu-btn">
         <mat-icon class="athlete-menu-icon">more_vert</mat-icon>
       </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="onClickEditAthlete()">
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="onClickEditAthlete()">
           <mat-icon>edit</mat-icon>
           <span>Edit</span>
         </button>
-        <button mat-menu-item (click)="openDeleteAthleteDialog()">
+      <button mat-menu-item (click)="openDeleteAthleteDialog()">
           <mat-icon>delete</mat-icon>
           <span>Delete</span>
         </button>
-      </mat-menu>
-    </div>
+    </mat-menu>
   </div>
-  <div class="row text-center h-100 justify-content-center align-items-center">
-    <div class="col-lg-6" *ngIf="athlete">
-      <div *ngIf="athlete.status == 'Verified'">
-        <h1>{{ athlete.first_name + " " + athlete.last_name }}</h1>
-        <p>{{ athlete.email }}</p>
-        <h2 *ngIf="organization">{{ organization.title }}</h2>
-        <h3>{{ athlete.position }}</h3>
-        <p>{{ formatBirthday(athlete.date_of_birth) }}</p>
-        <p>{{ athlete.height }} inches, {{ athlete.weight }} lbs</p>
-        <button mat-raised-button class="machineLearnerButton" color="primary" (click)="onClickMachineLearner()">Machine Learner</button>
-      </div>
-      <div *ngIf="athlete.status != 'Verified'">
-        <h1>{{ athlete.email }}</h1>
-        <h2 *ngIf="organization">{{ organization.title }}</h2>
-      </div>
-      <div class="row">
-        <div class="col-lg-6">
-          <div class="row tests-row">
-            <div class="col-lg-12 test-list-filled" *ngIf="testingData?.length > 0">
-              <mat-nav-list>
-                <h2 mat-header class="list-header">Tests</h2>
-                <a mat-list-item *ngFor="let test of testingData" (click)="onTestingDataClick(test._id)">
-                  <mat-icon mat-list-icon>accessibility</mat-icon>
-                  <p mat-line>{{ formatDate(test.created_at) }}</p>
-                </a>
-              </mat-nav-list>
-              <button mat-raised-button color="primary" class="downloadButton" (click)="onClickDownloadCSV()">Download CSV</button>
-            </div>
-            <div class="col-lg-12" *ngIf="!testingData?.length > 0">
+</div>
+<div class="row text-center h-100 justify-content-center align-items-center" *ngIf="athlete">
+  <div class="col-lg-6">
+    <div *ngIf="athlete.status == 'Verified'">
+      <h1>{{ athlete.first_name + " " + athlete.last_name }}</h1>
+      <p>{{ athlete.email }}</p>
+      <h2 *ngIf="organization">{{ organization.title }}</h2>
+      <h3>{{ athlete.position }}</h3>
+      <p>{{ formatBirthday(athlete.date_of_birth) }}</p>
+      <p>{{ athlete.height }} inches, {{ athlete.weight }} lbs</p>
+      <button mat-raised-button class="machineLearnerButton" color="primary" (click)="onClickMachineLearner()">Machine Learner</button>
+    </div>
+    <div *ngIf="athlete.status != 'Verified'">
+      <h1>{{ athlete.email }}</h1>
+      <h2 *ngIf="organization">{{ organization.title }}</h2>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="row tests-row">
+          <div class="col-lg-12 test-list-filled" *ngIf="testingData?.length > 0">
+            <mat-nav-list>
               <h2 mat-header class="list-header">Tests</h2>
-              <p>No tests performed yet..</p>
-            </div>
+              <a mat-list-item *ngFor="let test of testingData" (click)="onTestingDataClick(test._id)">
+                <mat-icon mat-list-icon>accessibility</mat-icon>
+                <p mat-line>{{ formatDate(test.created_at) }}</p>
+              </a>
+            </mat-nav-list>
+            <button mat-raised-button color="primary" class="downloadButton" (click)="onClickDownloadCSV()">Download CSV</button>
+          </div>
+          <div class="col-lg-12" *ngIf="!testingData?.length > 0">
+            <h2 mat-header class="list-header">Tests</h2>
+            <p>No tests performed yet..</p>
           </div>
         </div>
-        <div class="col-lg-6">
-          <div class="row injuries-row">
-            <div class="col-lg-12 injury-list-filled" *ngIf="injuries?.length > 0">
-              <mat-nav-list>
-                <h2 mat-header class="list-header">Past Injuries</h2>
-                <a mat-list-item *ngFor="let injury of injuries">
-                  <mat-icon mat-list-icon>accessibility</mat-icon>
-                  <h4 mat-line>{{ injury.title }}</h4>
-                  <p mat-line>{{ formatDate(injury.date_occurred) }}</p>
-                </a>
-              </mat-nav-list>
-              <button mat-raised-button class="addInjuryButton" color="primary" (click)="addInjury(athlete._id)">Add</button>
-            </div>
-            <div class="col-lg-12" *ngIf="!injuries?.length > 0">
+      </div>
+      <div class="col-lg-6">
+        <div class="row injuries-row">
+          <div class="col-lg-12 injury-list-filled" *ngIf="injuries?.length > 0">
+            <mat-nav-list>
               <h2 mat-header class="list-header">Past Injuries</h2>
-              <p>Yay! No injuries!</p>
-              <button mat-raised-button class="addInjuryButton" color="primary" (click)="addInjury(athlete._id)">Add</button>
-            </div>
+              <a mat-list-item *ngFor="let injury of injuries">
+                <mat-icon mat-list-icon>accessibility</mat-icon>
+                <h4 mat-line>{{ injury.title }}</h4>
+                <p mat-line>{{ formatDate(injury.date_occurred) }}</p>
+              </a>
+            </mat-nav-list>
+            <button mat-raised-button class="addInjuryButton" color="primary" (click)="addInjury(athlete._id)">Add</button>
+          </div>
+          <div class="col-lg-12" *ngIf="!injuries?.length > 0">
+            <h2 mat-header class="list-header">Past Injuries</h2>
+            <p>Yay! No injuries!</p>
+            <button mat-raised-button class="addInjuryButton" color="primary" (click)="addInjury(athlete._id)">Add</button>
           </div>
         </div>
       </div>

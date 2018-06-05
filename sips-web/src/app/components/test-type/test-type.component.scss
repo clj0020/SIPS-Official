@@ -1,0 +1,46 @@
+@import '~sass/variables';
+
+.page-header {
+  margin-top: 2em;
+}
+
+.row {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.list-header {
+  font-weight: bold;
+  margin-top: 0.7em;
+  margin-bottom: 0.7em;
+}
+
+.test-list-filled {
+  padding-bottom: 1em;
+}
+
+.mat-list-item {
+  color: black;
+  margin-top: 1em;
+  box-shadow: 0 0 0 grey;
+  -webkit-transition: box-shadow 0.6s ease-out;
+  box-shadow: 0.8px 0.9px 3px grey;
+
+  &:hover {
+    box-shadow: 1px 8px 20px grey;
+    -webkit-transition: box-shadow 0.6s ease-in;
+  }
+}
+
+.mat-nav-list {
+  margin-bottom: 2em;
+}
+@media only screen and (max-width: 450px) {
+  h1 {
+    font-size: 1.5em;
+  }
+
+  h2 {
+    font-size: 1em;
+  }
+}

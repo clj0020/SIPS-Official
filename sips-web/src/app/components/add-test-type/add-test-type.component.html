@@ -11,6 +11,7 @@
       <mat-form-field>
         <input matInput type="number" id="duration" [(ngModel)]="duration" placeholder="Duration (seconds)" name="duration">
       </mat-form-field>
+      <input type="file" (change)="fileChange($event)" placeholder="Upload Image" accept=".jpg, .png, .jpeg">
       <button type="submit" class="align-middle" mat-raised-button color="primary">Submit</button>
     </form>
   </div>
