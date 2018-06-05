@@ -64,7 +64,6 @@ export class AddTestTypeComponent implements OnInit {
       this.file = fileList[0];
       console.log(this.file);
     }
-
   }
 
 }

@@ -1,0 +1,6 @@
+<h1 md-dialog-title>Image Upload</h1>
+<div md-dialog-content>Upload an Image</div>
+<div md-dialog-actions>
+  <input type="file" (change)="fileChange($event)" placeholder="Upload Image" accept=".jpg, .png, .jpeg">
+  <button md-button style="color: #fff;background-color: #153961;" (click)="dialogRef.close(file)">Upload</button>
+</div>

@@ -54,17 +54,78 @@ export class AthleteService {
       .map(res => res.json());
   }
 
-  editAthlete(athlete) {
+  editAthlete(athlete, profileImage) {
     this.showLoader();
 
     let headers = new Headers();
     this.authToken = this.authService.loadToken();
     headers.append('Authorization', this.authToken);
-    headers.append('Content-Type', 'application/json');
+    headers.delete('Content-Type');
+    headers.append('Accept', 'application/json');
+
+    let formData: FormData = new FormData();
+
+    formData.append('id', athlete._id);
+
+    if (profileImage) {
+      formData.append('profileImage', profileImage, profileImage.name);
+    }
+    if (athlete.first_name) {
+      formData.append('first_name', athlete.first_name);
+    }
+    if (athlete.last_name) {
+      formData.append('last_name', athlete.last_name);
+    }
+    if (athlete.email) {
+      formData.append('email', athlete.email);
+    }
+    if (athlete.date_of_birth) {
+      formData.append('date_of_birth', athlete.date_of_birth);
+    }
+    if (athlete.height) {
+      formData.append('height', athlete.height);
+    }
+    if (athlete.weight) {
+      formData.append('weight', athlete.weight);
+    }
+    if (athlete.sport) {
+      formData.append('sport', athlete.sport);
+    }
+    if (athlete.position) {
+      formData.append('position', athlete.position);
+    }
 
     let url = this.serverUrl + "athletes/" + athlete._id;
 
-    return this.http.put(url, athlete, { headers: headers }).catch(this.onCatch)
+    return this.http.put(url, formData, { headers: headers }).catch(this.onCatch)
+      .do((res: Response) => {
+        this.onSuccess(res);
+      }, (error: any) => {
+        this.onError(error);
+      })
+      .finally(() => {
+        this.onEnd();
+      })
+      .map(res => res.json());
+  }
+
+  uploadProfileImage(athleteId, profileImageFile) {
+    this.showLoader();
+
+    let headers = new Headers();
+    this.authToken = this.authService.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.delete('Content-Type');
+    headers.append('Accept', 'application/json');
+
+    let formData: FormData = new FormData();
+
+    formData.append('profileImage', profileImageFile, profileImageFile.name);
+    formData.append('id', athleteId);
+
+    let url = this.serverUrl + "athletes/upload-profile-image";
+
+    return this.http.post(url, formData, { headers: headers }).catch(this.onCatch)
       .do((res: Response) => {
         this.onSuccess(res);
       }, (error: any) => {

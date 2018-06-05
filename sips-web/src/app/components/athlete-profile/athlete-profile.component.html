@@ -24,6 +24,22 @@
 </div>
 <div class="row text-center h-100 justify-content-center align-items-center" *ngIf="athlete">
   <div class="col-lg-6">
+    <div class="image-container" *ngIf="athlete.profileImageUrl">
+      <img src="{{ athlete.profileImageUrl }}" alt="Avatar" class="image">
+      <div class="overlay">
+        <a (click)="openUploadProfileImageDialog()" class="icon" title="Cover Image">
+          <i class="fa fa-camera"></i>
+        </a>
+      </div>
+    </div>
+    <div class="image-container" *ngIf="!athlete.profileImageUrl">
+      <img src="../../../assets/img/placeholder.png" alt="Avatar" class="image">
+      <div class="overlay">
+        <a (click)="openUploadProfileImageDialog()" class="icon" title="Cover Image">
+          <i class="fa fa-camera"></i>
+        </a>
+      </div>
+    </div>
     <div *ngIf="athlete.status == 'Verified'">
       <h1>{{ athlete.first_name + " " + athlete.last_name }}</h1>
       <p>{{ athlete.email }}</p>
@@ -31,7 +47,7 @@
       <h3>{{ athlete.position }}</h3>
       <p>{{ formatBirthday(athlete.date_of_birth) }}</p>
       <p>{{ athlete.height }} inches, {{ athlete.weight }} lbs</p>
-      <button mat-raised-button class="machineLearnerButton" color="primary" (click)="onClickMachineLearner()">Machine Learner</button>
+      <!-- <button mat-raised-button class="machineLearnerButton" color="primary" (click)="onClickMachineLearner()">Machine Learner</button> -->
     </div>
     <div *ngIf="athlete.status != 'Verified'">
       <h1>{{ athlete.email }}</h1>

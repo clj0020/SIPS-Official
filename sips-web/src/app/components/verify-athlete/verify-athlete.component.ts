@@ -182,5 +182,4 @@ export class VerifyAthleteComponent implements OnInit {
     return false;
   }
 
-
 }

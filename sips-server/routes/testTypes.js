@@ -118,6 +118,46 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'ad
 	}
 });
 
+router.post('/upload-image', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'uploadTestTypeCoverImage'), upload.single('cover'), (req, res) => {
+	let id = req.body.id;
+
+	if (req.file) {
+		uploadCoverImage(req.file.buffer, (err, imageUrl) => {
+			if (err) {
+				console.log(err);
+				return res.status(206).json({
+					success: false,
+					msg: 'Error adding test type image: ' + err
+				});
+			} else {
+				TestType.findByIdAndUpdate(id, {
+					'imageUrl': imageUrl
+				}, {
+					new: true
+				}, (err, newTestType) => {
+					if (err) {
+						res.json({
+							success: false,
+							msg: 'Failed to update test type.'
+						});
+					} else {
+						res.json({
+							success: true,
+							msg: 'Successfully uploaded cover image for test type.',
+							testType: newTestType
+						});
+					}
+				});
+			}
+		});
+	} else {
+		return res.status(206).json({
+			success: false,
+			msg: 'Error: No image file uploaded.'
+		});
+	}
+});
+
 /** Get Single TestType
 
 	Description: Get a single testType by ID.
@@ -188,7 +228,5 @@ function uploadCoverImage(coverImageData, callback) {
 	});
 	stream.end(coverImageData);
 }
-
-
 
 module.exports = router;

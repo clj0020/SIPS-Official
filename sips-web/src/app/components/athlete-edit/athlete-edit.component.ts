@@ -27,6 +27,7 @@ export class AthleteEditComponent implements OnInit {
   weight: number;
   selectedSport: Sport;
   position: string;
+  file: File;
 
   sports = [
     new Sport("Baseball", ["Pitcher", "Catcher", "First Baseman", "Second Baseman", "Third Baseman", "Shortstop", "Left Fielder", "Center Fielder", "Right Fielder"]),
@@ -99,7 +100,8 @@ export class AthleteEditComponent implements OnInit {
     this.athlete.last_name = this.last_name;
     this.athlete.date_of_birth = this.date_of_birth;
 
-    this.athleteService.editAthlete(this.athlete).subscribe(data => {
+
+    this.athleteService.editAthlete(this.athlete, this.file).subscribe(data => {
       if (data.success) {
         this.athlete = data.athlete;
 
@@ -125,7 +127,7 @@ export class AthleteEditComponent implements OnInit {
     this.athlete.sport = this.selectedSport.title;
     this.athlete.position = this.position;
 
-    this.athleteService.editAthlete(this.athlete).subscribe(data => {
+    this.athleteService.editAthlete(this.athlete, this.file).subscribe(data => {
       if (data.success) {
         this.athlete = data.athlete;
 
@@ -143,6 +145,13 @@ export class AthleteEditComponent implements OnInit {
     });
 
     return false;
+  }
+
+  fileChange(event) {
+    let fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      this.file = fileList[0];
+    }
   }
 
   loadInjuries(athleteId) {

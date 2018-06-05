@@ -43,8 +43,6 @@ module.exports.getAthleteInjuries = function(athleteId, callback) {
 				$in: athleteId
 			}
 		})
-		.populate('')
-		.select('')
 		.exec(callback);
 }
 

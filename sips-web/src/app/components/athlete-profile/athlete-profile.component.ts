@@ -13,7 +13,7 @@ import { TestData } from '../../classes/test-data';
 import { Angular5Csv } from 'angular5-csv/Angular5-csv';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
-
+import { ImageUploadDialogComponent } from '../image-upload-dialog/image-upload-dialog.component';
 
 @Component({
   selector: 'app-athlete-profile',
@@ -27,7 +27,8 @@ export class AthleteProfileComponent implements OnInit {
   testingData: TestData[] = [];
   injuries: Injury[] = [];
 
-  dialogRef: MatDialogRef<ConfirmationDialogComponent>;
+  confirmDialogRef: MatDialogRef<ConfirmationDialogComponent>;
+  imageUploadDialogRef: MatDialogRef<ImageUploadDialogComponent>;
 
   constructor(
     private authService: AuthService,
@@ -39,7 +40,8 @@ export class AthleteProfileComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private flashMessage: FlashMessagesService,
-    private dialog: MatDialog
+    private confirmDialog: MatDialog,
+    private imageUploadDialog: MatDialog
   ) {
     this.user = this.authService.loadUser();
   }
@@ -99,6 +101,7 @@ export class AthleteProfileComponent implements OnInit {
       if (data.success) {
         this.injuryService.storeInjuries(data.injuries);
         this.injuries = data.injuries;
+        console.log(data.injuries);
       }
       else {
         this.flashMessage.show(data.msg, {
@@ -109,13 +112,45 @@ export class AthleteProfileComponent implements OnInit {
     });
   }
 
-  openDeleteAthleteDialog() {
-    this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+  openUploadProfileImageDialog() {
+    this.imageUploadDialogRef = this.imageUploadDialog.open(ImageUploadDialogComponent, {
       disableClose: false
     });
-    this.dialogRef.componentInstance.confirmMessage = "Are you sure you want to delete?"
 
-    this.dialogRef.afterClosed().subscribe(result => {
+    this.imageUploadDialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(result);
+        this.athleteService.uploadProfileImage(this.athlete._id, result).subscribe(data => {
+          if (data.success) {
+            this.flashMessage.show(data.msg, {
+              cssClass: 'alert-success',
+              timeout: 5000
+            });
+
+            this.athlete = data.athlete;
+          }
+          else {
+            this.flashMessage.show(data.msg, {
+              cssClass: 'alert-danger',
+              timeout: 5000
+            });
+          }
+        });
+      }
+      else {
+
+      }
+      this.imageUploadDialogRef = null;
+    });
+  }
+
+  openDeleteAthleteDialog() {
+    this.confirmDialogRef = this.confirmDialog.open(ConfirmationDialogComponent, {
+      disableClose: false
+    });
+    this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to delete?"
+
+    this.confirmDialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.athleteService.deleteAthlete(this.athlete._id).subscribe(data => {
           if (data.success) {
@@ -134,17 +169,17 @@ export class AthleteProfileComponent implements OnInit {
           }
         });
       }
-      this.dialogRef = null;
+      this.confirmDialogRef = null;
     });
   }
 
   openResendConfirmationEmailDialog() {
-    this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    this.confirmDialogRef = this.confirmDialog.open(ConfirmationDialogComponent, {
       disableClose: false
     });
-    this.dialogRef.componentInstance.confirmMessage = "Resend confirmation email?"
+    this.confirmDialogRef.componentInstance.confirmMessage = "Resend confirmation email?"
 
-    this.dialogRef.afterClosed().subscribe(result => {
+    this.confirmDialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.athleteService.resendAthleteVerificationEmail(this.athlete._id).subscribe(data => {
           if (data.success) {
@@ -161,7 +196,7 @@ export class AthleteProfileComponent implements OnInit {
           }
         });
       }
-      this.dialogRef = null;
+      this.confirmDialogRef = null;
     });
   }
 

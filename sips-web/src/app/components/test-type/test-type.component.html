@@ -1,8 +1,23 @@
 <div class="row text-center h-100 justify-content-center align-items-center" *ngIf="testType">
   <div class="col-12">
-    <img class="img-fluid" src="{{ testType.imageUrl }}">
     <h1 class="page-header">{{ testType.title }}</h1>
     <p class="lead">{{ testType.description }}</p>
+    <div class="image-container" *ngIf="testType.imageUrl">
+      <img src="{{ testType.imageUrl }}" alt="Avatar" class="image">
+      <div class="overlay">
+        <a (click)="openUploadCoverImageDialog()" class="icon" title="Cover Image">
+          <i class="fa fa-camera"></i>
+        </a>
+      </div>
+    </div>
+    <div class="image-container" *ngIf="!testType.imageUrl">
+      <img src="../../../assets/img/placeholder.png" alt="Avatar" class="image">
+      <div class="overlay">
+        <a (click)="openUploadCoverImageDialog()" class="icon" title="Cover Image">
+          <i class="fa fa-camera"></i>
+        </a>
+      </div>
+    </div>
     <mat-icon>alarm</mat-icon>
     <p>{{ testType.duration }} seconds</p>
     <div class="row tests-row">

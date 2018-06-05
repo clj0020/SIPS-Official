@@ -43,6 +43,7 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { AddTestTypeComponent } from './components/add-test-type/add-test-type.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { ImageUploadDialogComponent } from './components/image-upload-dialog/image-upload-dialog.component';
 import { TesterProfileComponent } from './components/tester-profile/tester-profile.component';
 import { AddInjuryComponent } from './components/add-injury/add-injury.component';
 import { TestTypeComponent } from './components/test-type/test-type.component';
@@ -102,7 +103,8 @@ const appRoutes: Routes = [
     TesterProfileComponent,
     AddInjuryComponent,
     AthleteEditComponent,
-    TestTypeComponent
+    TestTypeComponent,
+    ImageUploadDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -145,6 +147,9 @@ const appRoutes: Routes = [
     AuthGuard
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ConfirmationDialogComponent]
+  entryComponents: [
+    ConfirmationDialogComponent,
+    ImageUploadDialogComponent
+  ]
 })
 export class AppModule { }

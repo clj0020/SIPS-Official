@@ -12,7 +12,7 @@ var requireAuth = passport.authenticate('jwt', {
 });
 
 // Get list of past injuries for Athlete
-router.get('/athlete/:athleteId', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'getAthleteInjuries'), (req, res, next) => {
+router.get('/athlete/:athleteId', requireAuth, auth.roleAuthorization(['Admin', 'Tester', 'Athlete'], 'getAthleteInjuries'), (req, res, next) => {
 
 	let athleteId = req.params.athleteId;
 
@@ -24,7 +24,7 @@ router.get('/athlete/:athleteId', requireAuth, auth.roleAuthorization(['Admin', 
 				msg: 'Failed to retrieve injuries: ' + err
 			});
 		} else {
-			// Success! Send back athletes
+			// Success! Send back injuries
 			res.status(200).json({
 				success: true,
 				msg: 'Got athlete injuries.',

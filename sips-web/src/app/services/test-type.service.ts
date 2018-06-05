@@ -39,7 +39,6 @@ export class TestTypeService {
     let headers = new Headers();
     this.authToken = this.authService.loadToken();
     headers.append('Authorization', this.authToken);
-    // headers.append('Content-Type', 'multipart/form-data');
     headers.delete('Content-Type');
     headers.append('Accept', 'application/json');
 
@@ -55,6 +54,34 @@ export class TestTypeService {
     formData.append('organization', testType.organization);
 
     let url = this.serverUrl + "testTypes/add";
+
+    return this.http.post(url, formData, { headers: headers }).catch(this.onCatch)
+      .do((res: Response) => {
+        this.onSuccess(res);
+      }, (error: any) => {
+        this.onError(error);
+      })
+      .finally(() => {
+        this.onEnd();
+      })
+      .map(res => res.json());
+  }
+
+  uploadTestTypeImage(testTypeId, testTypeImageFile) {
+    this.showLoader();
+
+    let headers = new Headers();
+    this.authToken = this.authService.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.delete('Content-Type');
+    headers.append('Accept', 'application/json');
+
+    let formData: FormData = new FormData();
+
+    formData.append('cover', testTypeImageFile, testTypeImageFile.name);
+    formData.append('id', testTypeId);
+
+    let url = this.serverUrl + "testTypes/upload-image";
 
     return this.http.post(url, formData, { headers: headers }).catch(this.onCatch)
       .do((res: Response) => {

@@ -24,6 +24,7 @@
             <input matInput [matDatepicker]="dateOfBirthPicker" (focus)="dateOfBirthPicker.open()" [(ngModel)]="date_of_birth" name="date_of_birth" id="dateOfBirthInput" placeholder="Date of Birth">
             <mat-datepicker #dateOfBirthPicker disabled="false"></mat-datepicker>
           </mat-form-field>
+          <input type="file" (change)="fileChange($event)" placeholder="Upload Profile Picture" accept=".jpg, .png, .jpeg">
           <button type="submit" mat-raised-button color="primary">Submit</button>
         </form>
       </mat-tab>

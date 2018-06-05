@@ -12,44 +12,28 @@ const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || config.SENDGRID_API_KEY
 const SENDGRID_SENDER = process.env.SENDGRID_SENDER || config.SENDGRID_SENDER;
 const sendGridMail = require('@sendgrid/mail');
 
+const multer = require('multer');
+
+const upload = multer({
+	storage: multer.memoryStorage(),
+	limits: {
+		fileSize: 5 * 1024 * 1024
+	}
+});
+
+var gcloud = require('google-cloud');
+
+var storage = gcloud.storage({
+	projectId: config.projectId,
+	keyFilename: config.keyFilename
+});
+
+var bucket = storage.bucket(config.bucketName);
 
 var requireAuth = passport.authenticate('jwt', {
 	session: false
 });
 
-function generateToken(user) {
-	return jwt.sign(user, config.secret, {
-		expiresIn: 10080
-	});
-}
-
-function setAthleteInfo(request) {
-	return {
-		_id: request._id,
-		status: request.status,
-		kind: request.kind,
-		first_name: request.first_name,
-		last_name: request.last_name,
-		email: request.email,
-		date_of_birth: request.date_of_birth,
-		height: request.height,
-		weight: request.weight,
-		sport: request.sport,
-		position: request.position,
-		organization: request.organization,
-	};
-}
-
-function setUnVerifiedAthleteInfo(request) {
-	return {
-		_id: request._id,
-		status: request.status,
-		email: request.email,
-		kind: request.kind,
-		organization: request.organization,
-		created_at: request.created_at
-	};
-}
 
 router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'addAthlete'), (req, res, next) => {
 	let newAthlete = new Athlete({
@@ -127,6 +111,46 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'ad
 	});
 });
 
+router.post('/upload-profile-image', requireAuth, auth.roleAuthorization(['Admin', 'Tester', 'Athlete'], 'uploadAthleteProfileImage'), upload.single('profileImage'), (req, res) => {
+	let id = req.body.id;
+
+	if (req.file) {
+		uploadProfileImage(req.file.buffer, (err, imageUrl) => {
+			if (err) {
+				console.log(err);
+				return res.status(206).json({
+					success: false,
+					msg: 'Error adding athlete profile image: ' + err
+				});
+			} else {
+				Athlete.findByIdAndUpdate(id, {
+					'profileImageUrl': imageUrl
+				}, {
+					new: true
+				}, (err, newAthlete) => {
+					if (err) {
+						res.json({
+							success: false,
+							msg: 'Failed to update athlete.'
+						});
+					} else {
+						res.json({
+							success: true,
+							msg: 'Successfully uploaded profile image for athlete.',
+							athlete: newAthlete
+						});
+					}
+				});
+			}
+		});
+	} else {
+		return res.status(206).json({
+			success: false,
+			msg: 'Error: No image file uploaded.'
+		});
+	}
+});
+
 router.get('/resend-verification/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'resendAthleteVerification'), (req, res, next) => {
 	let id = req.params.id;
 
@@ -191,7 +215,6 @@ router.get('/resend-verification/:id', requireAuth, auth.roleAuthorization(['Adm
 router.post('/verify', function(req, res) {
 	var decodedToken = {}
 
-	// get object from token
 	jwt.verify(req.headers.authorization, config.secret, function(err, decoded) {
 		decodedToken = decoded;
 	});
@@ -212,7 +235,6 @@ router.post('/verify', function(req, res) {
 		password: req.body.password
 	};
 
-
 	let newInjuries = [];
 	for (let injury of req.body.injuries) {
 		const newInjury = new Injury({
@@ -224,14 +246,16 @@ router.post('/verify', function(req, res) {
 		newInjuries.push(newInjury);
 	}
 
-	if (!newInjuries.size == 0) {
-		Injury.collection.insert(newInjuries, (err, injuries) => {
+	if (!newInjuries.length == 0) {
+		Injury.insertMany(newInjuries, (err, injuries) => {
 			if (err) {
 				res.status(401).json({
 					success: false,
 					msg: 'Failed to add injuries! Error:' + err.message
 				});
 			} else {
+				console.log("Injuries: ", injuries);
+
 				Athlete.verifyAthlete(athlete, (err, newAthlete) => {
 					if (err) {
 						res.status(401).json({
@@ -239,6 +263,8 @@ router.post('/verify', function(req, res) {
 							msg: 'Failed to verify athlete! Error:' + err.message
 						});
 					} else {
+						console.log("New Athlete: ", newAthlete);
+
 						let athleteInfo = setAthleteInfo(newAthlete);
 
 						res.status(200).json({
@@ -317,25 +343,58 @@ router.get('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'get
 	});
 });
 
-router.put('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester', 'Athlete'], 'editAthlete'), (req, res, next) => {
+router.put('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester', 'Athlete'], 'editAthlete'), upload.single('profileImage'), (req, res, next) => {
+	const athlete = req.body;
 
-	Athlete.findByIdAndUpdate(req.body._id, req.body, {
-		new: true
-	}, (err, newAthlete) => {
-		if (err) {
-			res.json({
-				success: false,
-				msg: 'Failed to edit athlete.'
-			});
-		} else {
-			res.json({
-				success: true,
-				msg: 'Successfully edited athlete.',
-				athlete: newAthlete
-			});
-		}
-	});
+	if (req.file) {
+		uploadProfileImage(req.file.buffer, (err, imageUrl) => {
+			if (err) {
+				console.log(err);
+				return res.status(206).json({
+					success: false,
+					msg: 'Error adding profile image: ' + err
+				});
+			} else {
+				athlete.profileImageUrl = imageUrl;
+				console.log("Athlete: ", athlete);
 
+				Athlete.findByIdAndUpdate(req.body.id, athlete, {
+					new: true
+				}, (err, newAthlete) => {
+					if (err) {
+						res.json({
+							success: false,
+							msg: 'Failed to edit athlete.'
+						});
+					} else {
+						console.log("New Athlete: ", newAthlete);
+						res.json({
+							success: true,
+							msg: 'Successfully edited athlete.',
+							athlete: newAthlete
+						});
+					}
+				});
+			}
+		})
+	} else {
+		Athlete.findByIdAndUpdate(req.body._id, req.body, {
+			new: true
+		}, (err, newAthlete) => {
+			if (err) {
+				res.json({
+					success: false,
+					msg: 'Failed to edit athlete.'
+				});
+			} else {
+				res.json({
+					success: true,
+					msg: 'Successfully edited athlete.',
+					athlete: newAthlete
+				});
+			}
+		});
+	}
 });
 
 router.delete('/:id', requireAuth, auth.roleAuthorization(['Admin'], 'deleteAthlete'), (req, res, next) => {
@@ -356,5 +415,55 @@ router.delete('/:id', requireAuth, auth.roleAuthorization(['Admin'], 'deleteAthl
 	});
 });
 
+function uploadProfileImage(profileImageData, callback) {
+	// Generate a unique filename for this image
+	var filename = '' + new Date().getTime() + "-" + Math.random();
+	var file = bucket.file('athletes/' + filename);
+	var imageUrl = 'https://' + config.bucketName + '.storage.googleapis.com/athletes/' + filename;
+	var stream = file.createWriteStream();
+	stream.on('error', callback);
+	stream.on('finish', function() {
+		// Set this file to be publicly readable
+		file.makePublic(function(err) {
+			if (err) return callback(err);
+			callback(null, imageUrl);
+		});
+	});
+	stream.end(profileImageData);
+}
+
+function generateToken(user) {
+	return jwt.sign(user, config.secret, {
+		expiresIn: 10080
+	});
+}
+
+function setAthleteInfo(request) {
+	return {
+		_id: request._id,
+		status: request.status,
+		kind: request.kind,
+		first_name: request.first_name,
+		last_name: request.last_name,
+		email: request.email,
+		date_of_birth: request.date_of_birth,
+		height: request.height,
+		weight: request.weight,
+		sport: request.sport,
+		position: request.position,
+		organization: request.organization,
+	};
+}
+
+function setUnVerifiedAthleteInfo(request) {
+	return {
+		_id: request._id,
+		status: request.status,
+		email: request.email,
+		kind: request.kind,
+		organization: request.organization,
+		created_at: request.created_at
+	};
+}
 
 module.exports = router;

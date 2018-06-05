@@ -17,11 +17,12 @@
             </div>
           </div>
           <a mat-list-item *ngFor="let athlete of athletes" (click)="onAthleteClick(athlete._id)">
-            <mat-icon mat-list-icon aria-hidden="true">accessibility <span class="cdk-visually-hidden">Athlete</span></mat-icon>
-            <h4 *ngIf="!athlete.first_name" mat-line>{{ athlete.email }}</h4>
-            <h4 *ngIf="athlete.first_name" mat-line>{{ athlete.first_name + " " + athlete.last_name }}</h4>
+            <mat-icon mat-list-icon *ngIf="!athlete.profileImageUrl" aria-hidden="true">accessibility <span class="cdk-visually-hidden">Athlete</span></mat-icon>
+            <img matListAvatar *ngIf="athlete.profileImageUrl" src="{{ athlete.profileImageUrl }}" alt="{{ athlete.first_name }} {{ athlete.last_name}}'s Picture">
+            <h4 *ngIf="!athlete.first_name" mat-line id="listAthleteEmail" style="text-align: start;">{{ athlete.email }} </h4>
+            <h4 *ngIf="athlete.first_name" mat-line id="listAthleteName" style="text-align: start;">{{ athlete.first_name + " " + athlete.last_name }} </h4>
+            <p mat-line id="listAthleteCreationDate" style="text-align: start;">Joined: {{athlete.created_at | date}} </p>
             <mat-icon *ngIf="athlete.status == 'Unverified'" matTooltip="Unverified" tooltip-position='above' aria-hidden="true" class="unverified-indicator" data-toggle="tooltip" title="Unverified">warning <span class="cdk-visually-hidden">Unverified</span></mat-icon>
-            <p mat-line> {{athlete.created_at | date}} </p>
             <mat-divider></mat-divider>
           </a>
         </mat-nav-list>
@@ -55,10 +56,10 @@
           </div>
           <a mat-list-item *ngFor="let tester of testers" (click)="onTesterClick(tester._id)">
             <mat-icon mat-list-icon aria-hidden="true">accessibility <span class="cdk-visually-hidden">Tester</span></mat-icon>
-            <h4 *ngIf="!tester.first_name" mat-line>{{ tester.email }}</h4>
-            <h4 *ngIf="tester.first_name" mat-line>{{ tester.first_name + " " + tester.last_name }}</h4>
+            <h4 *ngIf="!tester.first_name" mat-line style="text-align: start;">{{ tester.email }}</h4>
+            <h4 *ngIf="tester.first_name" mat-line style="text-align: start;">{{ tester.first_name + " " + tester.last_name }}</h4>
+            <p mat-line style="text-align: start;"> {{tester.created_at | date}} </p>
             <mat-icon *ngIf="tester.status == 'Unverified'" matTooltip="Unverified" tooltip-position='above' aria-hidden="true" class="unverified-indicator" data-toggle="tooltip" title="Unverified">warning <span class="cdk-visually-hidden">Unverified</span></mat-icon>
-            <p mat-line> {{tester.created_at | date}} </p>
           </a>
         </mat-nav-list>
       </div>
