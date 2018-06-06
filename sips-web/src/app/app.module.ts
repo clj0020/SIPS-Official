@@ -23,7 +23,8 @@ import {
   MatStepperModule,
   MatDialogModule,
   MatMenuModule,
-  MatTabsModule
+  MatTabsModule,
+  MatGridListModule
 } from '@angular/material';
 
 // Components
@@ -46,8 +47,9 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
 import { ImageUploadDialogComponent } from './components/image-upload-dialog/image-upload-dialog.component';
 import { TesterProfileComponent } from './components/tester-profile/tester-profile.component';
 import { AddInjuryComponent } from './components/add-injury/add-injury.component';
+import { InjuryComponent } from './components/injury/injury.component';
 import { TestTypeComponent } from './components/test-type/test-type.component';
-
+import { TestTypeEditComponent } from './components/test-type-edit/test-type-edit.component';
 
 // Services
 import { AuthService } from './services/auth.service';
@@ -64,6 +66,7 @@ import { MachineLearnerService } from './services/machine-learner.service';
 // Guards
 import { AuthGuard } from './guards/auth.guard';
 
+
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'landing', component: LandingPageComponent },
@@ -75,11 +78,13 @@ const appRoutes: Routes = [
   { path: 'athletes/athlete/:id', component: AthleteProfileComponent },
   { path: 'athletes/athlete/edit/:id', component: AthleteEditComponent },
   { path: 'athletes/injuries/add/:athleteId', component: AddInjuryComponent },
+  { path: 'athletes/athlete/:athleteId/injuries/:id', component: InjuryComponent },
   { path: 'organization/testTypes/add', component: AddTestTypeComponent },
   { path: 'testers/verify', component: VerifyTesterComponent },
   { path: 'testers/tester/:id', component: TesterProfileComponent },
   { path: 'tests/athlete/:athleteId/:id', component: TestDataComponent },
-  { path: 'tests/test-types/:id', component: TestTypeComponent }
+  { path: 'tests/test-types/:id', component: TestTypeComponent },
+  { path: 'tests/test-types/:id/edit', component: TestTypeEditComponent }
 ]
 
 
@@ -104,7 +109,9 @@ const appRoutes: Routes = [
     AddInjuryComponent,
     AthleteEditComponent,
     TestTypeComponent,
-    ImageUploadDialogComponent
+    TestTypeEditComponent,
+    ImageUploadDialogComponent,
+    InjuryComponent
   ],
   imports: [
     BrowserModule,
@@ -130,6 +137,7 @@ const appRoutes: Routes = [
     MatDialogModule,
     MatMenuModule,
     MatTabsModule,
+    MatGridListModule,
     BrowserAnimationsModule,
     AngularFontAwesomeModule
   ],

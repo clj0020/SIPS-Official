@@ -1,4 +1,21 @@
 <div class="row text-center h-100 justify-content-center align-items-center" *ngIf="testType">
+  <div class="col-1 offset-11">
+    <button mat-icon-button [matMenuTriggerFor]="menu" class="test-type-menu-btn">
+        <mat-icon class="test-type-menu-icon">more_vert</mat-icon>
+      </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="onClickEditTestType()">
+          <mat-icon>edit</mat-icon>
+          <span>Edit</span>
+        </button>
+      <button mat-menu-item (click)="openDeleteTestTypeDialog()">
+          <mat-icon>delete</mat-icon>
+          <span>Delete</span>
+        </button>
+    </mat-menu>
+  </div>
+</div>
+<div class="row text-center h-100 justify-content-center align-items-center" *ngIf="testType">
   <div class="col-12">
     <h1 class="page-header">{{ testType.title }}</h1>
     <p class="lead">{{ testType.description }}</p>

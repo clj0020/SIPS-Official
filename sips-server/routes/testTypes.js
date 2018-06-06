@@ -193,6 +193,78 @@ router.get('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'get
 	});
 });
 
+router.put('/:id', requireAuth, auth.roleAuthorization(['Admin'], 'editTestType'), upload.single('cover'), (req, res, next) => {
+	const testType = req.body;
+
+	if (req.file) {
+		uploadCoverImage(req.file.buffer, (err, imageUrl) => {
+			if (err) {
+				console.log(err);
+				return res.status(206).json({
+					success: false,
+					msg: 'Error adding test type image: ' + err
+				});
+			} else {
+				testType.imageUrl = imageUrl;
+
+				TestType.findByIdAndUpdate(req.body.id, testType, {
+					new: true
+				}, (err, newTestType) => {
+					if (err) {
+						res.json({
+							success: false,
+							msg: 'Failed to edit test type.'
+						});
+					} else {
+						res.json({
+							success: true,
+							msg: 'Successfully edited test type.',
+							testType: newTestType
+						});
+					}
+				});
+			}
+		})
+	} else {
+		TestType.findByIdAndUpdate(req.body._id, req.body, {
+			new: true
+		}, (err, newTestType) => {
+			if (err) {
+				res.json({
+					success: false,
+					msg: 'Failed to edit test type.'
+				});
+			} else {
+				res.json({
+					success: true,
+					msg: 'Successfully edited test type.',
+					testType: newTestType
+				});
+			}
+		});
+	}
+});
+
+router.delete('/:id', requireAuth, auth.roleAuthorization(['Admin'], 'deleteTestType'), (req, res, next) => {
+	const id = req.params.id;
+
+	TestType.deleteTestTypeById(id, (err) => {
+		if (err) {
+			res.json({
+				success: false,
+				msg: 'Failed to delete test type.'
+			});
+		} else {
+			res.json({
+				success: true,
+				msg: 'Successfully deleted test type.'
+			});
+		}
+	});
+});
+
+
+
 router.get('/organization/:organizationId', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'getTestTypesFromOrganization'), (req, res) => {
 	const organizationId = req.user.organization;
 

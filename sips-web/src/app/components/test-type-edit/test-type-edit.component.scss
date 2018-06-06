@@ -1,0 +1,39 @@
+@import '~sass/variables';
+
+.page-header {
+  margin-top: 2em;
+}
+
+.input-header {
+  text-align: start;
+}
+
+.image-upload-input {
+  width: 100%;
+  margin-top: 1em;
+}
+
+/deep/ .mat-tab-label,
+/deep/ .mat-tab-link {
+  color: black;
+}
+
+/deep/ .mat-select-value {
+  color: black;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+/deep/ .mat-input-underline {
+  background-color: black;
+}
+
+.mat-form-field-hide-placeholder .mat-input-element::-moz-placeholder {
+  color: black !important;
+}
+
+/deep/ .mat-form-field-label {
+  color: #606060 !important;
+}

@@ -77,7 +77,7 @@
           <div class="col-lg-12 injury-list-filled" *ngIf="injuries?.length > 0">
             <mat-nav-list>
               <h2 mat-header class="list-header">Past Injuries</h2>
-              <a mat-list-item *ngFor="let injury of injuries">
+              <a mat-list-item *ngFor="let injury of injuries" (click)="onClickInjury(injury._id)">
                 <mat-icon mat-list-icon>accessibility</mat-icon>
                 <h4 mat-line>{{ injury.title }}</h4>
                 <p mat-line>{{ formatDate(injury.date_occurred) }}</p>

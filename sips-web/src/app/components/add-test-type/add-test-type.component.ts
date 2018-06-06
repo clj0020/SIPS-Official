@@ -14,6 +14,7 @@ export class AddTestTypeComponent implements OnInit {
   title: string;
   description: string;
   duration: string;
+  imageUrl: string;
   file: File;
 
   constructor(
@@ -62,7 +63,13 @@ export class AddTestTypeComponent implements OnInit {
     let fileList: FileList = event.target.files;
     if (fileList.length > 0) {
       this.file = fileList[0];
-      console.log(this.file);
+      var reader = new FileReader();
+
+      reader.onload = (event: any) => {
+        this.imageUrl = event.target.result;
+      }
+
+      reader.readAsDataURL(event.target.files[0]);
     }
   }
 

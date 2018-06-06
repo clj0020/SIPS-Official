@@ -205,6 +205,12 @@ export class AthleteProfileComponent implements OnInit {
     return false;
   }
 
+  onClickInjury(id) {
+    console.log(id);
+    this.router.navigate(['/athletes', 'athlete', this.athlete._id, 'injuries', id]);
+    return false;
+  }
+
   onClickDownloadCSV() {
     var data = [];
     for (var i = 0; i < this.testingData.length; i++) {

@@ -81,13 +81,65 @@
     <div class="row text-center">
       <div class="col-lg-12 offset-lg-0 col-10 offset-1">
         <h3>Test Types</h3>
-        <mat-nav-list id="testTypeList">
+        <div class="row">
+          <div class="col-lg-4 col-md-6 col-sm-12 col-12 mb-md-3 mb-sm-3 mb-3" *ngFor="let testType of testTypes">
+            <div class="card h-100" (click)="onTestTypeClick(testType._id)">
+              <img class="card-img-top img-fluid" src="{{ testType.imageUrl }}">
+              <div class="card-body">
+                <h4 class="card-title">{{ testType.title }}</h4>
+                <p class="card-text">{{ testType.description }}</p>
+              </div>
+              <div class="card-footer">
+                <small class="text-muted">{{ testType.duration }} seconds</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="card-deck">
+          <div class="card mb-4" *ngFor="let testType of testTypes">
+            <img class="card-img-top img-fluid" src="{{ testType.imageUrl }}">
+            <div class="card-body">
+              <h4 class="card-title">{{ testType.title }}</h4>
+              <p class="card-text">{{ testType.description }}</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">{{ testType.duration }} seconds</small>
+            </div>
+          </div>
+        </div> -->
+        <!-- <div class="col-4" *ngFor="let testType of testTypes"> -->
+
+        <!-- <a (click)="onTestTypeClick(testType._id)"> -->
+        <!-- <img class="card-img-top img-fluid" src="{{ testType.imageUrl }}">
+            <div class="card-body">
+              <h4 class="card-title">{{ testType.title }}</h4>
+              <p class="card-text">{{ testType.description }}</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">{{ testType.duration }} seconds</small>
+            </div> -->
+        <!-- </a> -->
+        <!-- </div> -->
+        <!-- </div> -->
+        <!-- </div> -->
+        <!-- <mat-grid-list cols="4" rowHeight="100px">
+          <mat-grid-tile *ngFor="let testType of testTypes" [colspan]="3" [rowspan]="1">
+            <img mat-grid-tile-header *ngIf="testType.imageUrl" src="{{ testType.imageUrl }}" class="img-fluid">
+            <h4 mat-grid-tile-footer>{{ testType.title }}</h4>
+            <h6 mat-grid-tile-footer>Description: {{ testType.description }}</h6>
+            <p mat-grid-tile-footer>{{ testType.duration }} seconds</p>
+          </mat-grid-tile>
+        </mat-grid-list> -->
+
+
+        <!-- <mat-nav-list id="testTypeList">
           <a mat-list-item *ngFor="let testType of testTypes" (click)="onTestTypeClick(testType._id)">
+            <img mat-line *ngIf="testType.imageUrl" src="{{ testType.imageUrl }}" class="img-fluid">
             <h4 mat-line>{{ testType.title }}</h4>
             <h6 mat-line>Description: {{ testType.description }}</h6>
             <p mat-line>{{ testType.duration }} seconds</p>
           </a>
-        </mat-nav-list>
+        </mat-nav-list> -->
         <button mat-raised-button color="primary" (click)="onAddTestTypeClicked()" id="addTestTypeBtn">Add</button>
       </div>
     </div>

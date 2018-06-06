@@ -35,14 +35,14 @@ router.get('/athlete/:athleteId', requireAuth, auth.roleAuthorization(['Admin', 
 });
 
 // Get a single injury
-router.get('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'getInjury'), (req, res, next) => {
+router.get('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester', 'Athlete'], 'getInjury'), (req, res, next) => {
 	const id = req.params.id;
 
 	Injury.getInjuryById(id, (err, injury) => {
 		if (err) {
 			res.json({
 				success: false,
-				msg: 'Failed to find injury.'
+				msg: 'Failed to find injury.' + err
 			});
 		} else {
 			res.json({
@@ -77,7 +77,5 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester', 'Ath
 		}
 	});
 });
-
-
 
 module.exports = router;

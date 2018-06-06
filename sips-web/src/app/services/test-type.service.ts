@@ -139,6 +139,69 @@ export class TestTypeService {
       .map(res => res.json());
   }
 
+  editTestType(testType, testTypeImage) {
+    this.showLoader();
+
+    let headers = new Headers();
+    this.authToken = this.authService.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.delete('Content-Type');
+    headers.append('Accept', 'application/json');
+
+    let formData: FormData = new FormData();
+
+    formData.append('id', testType._id);
+
+    if (testTypeImage) {
+      formData.append('cover', testTypeImage, testTypeImage.name);
+    }
+    if (testType.title) {
+      formData.append('title', testType.title);
+    }
+    if (testType.description) {
+      formData.append('description', testType.description);
+    }
+    if (testType.duration) {
+      formData.append('duration', testType.duration);
+    }
+
+    let url = this.serverUrl + "testTypes/" + testType._id;
+
+    return this.http.put(url, formData, { headers: headers }).catch(this.onCatch)
+      .do((res: Response) => {
+        this.onSuccess(res);
+      }, (error: any) => {
+        this.onError(error);
+      })
+      .finally(() => {
+        this.onEnd();
+      })
+      .map(res => res.json());
+  }
+
+  deleteTestType(testTypeId) {
+    this.showLoader();
+
+    let headers = new Headers();
+    this.authToken = this.authService.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type', 'application/json');
+
+    let url = this.serverUrl + "testTypes/" + testTypeId;
+
+    return this.http.delete(url, { headers: headers }).catch(this.onCatch)
+      .do((res: Response) => {
+        this.onSuccess(res);
+      }, (error: any) => {
+        this.onError(error);
+      })
+      .finally(() => {
+        this.onEnd();
+      })
+      .map(res => res.json());
+  }
+
+
   storeTestTypes(testTypes) {
     this.testTypes = testTypes;
   }

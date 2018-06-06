@@ -19,6 +19,21 @@
   padding-bottom: 1em;
 }
 
+.test-type-menu-btn {
+  margin: 1em;
+  position: relative;
+  width: 3.5em;
+  height: 3.5em;
+  float: right;
+
+  .test-type-menu-icon {
+    font-size: 3em !important;
+    position: absolute;
+    top: 0.3em;
+    left: 0.1em;
+  }
+}
+
 .mat-list-item {
   color: black;
   margin-top: 1em;
@@ -87,5 +102,20 @@
 
   h2 {
     font-size: 1em;
+  }
+
+  .test-type-menu-btn {
+    margin: 1em;
+    position: relative;
+    width: 3em;
+    height: 3em;
+    float: right;
+
+    .test-type-menu-icon {
+      font-size: 2em !important;
+      position: absolute;
+      top: 0.35em;
+      left: 0.25em;
+    }
   }
 }

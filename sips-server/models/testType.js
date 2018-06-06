@@ -41,3 +41,9 @@ module.exports.getOrganizationTestTypes = function(organizationId, callback) {
 		})
 		.exec(callback);
 }
+
+module.exports.deleteTestTypeById = function(testTypeId, callback) {
+	TestType.findByIdAndRemove({
+		'_id': testTypeId
+	}, callback);
+}

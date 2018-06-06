@@ -1,7 +1,7 @@
-<div class="row text-center h-100 justify-content-center align-items-center">
-  <div class="col-lg-6">
-    <h2 class="page-header">Add Test Type</h2>
-    <form (submit)="onAddTestTypeSubmit()">
+<div *ngIf="testType" class="row text-center h-100 justify-content-center align-items-center">
+  <div class="col-lg-6 col-10">
+    <h2 class="page-header">Edit Test Type</h2>
+    <form (submit)="onTestTypeEditSubmit()">
       <mat-form-field>
         <input matInput type="text" id="title" [(ngModel)]="title" placeholder="Title" name="title">
       </mat-form-field>
@@ -14,12 +14,11 @@
       <div class="row text-left">
         <div class="col-12">
           <p class="input-header">Test Type Image</p>
-          <img *ngIf="imageUrl" class="img-fluid" src="{{ imageUrl }}">
+          <img *ngIf="testType.imageUrl" class="img-fluid" src="{{ testType.imageUrl }}">
           <input class="image-upload-input" type="file" (change)="fileChange($event)" placeholder="Upload Image" accept=".jpg, .png, .jpeg">
         </div>
       </div>
       <br>
-      <!-- <input type="file" (change)="fileChange($event)" placeholder="Upload Image" accept=".jpg, .png, .jpeg"> -->
       <button type="submit" class="align-middle" mat-raised-button color="primary">Submit</button>
     </form>
   </div>

@@ -8,6 +8,7 @@ import { TestingDataService } from '../../services/testing-data.service';
 import { TestTypeService } from '../../services/test-type.service';
 import { TestData } from '../../classes/test-data';
 import { MatDialog, MatDialogRef } from '@angular/material';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { ImageUploadDialogComponent } from '../image-upload-dialog/image-upload-dialog.component';
 
 
@@ -21,7 +22,8 @@ export class TestTypeComponent implements OnInit {
   testType: any;
   testingData: TestData[] = [];
 
-  dialogRef: MatDialogRef<ImageUploadDialogComponent>;
+  confirmDialogRef: MatDialogRef<ConfirmationDialogComponent>;
+  imageUploadDialogRef: MatDialogRef<ImageUploadDialogComponent>;
 
   constructor(
     private authService: AuthService,
@@ -30,7 +32,8 @@ export class TestTypeComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private flashMessage: FlashMessagesService,
-    private dialog: MatDialog
+    private confirmDialog: MatDialog,
+    private imageUploadDialog: MatDialog
   ) {
     this.user = this.authService.loadUser();
   }
@@ -73,12 +76,46 @@ export class TestTypeComponent implements OnInit {
     return false;
   }
 
+  onClickEditTestType() {
+    this.router.navigate(['/tests/test-types', this.testType._id, 'edit']);
+    return false;
+  }
+
+  openDeleteTestTypeDialog() {
+    this.confirmDialogRef = this.confirmDialog.open(ConfirmationDialogComponent, {
+      disableClose: false
+    });
+    this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to delete?"
+
+    this.confirmDialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.testTypeService.deleteTestType(this.testType._id).subscribe(data => {
+          if (data.success) {
+            this.flashMessage.show(data.msg, {
+              cssClass: 'alert-success',
+              timeout: 5000
+            });
+
+            this.router.navigate(['/']);
+          }
+          else {
+            this.flashMessage.show(data.msg, {
+              cssClass: 'alert-danger',
+              timeout: 5000
+            });
+          }
+        });
+      }
+      this.confirmDialogRef = null;
+    });
+  }
+
   openUploadCoverImageDialog() {
-    this.dialogRef = this.dialog.open(ImageUploadDialogComponent, {
+    this.imageUploadDialogRef = this.imageUploadDialog.open(ImageUploadDialogComponent, {
       disableClose: false
     });
 
-    this.dialogRef.afterClosed().subscribe(result => {
+    this.imageUploadDialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log(result);
         this.testTypeService.uploadTestTypeImage(this.testType._id, result).subscribe(data => {
@@ -101,7 +138,7 @@ export class TestTypeComponent implements OnInit {
       else {
 
       }
-      this.dialogRef = null;
+      this.imageUploadDialogRef = null;
     });
   }
 
