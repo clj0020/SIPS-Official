@@ -34,8 +34,28 @@ var requireAuth = passport.authenticate('jwt', {
 	session: false
 });
 
+// Get a single athlete
+router.get('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'getAthlete'), (req, res, next) => {
+	const id = req.params.id;
 
-router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'addAthlete'), (req, res, next) => {
+	Athlete.getAthleteById(id, (err, athlete) => {
+		if (err) {
+			res.json({
+				success: false,
+				msg: 'Failed to find athlete.'
+			});
+		} else {
+			res.json({
+				success: true,
+				msg: 'Successfully found athlete.',
+				athlete: athlete
+			});
+		}
+	});
+});
+
+// Add athlete
+router.post('/', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'addAthlete'), (req, res, next) => {
 	let newAthlete = new Athlete({
 		email: req.body.email,
 		organization: req.body.organization,
@@ -111,6 +131,106 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'ad
 	});
 });
 
+// Update athlete
+router.put('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester', 'Athlete'], 'editAthlete'), upload.single('profileImage'), (req, res, next) => {
+	const athlete = req.body;
+
+	if (req.file) {
+		uploadProfileImage(req.file.buffer, (err, imageUrl) => {
+			if (err) {
+				console.log(err);
+				return res.status(206).json({
+					success: false,
+					msg: 'Error adding profile image: ' + err
+				});
+			} else {
+				athlete.profileImageUrl = imageUrl;
+				console.log("Athlete: ", athlete);
+
+				Athlete.findByIdAndUpdate(req.body.id, athlete, {
+					new: true
+				}, (err, newAthlete) => {
+					if (err) {
+						res.json({
+							success: false,
+							msg: 'Failed to edit athlete.'
+						});
+					} else {
+						console.log("New Athlete: ", newAthlete);
+						res.json({
+							success: true,
+							msg: 'Successfully edited athlete.',
+							athlete: newAthlete
+						});
+					}
+				});
+			}
+		})
+	} else {
+		Athlete.findByIdAndUpdate(req.body._id, req.body, {
+			new: true
+		}, (err, newAthlete) => {
+			if (err) {
+				res.json({
+					success: false,
+					msg: 'Failed to edit athlete.'
+				});
+			} else {
+				res.json({
+					success: true,
+					msg: 'Successfully edited athlete.',
+					athlete: newAthlete
+				});
+			}
+		});
+	}
+});
+
+// Delete Athlete
+router.delete('/:id', requireAuth, auth.roleAuthorization(['Admin'], 'deleteAthlete'), (req, res, next) => {
+	const id = req.params.id;
+
+	Athlete.deleteAthleteById(id, (err) => {
+		if (err) {
+			res.json({
+				success: false,
+				msg: 'Failed to delete athlete.'
+			});
+		} else {
+			res.json({
+				success: true,
+				msg: 'Successfully deleted athlete.'
+			});
+		}
+	});
+});
+
+// Get list of athletes from Organization
+router.get('/get-athletes-from-organization', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'getAthletesFromOrganization'), (req, res, next) => {
+	// let organizationId = req.params.organizationId;
+
+	let organizationId = req.user.organization
+
+	// Call the getAthletesFromOrganization method of Athlete model.
+	Athlete.getAthletesFromOrganization(organizationId, (err, athletes) => {
+		// If theres an error, success will be false
+		if (err) {
+			return res.json({
+				success: false,
+				msg: 'Failed to retrieve athletes: ' + err
+			});
+		} else {
+			// Success! Send back athletes
+			res.status(200).json({
+				success: true,
+				msg: 'Got your athletes.',
+				athletes: athletes
+			});
+		}
+	});
+});
+
+// Upload Athlete Profile Image
 router.post('/upload-profile-image', requireAuth, auth.roleAuthorization(['Admin', 'Tester', 'Athlete'], 'uploadAthleteProfileImage'), upload.single('profileImage'), (req, res) => {
 	let id = req.body.id;
 
@@ -151,6 +271,7 @@ router.post('/upload-profile-image', requireAuth, auth.roleAuthorization(['Admin
 	}
 });
 
+// Resend Verification Email
 router.get('/resend-verification/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'resendAthleteVerification'), (req, res, next) => {
 	let id = req.params.id;
 
@@ -212,6 +333,7 @@ router.get('/resend-verification/:id', requireAuth, auth.roleAuthorization(['Adm
 
 });
 
+// Verify athlete
 router.post('/verify', function(req, res) {
 	var decodedToken = {}
 
@@ -296,123 +418,6 @@ router.post('/verify', function(req, res) {
 			}
 		});
 	}
-});
-
-// Get list of athletes from Organization
-router.get('/get-athletes-from-organization', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'getAthletesFromOrganization'), (req, res, next) => {
-	// let organizationId = req.params.organizationId;
-
-	let organizationId = req.user.organization
-
-	// Call the getAthletesFromOrganization method of Athlete model.
-	Athlete.getAthletesFromOrganization(organizationId, (err, athletes) => {
-		// If theres an error, success will be false
-		if (err) {
-			return res.json({
-				success: false,
-				msg: 'Failed to retrieve athletes: ' + err
-			});
-		} else {
-			// Success! Send back athletes
-			res.status(200).json({
-				success: true,
-				msg: 'Got your athletes.',
-				athletes: athletes
-			});
-		}
-	});
-});
-
-// Get a single athlete
-router.get('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'getAthlete'), (req, res, next) => {
-	const id = req.params.id;
-
-	Athlete.getAthleteById(id, (err, athlete) => {
-		if (err) {
-			res.json({
-				success: false,
-				msg: 'Failed to find athlete.'
-			});
-		} else {
-			res.json({
-				success: true,
-				msg: 'Successfully found athlete.',
-				athlete: athlete
-			});
-		}
-	});
-});
-
-router.put('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester', 'Athlete'], 'editAthlete'), upload.single('profileImage'), (req, res, next) => {
-	const athlete = req.body;
-
-	if (req.file) {
-		uploadProfileImage(req.file.buffer, (err, imageUrl) => {
-			if (err) {
-				console.log(err);
-				return res.status(206).json({
-					success: false,
-					msg: 'Error adding profile image: ' + err
-				});
-			} else {
-				athlete.profileImageUrl = imageUrl;
-				console.log("Athlete: ", athlete);
-
-				Athlete.findByIdAndUpdate(req.body.id, athlete, {
-					new: true
-				}, (err, newAthlete) => {
-					if (err) {
-						res.json({
-							success: false,
-							msg: 'Failed to edit athlete.'
-						});
-					} else {
-						console.log("New Athlete: ", newAthlete);
-						res.json({
-							success: true,
-							msg: 'Successfully edited athlete.',
-							athlete: newAthlete
-						});
-					}
-				});
-			}
-		})
-	} else {
-		Athlete.findByIdAndUpdate(req.body._id, req.body, {
-			new: true
-		}, (err, newAthlete) => {
-			if (err) {
-				res.json({
-					success: false,
-					msg: 'Failed to edit athlete.'
-				});
-			} else {
-				res.json({
-					success: true,
-					msg: 'Successfully edited athlete.',
-					athlete: newAthlete
-				});
-			}
-		});
-	}
-});
-
-router.delete('/:id', requireAuth, auth.roleAuthorization(['Admin'], 'deleteAthlete'), (req, res, next) => {
-	const id = req.params.id;
-
-	Athlete.deleteAthleteById(id, (err) => {
-		if (err) {
-			res.json({
-				success: false,
-				msg: 'Failed to delete athlete.'
-			});
-		} else {
-			res.json({
-				success: true,
-				msg: 'Successfully deleted athlete.'
-			});
-		}
-	});
 });
 
 function uploadProfileImage(profileImageData, callback) {

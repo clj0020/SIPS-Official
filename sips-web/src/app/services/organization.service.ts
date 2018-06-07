@@ -37,7 +37,7 @@ export class OrganizationService {
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
 
-    let url = this.serverUrl + "organizations/add";
+    let url = this.serverUrl + "organizations";
 
     return this.http.post(url, organization, { headers: headers }).catch(this.onCatch)
       .do((res: Response) => {

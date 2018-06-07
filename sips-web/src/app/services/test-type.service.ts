@@ -53,7 +53,7 @@ export class TestTypeService {
     formData.append('duration', testType.duration);
     formData.append('organization', testType.organization);
 
-    let url = this.serverUrl + "testTypes/add";
+    let url = this.serverUrl + "testTypes";
 
     return this.http.post(url, formData, { headers: headers }).catch(this.onCatch)
       .do((res: Response) => {

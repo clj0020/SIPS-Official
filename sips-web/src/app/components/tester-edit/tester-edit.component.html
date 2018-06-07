@@ -1,0 +1,31 @@
+<div *ngIf="tester" class="row text-center h-100 justify-content-center align-items-center">
+  <div class="col-lg-6 col-10">
+    <h2 class="page-header">Edit Tester</h2>
+    <form (submit)="onTesterEditSubmit()">
+      <div class="row name-row">
+        <div class="col-6 name-col-1">
+          <mat-form-field>
+            <input matInput type="text" [(ngModel)]="first_name" name="first_name" placeholder="First Name">
+          </mat-form-field>
+        </div>
+        <div class="col-6 name-col-2">
+          <mat-form-field>
+            <input matInput type="text" [(ngModel)]="last_name" name="last_name" placeholder="Last Name">
+          </mat-form-field>
+        </div>
+      </div>
+      <mat-form-field>
+        <input matInput type="text" [(ngModel)]="email" name="email" placeholder="Email">
+      </mat-form-field>
+      <div class="row text-left">
+        <div class="col-12">
+          <p class="input-header">Tester Profile Picture</p>
+          <img *ngIf="tester.profileImageUrl" class="img-fluid" src="{{ tester.profileImageUrl }}">
+          <input class="image-upload-input" type="file" (change)="fileChange($event)" placeholder="Upload Image" accept=".jpg, .png, .jpeg">
+        </div>
+      </div>
+      <br>
+      <button type="submit" class="align-middle" mat-raised-button color="primary">Submit</button>
+    </form>
+  </div>
+</div>

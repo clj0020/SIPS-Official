@@ -33,22 +33,24 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { AdminRegisterComponent } from './components/admin-register/admin-register.component';
-import { AddOrganizationComponent } from './components/add-organization/add-organization.component';
+import { OrganizationAddComponent } from './components/organization-add/organization-add.component';
 import { OrganizationAdminComponent } from './components/organization-admin/organization-admin.component';
-import { VerifyTesterComponent } from './components/verify-tester/verify-tester.component';
-import { VerifyAthleteComponent } from './components/verify-athlete/verify-athlete.component';
+import { AthleteVerifyComponent } from './components/athlete-verify/athlete-verify.component';
 import { AthleteProfileComponent } from './components/athlete-profile/athlete-profile.component';
 import { AthleteEditComponent } from './components/athlete-edit/athlete-edit.component';
-import { TestDataComponent } from './components/testdata/testdata.component';
 import { LoaderComponent } from './components/loader/loader.component';
-import { AddTestTypeComponent } from './components/add-test-type/add-test-type.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { ImageUploadDialogComponent } from './components/image-upload-dialog/image-upload-dialog.component';
-import { TesterProfileComponent } from './components/tester-profile/tester-profile.component';
-import { AddInjuryComponent } from './components/add-injury/add-injury.component';
+import { InjuryAddComponent } from './components/injury-add/injury-add.component';
 import { InjuryComponent } from './components/injury/injury.component';
+import { InjuryEditComponent } from './components/injury-edit/injury-edit.component';
+import { TesterProfileComponent } from './components/tester-profile/tester-profile.component';
+import { TesterEditComponent } from './components/tester-edit/tester-edit.component';
+import { TesterVerifyComponent } from './components/tester-verify/tester-verify.component';
+import { TestDataComponent } from './components/test-data/test-data.component';
 import { TestTypeComponent } from './components/test-type/test-type.component';
+import { TestTypeAddComponent } from './components/test-type-add/test-type-add.component';
 import { TestTypeEditComponent } from './components/test-type-edit/test-type-edit.component';
 
 // Services
@@ -66,22 +68,23 @@ import { MachineLearnerService } from './services/machine-learner.service';
 // Guards
 import { AuthGuard } from './guards/auth.guard';
 
-
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'landing', component: LandingPageComponent },
   { path: 'login', component: LoginComponent },
   { path: 'admin/register', component: AdminRegisterComponent },
-  { path: 'admin/add-organization', component: AddOrganizationComponent },
+  { path: 'admin/add-organization', component: OrganizationAddComponent },
   { path: 'admin/organization/:organizationId', component: OrganizationAdminComponent },
-  { path: 'athletes/verify', component: VerifyAthleteComponent },
+  { path: 'athletes/verify', component: AthleteVerifyComponent },
   { path: 'athletes/athlete/:id', component: AthleteProfileComponent },
   { path: 'athletes/athlete/edit/:id', component: AthleteEditComponent },
-  { path: 'athletes/injuries/add/:athleteId', component: AddInjuryComponent },
+  { path: 'athletes/injuries/add/:athleteId', component: InjuryAddComponent },
   { path: 'athletes/athlete/:athleteId/injuries/:id', component: InjuryComponent },
-  { path: 'organization/testTypes/add', component: AddTestTypeComponent },
-  { path: 'testers/verify', component: VerifyTesterComponent },
+  { path: 'athletes/athlete/:athleteId/injuries/:id/edit', component: InjuryEditComponent },
+  { path: 'organization/testTypes/add', component: TestTypeAddComponent },
+  { path: 'testers/verify', component: TesterVerifyComponent },
   { path: 'testers/tester/:id', component: TesterProfileComponent },
+  { path: 'testers/tester/:id/edit', component: TesterEditComponent },
   { path: 'tests/athlete/:athleteId/:id', component: TestDataComponent },
   { path: 'tests/test-types/:id', component: TestTypeComponent },
   { path: 'tests/test-types/:id/edit', component: TestTypeEditComponent }
@@ -95,23 +98,25 @@ const appRoutes: Routes = [
     LoginComponent,
     NavbarComponent,
     AdminRegisterComponent,
-    AddOrganizationComponent,
-    OrganizationAdminComponent,
-    VerifyTesterComponent,
-    VerifyAthleteComponent,
+    AthleteVerifyComponent,
     AthleteProfileComponent,
+    AthleteEditComponent,
+    OrganizationAddComponent,
+    OrganizationAdminComponent,
     TestDataComponent,
     LoaderComponent,
-    AddTestTypeComponent,
     LandingPageComponent,
     ConfirmationDialogComponent,
-    TesterProfileComponent,
-    AddInjuryComponent,
-    AthleteEditComponent,
     TestTypeComponent,
+    TestTypeAddComponent,
     TestTypeEditComponent,
+    InjuryComponent,
+    InjuryAddComponent,
+    InjuryEditComponent,
+    TesterProfileComponent,
+    TesterEditComponent,
+    TesterVerifyComponent,
     ImageUploadDialogComponent,
-    InjuryComponent
   ],
   imports: [
     BrowserModule,

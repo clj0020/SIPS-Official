@@ -2,6 +2,7 @@
 
 .page-header {
   margin-top: 2em;
+  margin-bottom: 1em;
 }
 
 .row {
@@ -18,24 +19,33 @@
   margin-top: 1em;
 }
 
-/deep/ .mat-tab-label,
-/deep/ .mat-tab-link {
-  color: black;
-}
-
-/deep/ .mat-select-value {
-  color: black;
-}
-
 .mat-form-field {
   width: 100%;
 }
 
+.mat-list-item {
+  color: black;
+  margin-top: 1em;
+  box-shadow: 0 0 0 grey;
+  -webkit-transition: box-shadow 0.6s ease-out;
+  box-shadow: 0.8px 0.9px 3px grey;
+}
+
+.mat-list-item:hover {
+  box-shadow: 1px 8px 20px grey;
+  -webkit-transition: box-shadow 0.6s ease-in;
+}
+
 /deep/ .mat-input-underline {
   background-color: black;
+  /* replace this color with your accent color hex code */
 }
 
 .mat-form-field-hide-placeholder .mat-input-element::-moz-placeholder {
+  color: black !important;
+}
+
+/deep/ .mat-form-field-label {
   color: black !important;
 }
 

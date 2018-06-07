@@ -40,7 +40,7 @@ export class AthleteService {
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
 
-    let url = this.serverUrl + "athletes/add";
+    let url = this.serverUrl + "athletes";
 
     return this.http.post(url, athlete, { headers: headers }).catch(this.onCatch)
       .do((res: Response) => {

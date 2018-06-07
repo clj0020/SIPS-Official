@@ -5,6 +5,8 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import * as moment from 'moment';
 import { FlashMessagesService } from 'angular2-flash-messages';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-injury',
@@ -14,6 +16,9 @@ import { FlashMessagesService } from 'angular2-flash-messages';
 export class InjuryComponent implements OnInit {
   user: any;
   injury: any;
+  athleteId: string;
+
+  confirmDialogRef: MatDialogRef<ConfirmationDialogComponent>;
 
   constructor(
     private authService: AuthService,
@@ -21,13 +26,14 @@ export class InjuryComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private flashMessage: FlashMessagesService,
+    private confirmDialog: MatDialog,
   ) {
     this.user = this.authService.loadUser();
   }
 
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get('id');
-    let athleteId = this.route.snapshot.paramMap.get('athleteId');
+    this.athleteId = this.route.snapshot.paramMap.get('athleteId');
 
     this.injuryService.getInjuryById(id).subscribe(data => {
       if (data.success) {
@@ -40,6 +46,40 @@ export class InjuryComponent implements OnInit {
           timeout: 5000
         });
       }
+    });
+  }
+
+  onClickEditInjury() {
+    this.router.navigate(['/athletes/athlete', this.athleteId, 'injuries', this.injury._id, 'edit']);
+    return false;
+  }
+
+  openDeleteInjuryDialog() {
+    this.confirmDialogRef = this.confirmDialog.open(ConfirmationDialogComponent, {
+      disableClose: false
+    });
+    this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to delete?"
+
+    this.confirmDialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.injuryService.deleteInjury(this.injury._id).subscribe(data => {
+          if (data.success) {
+            this.flashMessage.show(data.msg, {
+              cssClass: 'alert-success',
+              timeout: 5000
+            });
+
+            this.router.navigate(['/']);
+          }
+          else {
+            this.flashMessage.show(data.msg, {
+              cssClass: 'alert-danger',
+              timeout: 5000
+            });
+          }
+        });
+      }
+      this.confirmDialogRef = null;
     });
   }
 

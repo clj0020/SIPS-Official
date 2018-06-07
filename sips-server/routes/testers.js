@@ -10,6 +10,24 @@ const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY || config.SENDGRID_API_KEY
 const SENDGRID_SENDER = process.env.SENDGRID_SENDER || config.SENDGRID_SENDER;
 const sendGridMail = require('@sendgrid/mail');
 
+const multer = require('multer');
+
+const upload = multer({
+	storage: multer.memoryStorage(),
+	limits: {
+		fileSize: 5 * 1024 * 1024
+	}
+});
+
+var gcloud = require('google-cloud');
+
+var storage = gcloud.storage({
+	projectId: config.projectId,
+	keyFilename: config.keyFilename
+});
+
+var bucket = storage.bucket(config.bucketName);
+
 var requireAuth = passport.authenticate('jwt', {
 	session: false
 });
@@ -18,35 +36,6 @@ var requireLogin = passport.authenticate('local', {
 	session: false
 });
 
-function generateToken(user) {
-	return jwt.sign(user, config.secret, {
-		// expiresIn: 10080
-	});
-}
-
-function setTesterInfo(request) {
-	return {
-		_id: request._id,
-		first_name: request.first_name,
-		last_name: request.last_name,
-		email: request.email,
-		kind: request.kind,
-		organization: request.organization,
-		status: request.status,
-		created_at: request.created_at
-	};
-}
-
-function setUnVerifiedTesterInfo(request) {
-	return {
-		_id: request._id,
-		email: request.email,
-		kind: request.kind,
-		organization: request.organization,
-		status: request.status,
-		created_at: request.created_at
-	};
-}
 
 router.post('/add', requireAuth, auth.roleAuthorization(['Admin'], 'addTester'), (req, res, next) => {
 	let newTester = new Tester({
@@ -226,7 +215,6 @@ router.get('/resend-verification/:id', requireAuth, auth.roleAuthorization(['Adm
 
 });
 
-
 // Get a single tester
 router.get('/tester/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'getTester'), (req, res, next) => {
 	const id = req.params.id;
@@ -267,6 +255,98 @@ router.get('/organization', requireAuth, auth.roleAuthorization(['Admin'], 'getT
 	});
 });
 
+router.post('/upload-profile-image', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'uploadTesterProfileImage'), upload.single('profileImage'), (req, res) => {
+	let id = req.body.id;
+
+	if (req.file) {
+		uploadProfileImage(req.file.buffer, (err, imageUrl) => {
+			if (err) {
+				console.log(err);
+				return res.status(206).json({
+					success: false,
+					msg: 'Error adding tester profile image: ' + err
+				});
+			} else {
+				Tester.findByIdAndUpdate(id, {
+					'profileImageUrl': imageUrl
+				}, {
+					new: true
+				}, (err, newTester) => {
+					if (err) {
+						res.json({
+							success: false,
+							msg: 'Failed to update tester.'
+						});
+					} else {
+						res.json({
+							success: true,
+							msg: 'Successfully uploaded profile image for tester.',
+							tester: newTester
+						});
+					}
+				});
+			}
+		});
+	} else {
+		return res.status(206).json({
+			success: false,
+			msg: 'Error: No image file uploaded.'
+		});
+	}
+});
+
+router.put('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'editTester'), upload.single('profileImage'), (req, res, next) => {
+	const tester = req.body;
+
+	if (req.file) {
+		uploadProfileImage(req.file.buffer, (err, imageUrl) => {
+			if (err) {
+				console.log(err);
+				return res.status(206).json({
+					success: false,
+					msg: 'Error adding profile image: ' + err
+				});
+			} else {
+				tester.profileImageUrl = imageUrl;
+
+				Tester.findByIdAndUpdate(req.body.id, tester, {
+					new: true
+				}, (err, newTester) => {
+					if (err) {
+						res.json({
+							success: false,
+							msg: 'Failed to edit tester.'
+						});
+					} else {
+						res.json({
+							success: true,
+							msg: 'Successfully edited tester.',
+							tester: newTester
+						});
+					}
+				});
+			}
+		})
+	} else {
+		Tester.findByIdAndUpdate(req.body._id, req.body, {
+			new: true
+		}, (err, newTester) => {
+			if (err) {
+				res.json({
+					success: false,
+					msg: 'Failed to edit tester.'
+				});
+			} else {
+				res.json({
+					success: true,
+					msg: 'Successfully edited tester.',
+					tester: newTester
+				});
+			}
+		});
+	}
+});
+
 router.delete('/:id', requireAuth, auth.roleAuthorization(['Admin'], 'deleteTester'), (req, res, next) => {
 	const id = req.params.id;
 
@@ -285,6 +365,51 @@ router.delete('/:id', requireAuth, auth.roleAuthorization(['Admin'], 'deleteTest
 	});
 });
 
+function uploadProfileImage(profileImageData, callback) {
+	// Generate a unique filename for this image
+	var filename = '' + new Date().getTime() + "-" + Math.random();
+	var file = bucket.file('testers/' + filename);
+	var imageUrl = 'https://' + config.bucketName + '.storage.googleapis.com/testers/' + filename;
+	var stream = file.createWriteStream();
+	stream.on('error', callback);
+	stream.on('finish', function() {
+		// Set this file to be publicly readable
+		file.makePublic(function(err) {
+			if (err) return callback(err);
+			callback(null, imageUrl);
+		});
+	});
+	stream.end(profileImageData);
+}
 
+function generateToken(user) {
+	return jwt.sign(user, config.secret, {
+		// expiresIn: 10080
+	});
+}
+
+function setTesterInfo(request) {
+	return {
+		_id: request._id,
+		first_name: request.first_name,
+		last_name: request.last_name,
+		email: request.email,
+		kind: request.kind,
+		organization: request.organization,
+		status: request.status,
+		created_at: request.created_at
+	};
+}
+
+function setUnVerifiedTesterInfo(request) {
+	return {
+		_id: request._id,
+		email: request.email,
+		kind: request.kind,
+		organization: request.organization,
+		status: request.status,
+		created_at: request.created_at
+	};
+}
 
 module.exports = router;

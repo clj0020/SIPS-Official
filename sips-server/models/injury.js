@@ -55,3 +55,9 @@ module.exports.updateInjury = function(injury, callback) {
 		id: injury._id
 	}, injury, callback);
 };
+
+module.exports.deleteInjuryById = function(injuryId, callback) {
+	Injury.findByIdAndRemove({
+		'_id': injuryId
+	}, callback);
+}

@@ -53,6 +53,74 @@ export class TesterService {
       .map(res => res.json());
   }
 
+  editTester(tester, profileImage) {
+    this.showLoader();
+
+    let headers = new Headers();
+    this.authToken = this.authService.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.delete('Content-Type');
+    headers.append('Accept', 'application/json');
+
+    let formData: FormData = new FormData();
+
+    formData.append('id', tester._id);
+
+    if (profileImage) {
+      formData.append('profileImage', profileImage, profileImage.name);
+    }
+    if (tester.first_name) {
+      formData.append('first_name', tester.first_name);
+    }
+    if (tester.last_name) {
+      formData.append('last_name', tester.last_name);
+    }
+    if (tester.email) {
+      formData.append('email', tester.email);
+    }
+
+    let url = this.serverUrl + "testers/" + tester._id;
+
+    return this.http.put(url, formData, { headers: headers }).catch(this.onCatch)
+      .do((res: Response) => {
+        this.onSuccess(res);
+      }, (error: any) => {
+        this.onError(error);
+      })
+      .finally(() => {
+        this.onEnd();
+      })
+      .map(res => res.json());
+  }
+
+  uploadProfileImage(testerId, profileImageFile) {
+    this.showLoader();
+
+    let headers = new Headers();
+    this.authToken = this.authService.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.delete('Content-Type');
+    headers.append('Accept', 'application/json');
+
+    let formData: FormData = new FormData();
+
+    formData.append('profileImage', profileImageFile, profileImageFile.name);
+    formData.append('id', testerId);
+
+    let url = this.serverUrl + "testers/upload-profile-image";
+
+    return this.http.post(url, formData, { headers: headers }).catch(this.onCatch)
+      .do((res: Response) => {
+        this.onSuccess(res);
+      }, (error: any) => {
+        this.onError(error);
+      })
+      .finally(() => {
+        this.onEnd();
+      })
+      .map(res => res.json());
+  }
+
   deleteTester(testerId) {
     this.showLoader();
 
@@ -140,7 +208,6 @@ export class TesterService {
       .map(res => res.json());
   }
 
-
   getTestersFromOrganization(organizationId) {
     this.showLoader();
 
@@ -190,5 +257,4 @@ export class TesterService {
   hideLoader(): void {
     this.loaderService.hide();
   }
-
 }

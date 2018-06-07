@@ -5,7 +5,7 @@ import { FlashMessagesService } from 'angular2-flash-messages';
 import { TesterService } from '../../services/tester.service';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
-
+import { ImageUploadDialogComponent } from '../image-upload-dialog/image-upload-dialog.component';
 
 @Component({
   selector: 'app-tester-profile',
@@ -16,7 +16,8 @@ export class TesterProfileComponent implements OnInit {
   user: any;
   tester: any;
 
-  dialogRef: MatDialogRef<ConfirmationDialogComponent>;
+  confirmDialogRef: MatDialogRef<ConfirmationDialogComponent>;
+  imageUploadDialogRef: MatDialogRef<ImageUploadDialogComponent>;
 
   constructor(
     private authService: AuthService,
@@ -24,7 +25,8 @@ export class TesterProfileComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private flashMessage: FlashMessagesService,
-    private dialog: MatDialog
+    private confirmDialog: MatDialog,
+    private imageUploadDialog: MatDialog
   ) {
     this.user = this.authService.loadUser();
   }
@@ -45,20 +47,27 @@ export class TesterProfileComponent implements OnInit {
     });
   }
 
-  openResendConfirmationEmailDialog() {
-    this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+  onClickEditTester() {
+    this.router.navigate(['/testers/tester', this.tester._id, 'edit']);
+    return false;
+  }
+
+  openUploadProfileImageDialog() {
+    this.imageUploadDialogRef = this.imageUploadDialog.open(ImageUploadDialogComponent, {
       disableClose: false
     });
-    this.dialogRef.componentInstance.confirmMessage = "Resend confirmation email?"
 
-    this.dialogRef.afterClosed().subscribe(result => {
+    this.imageUploadDialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.testerService.resendTesterVerificationEmail(this.tester._id).subscribe(data => {
+        console.log(result);
+        this.testerService.uploadProfileImage(this.tester._id, result).subscribe(data => {
           if (data.success) {
             this.flashMessage.show(data.msg, {
               cssClass: 'alert-success',
               timeout: 5000
             });
+
+            this.tester = data.tester;
           }
           else {
             this.flashMessage.show(data.msg, {
@@ -68,18 +77,20 @@ export class TesterProfileComponent implements OnInit {
           }
         });
       }
-      this.dialogRef = null;
+      else {
+
+      }
+      this.imageUploadDialogRef = null;
     });
   }
 
-
   openDeleteTesterDialog() {
-    this.dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    this.confirmDialogRef = this.confirmDialog.open(ConfirmationDialogComponent, {
       disableClose: false
     });
-    this.dialogRef.componentInstance.confirmMessage = "Are you sure you want to delete?"
+    this.confirmDialogRef.componentInstance.confirmMessage = "Are you sure you want to delete?"
 
-    this.dialogRef.afterClosed().subscribe(result => {
+    this.confirmDialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.testerService.deleteTester(this.tester._id).subscribe(data => {
           if (data.success) {
@@ -98,8 +109,34 @@ export class TesterProfileComponent implements OnInit {
           }
         });
       }
-      this.dialogRef = null;
+      this.confirmDialogRef = null;
     });
   }
 
+  openResendConfirmationEmailDialog() {
+    this.confirmDialogRef = this.confirmDialog.open(ConfirmationDialogComponent, {
+      disableClose: false
+    });
+    this.confirmDialogRef.componentInstance.confirmMessage = "Resend confirmation email?"
+
+    this.confirmDialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.testerService.resendTesterVerificationEmail(this.tester._id).subscribe(data => {
+          if (data.success) {
+            this.flashMessage.show(data.msg, {
+              cssClass: 'alert-success',
+              timeout: 5000
+            });
+          }
+          else {
+            this.flashMessage.show(data.msg, {
+              cssClass: 'alert-danger',
+              timeout: 5000
+            });
+          }
+        });
+      }
+      this.confirmDialogRef = null;
+    });
+  }
 }

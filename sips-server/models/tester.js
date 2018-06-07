@@ -4,7 +4,8 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 
 const TesterSchema = User.discriminator('Tester', new Schema({
-	status: String
+	status: String,
+	profileImageUrl: String
 }));
 
 const Tester = module.exports = mongoose.model('Tester');

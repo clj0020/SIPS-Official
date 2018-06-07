@@ -1,4 +1,21 @@
 <div class="row text-center h-100 justify-content-center align-items-center" *ngIf="injury">
+  <div class="col-1 offset-11">
+    <button mat-icon-button [matMenuTriggerFor]="menu" class="injury-menu-btn">
+        <mat-icon class="injury-menu-icon">more_vert</mat-icon>
+      </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="onClickEditInjury()">
+          <mat-icon>edit</mat-icon>
+          <span>Edit</span>
+        </button>
+      <button mat-menu-item (click)="openDeleteInjuryDialog()">
+          <mat-icon>delete</mat-icon>
+          <span>Delete</span>
+        </button>
+    </mat-menu>
+  </div>
+</div>
+<div class="row text-center h-100 justify-content-center align-items-center" *ngIf="injury">
   <div class="col-12">
     <h1 class="page-header">{{ injury.title }}</h1>
     <p class="lead">{{ formatDate(injury.date_occurred) }}</p>

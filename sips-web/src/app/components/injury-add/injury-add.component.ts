@@ -7,11 +7,11 @@ import 'rxjs/add/operator/switchMap';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'app-add-injury',
-  templateUrl: './add-injury.component.html',
-  styleUrls: ['./add-injury.component.scss']
+  selector: 'app-injury-add',
+  templateUrl: './injury-add.component.html',
+  styleUrls: ['./injury-add.component.scss']
 })
-export class AddInjuryComponent implements OnInit {
+export class InjuryAddComponent implements OnInit {
   athleteId: string;
   title: string;
   date_occurred: Date;

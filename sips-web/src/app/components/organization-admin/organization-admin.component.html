@@ -55,7 +55,8 @@
             </div>
           </div>
           <a mat-list-item *ngFor="let tester of testers" (click)="onTesterClick(tester._id)">
-            <mat-icon mat-list-icon aria-hidden="true">accessibility <span class="cdk-visually-hidden">Tester</span></mat-icon>
+            <mat-icon mat-list-icon *ngIf="!tester.profileImageUrl" aria-hidden="true">accessibility <span class="cdk-visually-hidden">Tester</span></mat-icon>
+            <img matListAvatar *ngIf="tester.profileImageUrl" src="{{ tester.profileImageUrl }}" alt="{{ tester.first_name }} {{ tester.last_name}}'s Picture">
             <h4 *ngIf="!tester.first_name" mat-line style="text-align: start;">{{ tester.email }}</h4>
             <h4 *ngIf="tester.first_name" mat-line style="text-align: start;">{{ tester.first_name + " " + tester.last_name }}</h4>
             <p mat-line style="text-align: start;"> {{tester.created_at | date}} </p>

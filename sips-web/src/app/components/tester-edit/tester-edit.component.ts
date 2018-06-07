@@ -4,30 +4,28 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import * as moment from 'moment';
 import { FlashMessagesService } from 'angular2-flash-messages';
-import { TestTypeService } from '../../services/test-type.service';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { TesterService } from '../../services/tester.service';
 
 @Component({
-  selector: 'app-test-type-edit',
-  templateUrl: './test-type-edit.component.html',
-  styleUrls: ['./test-type-edit.component.scss']
+  selector: 'app-tester-edit',
+  templateUrl: './tester-edit.component.html',
+  styleUrls: ['./tester-edit.component.scss']
 })
-export class TestTypeEditComponent implements OnInit {
+export class TesterEditComponent implements OnInit {
   user: any;
-  testType: any;
+  tester: any;
 
-  title: string;
-  description: string;
-  duration: number;
+  first_name: string;
+  last_name: string;
+  email: string;
   file: File;
 
   constructor(
     private authService: AuthService,
-    private testTypeService: TestTypeService,
+    private testerService: TesterService,
     private route: ActivatedRoute,
     private router: Router,
     private flashMessage: FlashMessagesService,
-    private dialog: MatDialog
   ) {
     this.user = this.authService.loadUser();
   }
@@ -35,13 +33,13 @@ export class TestTypeEditComponent implements OnInit {
   ngOnInit() {
     let id = this.route.snapshot.paramMap.get('id');
 
-    this.testTypeService.getTestTypeById(id).subscribe(data => {
+    this.testerService.getTesterById(id).subscribe(data => {
       if (data.success) {
-        this.testType = data.testType;
-        this.title = this.testType.title;
-        this.description = this.testType.description;
-        this.duration = this.testType.duration;
-        this.file = this.testType.imageUrl;
+        this.tester = data.tester
+        this.first_name = this.tester.first_name;
+        this.last_name = this.tester.last_name;
+        this.email = this.tester.email;
+
       }
       else {
         this.flashMessage.show(data.msg, {
@@ -59,28 +57,28 @@ export class TestTypeEditComponent implements OnInit {
       var reader = new FileReader();
 
       reader.onload = (event: any) => {
-        this.testType.imageUrl = event.target.result;
+        this.tester.profileImageUrl = event.target.result;
       }
 
       reader.readAsDataURL(event.target.files[0]);
     }
   }
 
-  onTestTypeEditSubmit() {
-    this.testType.title = this.title;
-    this.testType.description = this.description;
-    this.testType.duration = this.duration;
+  onTesterEditSubmit() {
+    this.tester.first_name = this.first_name;
+    this.tester.last_name = this.last_name;
+    this.tester.email = this.email;
 
-    this.testTypeService.editTestType(this.testType, this.file).subscribe(data => {
+    this.testerService.editTester(this.tester, this.file).subscribe(data => {
       if (data.success) {
-        this.testType = data.testType;
+        this.tester = data.tester;
 
         this.flashMessage.show(data.msg, {
           cssClass: 'alert-success',
           timeout: 5000
         });
 
-        this.router.navigate(['tests/test-types', this.testType._id]);
+        this.router.navigate(['testers/tester', this.tester._id]);
       }
       else {
         this.flashMessage.show(data.msg, {
@@ -90,4 +88,5 @@ export class TestTypeEditComponent implements OnInit {
       }
     });
   }
+
 }

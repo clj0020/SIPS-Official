@@ -6,11 +6,11 @@ import { FlashMessagesService } from 'angular2-flash-messages';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-add-test-type',
-  templateUrl: './add-test-type.component.html',
-  styleUrls: ['./add-test-type.component.scss']
+  selector: 'app-test-type-add',
+  templateUrl: './test-type-add.component.html',
+  styleUrls: ['./test-type-add.component.scss']
 })
-export class AddTestTypeComponent implements OnInit {
+export class TestTypeAddComponent implements OnInit {
   title: string;
   description: string;
   duration: string;

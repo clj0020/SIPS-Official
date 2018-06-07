@@ -6,11 +6,11 @@ import { FlashMessagesService } from 'angular2-flash-messages';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-add-organization',
-  templateUrl: './add-organization.component.html',
-  styleUrls: ['./add-organization.component.scss']
+  selector: 'app-organization-add',
+  templateUrl: './organization-add.component.html',
+  styleUrls: ['./organization-add.component.scss']
 })
-export class AddOrganizationComponent implements OnInit {
+export class OrganizationAddComponent implements OnInit {
   title: string;
 
   constructor(

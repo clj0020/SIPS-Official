@@ -1,3 +1,20 @@
+<div class="row text-center h-100 justify-content-center align-items-center" *ngIf="tester">
+  <div class="col-1 offset-11">
+    <button mat-icon-button [matMenuTriggerFor]="menu" class="tester-menu-btn">
+        <mat-icon class="tester-menu-icon">more_vert</mat-icon>
+      </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="onClickEditTester()">
+          <mat-icon>edit</mat-icon>
+          <span>Edit</span>
+        </button>
+      <button mat-menu-item (click)="openDeleteTesterDialog()">
+          <mat-icon>delete</mat-icon>
+          <span>Delete</span>
+        </button>
+    </mat-menu>
+  </div>
+</div>
 <div class="row text-center h-100 justify-content-center align-items-center" *ngIf="tester && tester.status != 'Verified'">
   <div class="col-12">
     <button mat-icon-button class="resend-verification-btn" (click)="openResendConfirmationEmailDialog()" matTooltip="Click to resend email." tooltip-position='above' aria-hidden="true" data-toggle="tooltip" title="Click to resend email.">
@@ -6,14 +23,23 @@
   </div>
 </div>
 <div class="row text-center h-100 justify-content-center align-items-center">
-  <div class="col-2 offset-10" *ngIf="tester">
-    <button *ngIf="user.kind == 'Admin'" (click)="openDeleteTesterDialog()" mat-icon-button class="delete-tester-btn" matTooltip="Delete Tester" tooltip-position='above' aria-hidden="true" data-toggle="tooltip" title="Delete Tester">
-        <mat-icon class="delete-tester-icon" aria-label="Delete Tester">delete</mat-icon>
-    </button>
-  </div>
-</div>
-<div class="row text-center h-100 justify-content-center align-items-center">
   <div class="col-lg-6 col-10" *ngIf="tester">
+    <div class="image-container" *ngIf="tester.profileImageUrl">
+      <img src="{{ tester.profileImageUrl }}" alt="Avatar" class="image">
+      <div class="overlay">
+        <a (click)="openUploadProfileImageDialog()" class="icon" title="Cover Image">
+          <i class="fa fa-camera"></i>
+        </a>
+      </div>
+    </div>
+    <div class="image-container" *ngIf="!tester.profileImageUrl">
+      <img src="../../../assets/img/placeholder.png" alt="Avatar" class="image">
+      <div class="overlay">
+        <a (click)="openUploadProfileImageDialog()" class="icon" title="Cover Image">
+          <i class="fa fa-camera"></i>
+        </a>
+      </div>
+    </div>
     <h1>
       {{ tester.email }}
       <small class="text-muted">(Tester)</small>

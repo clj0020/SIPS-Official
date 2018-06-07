@@ -31,6 +31,41 @@ var requireAuth = passport.authenticate('jwt', {
   TestType routes
 */
 
+/** Get Single TestType
+
+	Description: Get a single testType by ID.
+
+	Endpoint: '/testTypes/:id'
+
+	Method: Get
+
+	Auth: Open
+
+	Request: params.id: String (required)
+
+	Response: success: bool (),
+						msg: String (),
+						testData: TestData ()
+*/
+router.get('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'getTestTypeInstance'), (req, res) => {
+	const id = req.params.id;
+
+	TestType.getTestTypeById(id, (err, testType) => {
+		if (err) {
+			res.json({
+				success: false,
+				msg: 'Failed to find testType.'
+			});
+		} else {
+			res.json({
+				success: true,
+				msg: 'Successfully found testType.',
+				testType: testType
+			});
+		}
+	});
+});
+
 /** Add Test Type
 
 	Description: Add a test type to the database.
@@ -48,7 +83,7 @@ var requireAuth = passport.authenticate('jwt', {
 						msg: String (),
 						testData: TestData ()
 */
-router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'addTestingData'), upload.single('cover'), (req, res) => {
+router.post('/', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'addTestingData'), upload.single('cover'), (req, res) => {
 
 	let newTestType = new TestType({
 		title: req.body.title,
@@ -118,81 +153,7 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'ad
 	}
 });
 
-router.post('/upload-image', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'uploadTestTypeCoverImage'), upload.single('cover'), (req, res) => {
-	let id = req.body.id;
-
-	if (req.file) {
-		uploadCoverImage(req.file.buffer, (err, imageUrl) => {
-			if (err) {
-				console.log(err);
-				return res.status(206).json({
-					success: false,
-					msg: 'Error adding test type image: ' + err
-				});
-			} else {
-				TestType.findByIdAndUpdate(id, {
-					'imageUrl': imageUrl
-				}, {
-					new: true
-				}, (err, newTestType) => {
-					if (err) {
-						res.json({
-							success: false,
-							msg: 'Failed to update test type.'
-						});
-					} else {
-						res.json({
-							success: true,
-							msg: 'Successfully uploaded cover image for test type.',
-							testType: newTestType
-						});
-					}
-				});
-			}
-		});
-	} else {
-		return res.status(206).json({
-			success: false,
-			msg: 'Error: No image file uploaded.'
-		});
-	}
-});
-
-/** Get Single TestType
-
-	Description: Get a single testType by ID.
-
-	Endpoint: '/testTypes/:id'
-
-	Method: Get
-
-	Auth: Open
-
-	Request: params.id: String (required)
-
-	Response: success: bool (),
-						msg: String (),
-						testData: TestData ()
-*/
-router.get('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'getTestTypeInstance'), (req, res) => {
-	const id = req.params.id;
-
-	TestType.getTestTypeById(id, (err, testType) => {
-		if (err) {
-			res.json({
-				success: false,
-				msg: 'Failed to find testType.'
-			});
-		} else {
-			res.json({
-				success: true,
-				msg: 'Successfully found testType.',
-				testType: testType
-			});
-		}
-	});
-});
-
+// Update test type
 router.put('/:id', requireAuth, auth.roleAuthorization(['Admin'], 'editTestType'), upload.single('cover'), (req, res, next) => {
 	const testType = req.body;
 
@@ -245,6 +206,7 @@ router.put('/:id', requireAuth, auth.roleAuthorization(['Admin'], 'editTestType'
 	}
 });
 
+// Delete test type
 router.delete('/:id', requireAuth, auth.roleAuthorization(['Admin'], 'deleteTestType'), (req, res, next) => {
 	const id = req.params.id;
 
@@ -263,8 +225,7 @@ router.delete('/:id', requireAuth, auth.roleAuthorization(['Admin'], 'deleteTest
 	});
 });
 
-
-
+// Get all test types for organization
 router.get('/organization/:organizationId', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'getTestTypesFromOrganization'), (req, res) => {
 	const organizationId = req.user.organization;
 
@@ -282,6 +243,47 @@ router.get('/organization/:organizationId', requireAuth, auth.roleAuthorization(
 			});
 		}
 	});
+});
+
+// Upload image to test type
+router.post('/upload-image', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'uploadTestTypeCoverImage'), upload.single('cover'), (req, res) => {
+	let id = req.body.id;
+
+	if (req.file) {
+		uploadCoverImage(req.file.buffer, (err, imageUrl) => {
+			if (err) {
+				console.log(err);
+				return res.status(206).json({
+					success: false,
+					msg: 'Error adding test type image: ' + err
+				});
+			} else {
+				TestType.findByIdAndUpdate(id, {
+					'imageUrl': imageUrl
+				}, {
+					new: true
+				}, (err, newTestType) => {
+					if (err) {
+						res.json({
+							success: false,
+							msg: 'Failed to update test type.'
+						});
+					} else {
+						res.json({
+							success: true,
+							msg: 'Successfully uploaded cover image for test type.',
+							testType: newTestType
+						});
+					}
+				});
+			}
+		});
+	} else {
+		return res.status(206).json({
+			success: false,
+			msg: 'Error: No image file uploaded.'
+		});
+	}
 });
 
 function uploadCoverImage(coverImageData, callback) {

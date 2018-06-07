@@ -12,12 +12,12 @@ import * as moment from 'moment'; // add this 1 of 4
 
 
 @Component({
-  selector: 'app-verify-athlete',
-  templateUrl: './verify-athlete.component.html',
-  styleUrls: ['./verify-athlete.component.scss'],
+  selector: 'app-athlete-verify',
+  templateUrl: './athlete-verify.component.html',
+  styleUrls: ['./athlete-verify.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class VerifyAthleteComponent implements OnInit {
+export class AthleteVerifyComponent implements OnInit {
   token: string;
   first_name: string;
   last_name: string;

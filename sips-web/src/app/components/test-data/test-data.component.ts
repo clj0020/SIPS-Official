@@ -11,9 +11,9 @@ import { AthleteService } from '../../services/athlete.service';
 import { TestingDataService } from '../../services/testing-data.service';
 
 @Component({
-  selector: 'app-testdata',
-  templateUrl: './testdata.component.html',
-  styleUrls: ['./testdata.component.scss']
+  selector: 'app-test-data',
+  templateUrl: './test-data.component.html',
+  styleUrls: ['./test-data.component.scss']
 })
 export class TestDataComponent implements OnInit {
   testData: any;

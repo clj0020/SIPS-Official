@@ -79,7 +79,7 @@ export class InjuryService {
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
 
-    let url = this.serverUrl + "injuries/add";
+    let url = this.serverUrl + "injuries";
 
     return this.http.post(url, injury, { headers: headers }).catch(this.onCatch)
       .do((res: Response) => {
@@ -93,6 +93,49 @@ export class InjuryService {
       .map(res => res.json());
   }
 
+  editInjury(injury) {
+    this.showLoader();
+
+    let headers = new Headers();
+    this.authToken = this.authService.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type', 'application/json');
+
+    let url = this.serverUrl + "injuries/" + injury._id;
+
+    return this.http.put(url, injury, { headers: headers }).catch(this.onCatch)
+      .do((res: Response) => {
+        this.onSuccess(res);
+      }, (error: any) => {
+        this.onError(error);
+      })
+      .finally(() => {
+        this.onEnd();
+      })
+      .map(res => res.json());
+  }
+
+  deleteInjury(injuryId) {
+    this.showLoader();
+
+    let headers = new Headers();
+    this.authToken = this.authService.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type', 'application/json');
+
+    let url = this.serverUrl + "injuries/" + injuryId;
+
+    return this.http.delete(url, { headers: headers }).catch(this.onCatch)
+      .do((res: Response) => {
+        this.onSuccess(res);
+      }, (error: any) => {
+        this.onError(error);
+      })
+      .finally(() => {
+        this.onEnd();
+      })
+      .map(res => res.json());
+  }
 
   storeInjuries(injuries) {
     this.injuries = injuries;

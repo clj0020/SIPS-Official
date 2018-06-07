@@ -9,6 +9,11 @@ h2 {
   font-size: 2em;
 }
 
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
 .unverified-icon {
   color: red;
   font-size: 3em;
@@ -18,17 +23,78 @@ h2 {
   margin-top: 1em;
 }
 
-.delete-tester-btn {
+.tester-menu-btn {
   margin: 1em;
   position: relative;
   width: 3.5em;
   height: 3.5em;
   float: right;
+
+  .tester-menu-icon {
+    font-size: 3em !important;
+    position: absolute;
+    top: 0.3em;
+    left: 0.1em;
+  }
 }
 
-.delete-tester-icon {
-  font-size: 3em !important;
-  position: absolute;
-  top: 0.3em;
-  left: 0.1em;
+.image-container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+
+  .image {
+    width: 100%;
+    height: auto;
+    margin: auto;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: 0.3s ease;
+    background-color: rgba(96, 96, 96, 0.8);
+
+    .icon {
+      color: white;
+      font-size: 100px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      text-align: center;
+
+      .fa-camera:hover {
+        color: #eee;
+      }
+    }
+  }
+
+  &:hover .overlay {
+    opacity: 1;
+  }
+}
+@media only screen and (max-width: 450px) {
+  .tester-menu-btn {
+    margin: 1em;
+    position: relative;
+    width: 3em;
+    height: 3em;
+    float: right;
+
+    .tester-menu-icon {
+      font-size: 2em !important;
+      position: absolute;
+      top: 0.35em;
+      left: 0.25em;
+    }
+  }
 }

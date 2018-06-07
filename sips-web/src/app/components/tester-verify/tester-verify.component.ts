@@ -7,11 +7,11 @@ import { TesterService } from '../../services/tester.service';
 import 'rxjs/add/operator/filter';
 
 @Component({
-  selector: 'app-verify-tester',
-  templateUrl: './verify-tester.component.html',
-  styleUrls: ['./verify-tester.component.scss']
+  selector: 'app-tester-verify',
+  templateUrl: './tester-verify.component.html',
+  styleUrls: ['./tester-verify.component.scss']
 })
-export class VerifyTesterComponent implements OnInit {
+export class TesterVerifyComponent implements OnInit {
   token: string;
 
   first_name: string;

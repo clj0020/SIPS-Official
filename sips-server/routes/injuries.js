@@ -11,29 +11,6 @@ var requireAuth = passport.authenticate('jwt', {
 	session: false
 });
 
-// Get list of past injuries for Athlete
-router.get('/athlete/:athleteId', requireAuth, auth.roleAuthorization(['Admin', 'Tester', 'Athlete'], 'getAthleteInjuries'), (req, res, next) => {
-
-	let athleteId = req.params.athleteId;
-
-	Injury.getAthleteInjuries(athleteId, (err, injuries) => {
-		// If theres an error, success will be false
-		if (err) {
-			return res.json({
-				success: false,
-				msg: 'Failed to retrieve injuries: ' + err
-			});
-		} else {
-			// Success! Send back injuries
-			res.status(200).json({
-				success: true,
-				msg: 'Got athlete injuries.',
-				injuries: injuries
-			});
-		}
-	});
-});
-
 // Get a single injury
 router.get('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester', 'Athlete'], 'getInjury'), (req, res, next) => {
 	const id = req.params.id;
@@ -54,7 +31,8 @@ router.get('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester', 'Athl
 	});
 });
 
-router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester', 'Athlete'], 'addInjury'), (req, res) => {
+// Add an injury
+router.post('/', requireAuth, auth.roleAuthorization(['Admin', 'Tester', 'Athlete'], 'addInjury'), (req, res) => {
 	const injury = new Injury({
 		title: req.body.title,
 		athlete: req.body.athlete,
@@ -73,6 +51,69 @@ router.post('/add', requireAuth, auth.roleAuthorization(['Admin', 'Tester', 'Ath
 				success: true,
 				msg: 'Successfully added injury.',
 				injury: addedInjury
+			});
+		}
+	});
+});
+
+// Update injury
+router.put('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Athlete'], 'editInjury'), (req, res) => {
+
+	Injury.findByIdAndUpdate(req.body._id, req.body, {
+		new: true
+	}, (err, newInjury) => {
+		if (err) {
+			res.json({
+				success: true,
+				msg: 'Failed to edit injury. Error: ' + err
+			});
+		} else {
+			res.json({
+				success: true,
+				msg: 'Successfully edited injury.',
+				injury: newInjury
+			});
+		}
+	});
+});
+
+// Delete injury
+router.delete('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Athlete'], 'deleteInjury'), (req, res, next) => {
+	const id = req.params.id;
+
+	Injury.deleteInjuryById(id, (err) => {
+		if (err) {
+			res.json({
+				success: false,
+				msg: 'Failed to delete injury.'
+			});
+		} else {
+			res.json({
+				success: true,
+				msg: 'Successfully deleted injury.'
+			});
+		}
+	});
+});
+
+// Get list of past injuries for Athlete
+router.get('/athlete/:athleteId', requireAuth, auth.roleAuthorization(['Admin', 'Tester', 'Athlete'], 'getAthleteInjuries'), (req, res, next) => {
+
+	let athleteId = req.params.athleteId;
+
+	Injury.getAthleteInjuries(athleteId, (err, injuries) => {
+		// If theres an error, success will be false
+		if (err) {
+			return res.json({
+				success: false,
+				msg: 'Failed to retrieve injuries: ' + err
+			});
+		} else {
+			// Success! Send back injuries
+			res.status(200).json({
+				success: true,
+				msg: 'Got athlete injuries.',
+				injuries: injuries
 			});
 		}
 	});

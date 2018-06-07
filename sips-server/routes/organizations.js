@@ -7,24 +7,6 @@ const config = require('config');
 const Organization = require('../models/organization');
 const Admin = require('../models/admin');
 
-function generateToken(user) {
-	return jwt.sign(user, config.secret, {
-		expiresIn: 10080
-	});
-}
-
-function setAdminInfo(request) {
-	return {
-		_id: request._id,
-		kind: request.kind,
-		created_at: request.created_at,
-		first_name: request.first_name,
-		last_name: request.last_name,
-		email: request.email,
-		organization: request.organization
-	};
-}
-
 var requireAuth = passport.authenticate('jwt', {
 	session: false
 });
@@ -50,7 +32,7 @@ var requireAuth = passport.authenticate('jwt', {
 						msg: String (),
 						organization: Organization ()
 */
-router.post('/add', requireAuth, auth.roleAuthorization(['Admin']), (req, res) => {
+router.post('/', requireAuth, auth.roleAuthorization(['Admin']), (req, res) => {
 
 	let newOrganization = new Organization({
 		title: req.body.title,
@@ -133,6 +115,7 @@ router.get('/:id', requireAuth, auth.roleAuthorization([], 'getOrganization'), (
 	});
 });
 
+// Update organization
 router.put('/:id', requireAuth, auth.roleAuthorization(['Admin'], 'getOrganization'), (req, res, next) => {
 	Organization.findOneAndUpdate(req.body._id, req.body, {
 		new: true
@@ -152,5 +135,22 @@ router.put('/:id', requireAuth, auth.roleAuthorization(['Admin'], 'getOrganizati
 	});
 });
 
+function generateToken(user) {
+	return jwt.sign(user, config.secret, {
+		expiresIn: 10080
+	});
+}
+
+function setAdminInfo(request) {
+	return {
+		_id: request._id,
+		kind: request.kind,
+		created_at: request.created_at,
+		first_name: request.first_name,
+		last_name: request.last_name,
+		email: request.email,
+		organization: request.organization
+	};
+}
 
 module.exports = router;
