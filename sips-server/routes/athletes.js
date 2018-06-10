@@ -34,6 +34,7 @@ var requireAuth = passport.authenticate('jwt', {
 	session: false
 });
 
+
 // Get a single athlete
 router.get('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'getAthlete'), (req, res, next) => {
 	const id = req.params.id;
@@ -206,10 +207,8 @@ router.delete('/:id', requireAuth, auth.roleAuthorization(['Admin'], 'deleteAthl
 });
 
 // Get list of athletes from Organization
-router.get('/get-athletes-from-organization', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'getAthletesFromOrganization'), (req, res, next) => {
-	// let organizationId = req.params.organizationId;
-
-	let organizationId = req.user.organization
+router.get('/organization/:organizationId', requireAuth, auth.roleAuthorization(['Admin', 'Tester'], 'getAthletesFromOrganization'), (req, res, next) => {
+	let organizationId = req.params.organizationId;
 
 	// Call the getAthletesFromOrganization method of Athlete model.
 	Athlete.getAthletesFromOrganization(organizationId, (err, athletes) => {

@@ -187,7 +187,6 @@ export class TesterService {
 
   getTesterById(id) {
     this.showLoader();
-    console.log("Getting tester");
 
     let headers = new Headers();
     this.authToken = this.authService.loadToken();
@@ -210,8 +209,6 @@ export class TesterService {
 
   getTestersFromOrganization(organizationId) {
     this.showLoader();
-
-    console.log("Getting testers from org");
 
     let headers = new Headers();
     this.authToken = this.authService.loadToken();

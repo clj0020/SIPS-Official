@@ -211,7 +211,7 @@ export class AthleteService {
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
 
-    let url = this.serverUrl + "athletes/get-athletes-from-organization";
+    let url = this.serverUrl + "athletes/organization/" + organizationId;
 
     return this.http.get(url, { headers: headers }).catch(this.onCatch)
       .do((res: Response) => {
