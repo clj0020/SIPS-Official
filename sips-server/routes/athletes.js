@@ -146,9 +146,8 @@ router.put('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester', 'Athl
 				});
 			} else {
 				athlete.profileImageUrl = imageUrl;
-				console.log("Athlete: ", athlete);
 
-				Athlete.findByIdAndUpdate(req.body.id, athlete, {
+				Athlete.findByIdAndUpdate(req.body._id, athlete, {
 					new: true
 				}, (err, newAthlete) => {
 					if (err) {
@@ -168,7 +167,7 @@ router.put('/:id', requireAuth, auth.roleAuthorization(['Admin', 'Tester', 'Athl
 			}
 		})
 	} else {
-		Athlete.findByIdAndUpdate(req.body._id, req.body, {
+		Athlete.findByIdAndUpdate(req.body._id, athlete, {
 			new: true
 		}, (err, newAthlete) => {
 			if (err) {

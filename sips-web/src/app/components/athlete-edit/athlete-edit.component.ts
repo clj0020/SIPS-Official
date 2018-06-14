@@ -98,17 +98,20 @@ export class AthleteEditComponent implements OnInit {
   onPersonalSubmit() {
     this.athlete.first_name = this.first_name;
     this.athlete.last_name = this.last_name;
-    this.athlete.date_of_birth = this.date_of_birth;
+    this.athlete.date_of_birth = moment(this.date_of_birth).toISOString();
 
 
     this.athleteService.editAthlete(this.athlete, this.file).subscribe(data => {
       if (data.success) {
         this.athlete = data.athlete;
+        console.log(data.athlete);
 
         this.flashMessage.show(data.msg, {
           cssClass: 'alert-success',
           timeout: 5000
         });
+
+        this.router.navigate(['/athletes/athlete', data.athlete._id]);
       }
       else {
         this.flashMessage.show(data.msg, {
@@ -135,6 +138,8 @@ export class AthleteEditComponent implements OnInit {
           cssClass: 'alert-success',
           timeout: 5000
         });
+
+        this.router.navigate(['/athletes/athlete', this.athlete._id]);
       }
       else {
         this.flashMessage.show(data.msg, {
@@ -151,6 +156,13 @@ export class AthleteEditComponent implements OnInit {
     let fileList: FileList = event.target.files;
     if (fileList.length > 0) {
       this.file = fileList[0];
+      var reader = new FileReader();
+
+      reader.onload = (event: any) => {
+        this.athlete.profileImageUrl = event.target.result;
+      }
+
+      reader.readAsDataURL(event.target.files[0]);
     }
   }
 

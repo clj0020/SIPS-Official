@@ -1,7 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpModule, BrowserXhr } from '@angular/http';
+import { CustExtBrowserXhr } from './classes/custom-ext-browser-xhr';
 import { RouterModule, Routes } from '@angular/router';
 import { FlashMessagesModule } from 'angular2-flash-messages';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -157,7 +158,8 @@ const appRoutes: Routes = [
     InjuryService,
     ValidateService,
     MachineLearnerService,
-    AuthGuard
+    AuthGuard,
+    { provide: BrowserXhr, useClass: CustExtBrowserXhr }
   ],
   bootstrap: [AppComponent],
   entryComponents: [

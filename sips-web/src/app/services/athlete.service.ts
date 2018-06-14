@@ -65,7 +65,7 @@ export class AthleteService {
 
     let formData: FormData = new FormData();
 
-    formData.append('id', athlete._id);
+    formData.append('_id', athlete._id);
 
     if (profileImage) {
       formData.append('profileImage', profileImage, profileImage.name);

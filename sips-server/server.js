@@ -58,7 +58,21 @@ const machineLearner = require('./routes/machine-learner');
 const port = process.env.PORT || 8080;
 
 // CORS Middleware
-app.use(cors());
+var originsWhitelist = [
+	'http://localhost:4200',
+	'https://sips-1350.appspot.com'
+];
+
+var corsOptions = {
+	origin: function(origin, callback) {
+		var isWhitelisted = originsWhitelist.indexOf(origin) !== -1;
+		callback(null, isWhitelisted);
+	},
+	credentials: true
+}
+
+//here is the magic
+app.use(cors(corsOptions));
 
 // Set Static Folder
 app.use(express.static(path.join(__dirname, 'public')));
